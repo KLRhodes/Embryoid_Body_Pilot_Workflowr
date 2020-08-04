@@ -1,0 +1,17 @@
+name: "Embryoid_Body_Pilot_Workflowr"
+output_dir: ../docs
+navbar:
+  title: "Embryoid_Body_Pilot_Workflowr"
+  left:
+  - text: Home
+    href: index.html
+  - text: About
+    href: about.html
+  - text: License
+    href: license.html
+output:
+  workflowr::wflow_html:
+    toc: yes
+    toc_float: yes
+    theme: cosmo
+    highlight: textmate
