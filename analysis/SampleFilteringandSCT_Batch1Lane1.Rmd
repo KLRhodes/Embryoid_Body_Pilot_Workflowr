@@ -5,7 +5,7 @@ date: "8/4/2020"
 output: html_document
 ---
 
-```{r, results='hide'}
+```{r, message=FALSE}
 library(knitr)
 library(Seurat)
 library(Matrix)
@@ -16,7 +16,7 @@ library(here)
 ```
 
 load rds
-```{r, results='hide'}
+```{r, message=F}
 samp.obj<- readRDS('/project2/gilad/katie/Pilot_HumanEBs/HumanEB_QCmetadata/Batch1_Lane1_seurat_NoNorm_QCMetaAdded.rds')
 ```
 
@@ -25,5 +25,5 @@ qc<- knitr::knit_expand(file = here::here("analysis/child/SampleFilteringAndSCT.
 ```
 
 
-`knitr::knit(text=unlist(qc))`
+`r knitr::knit(text=unlist(qc))`
 
