@@ -25,5 +25,4 @@ qc<- knitr::knit_expand(file = here::here("analysis/child/SampleFilteringAndSCT.
 ```
 
 
-`r knitr::knit(text=unlist(qc))`
 
