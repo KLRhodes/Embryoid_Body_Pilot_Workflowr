@@ -1,0 +1,28 @@
+---
+title: "SampleFilteringandSCT_Batch2Lane2"
+author: "klrhodes"
+date: "8/4/2020"
+output: html_document
+---
+
+```{r, message=FALSE}
+library(knitr)
+library(Seurat)
+library(Matrix)
+library(DropletUtils)
+library(ggplot2)
+library(dplyr)
+library(here)
+```
+
+load rds
+```{r, message=F}
+samp.obj<- readRDS('/project2/gilad/katie/Pilot_HumanEBs/HumanEB_QCmetadata/Batch2_Lane2_seurat_NoNorm_QCMetaAdded.rds')
+```
+
+```{r}
+qc<- knitr::knit_expand(file = here::here("analysis/child/SampleFilteringAndSCT.Rmd"))
+```
+
+`r knitr::knit(text=unlist(qc))`
+
