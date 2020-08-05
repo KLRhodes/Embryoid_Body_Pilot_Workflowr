@@ -12,7 +12,7 @@
 <meta name="author" content="klrhodes" />
 
 
-<title>SampleFilteringandSCT_Batch1Lane1</title>
+<title>HC_EB_sampleQC_DoubletsAndChimpRemoved</title>
 
 <script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -380,7 +380,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">SampleFilteringandSCT_Batch1Lane1</h1>
+<h1 class="title toc-ignore">HC_EB_sampleQC_DoubletsAndChimpRemoved</h1>
 <h4 class="author">klrhodes</h4>
 <h4 class="date">8/4/2020</h4>
 
@@ -498,16 +498,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong6b4fa36"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 6b4fa36 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong6173fef"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 6173fef </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong6b4fa36" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong6173fef" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 6b4fa36. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 6173fef. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -591,6 +591,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+6173fef
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+<td>
+test
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -710,6 +744,658 @@ library(here)</code></pre>
 <p>load rds</p>
 <pre class="r"><code>samp.obj&lt;- readRDS(&#39;/project2/gilad/katie/Pilot_HumanEBs/HumanEB_QCmetadata/Batch1_Lane1_seurat_NoNorm_QCMetaAdded.rds&#39;)</code></pre>
 <pre class="r"><code>qc&lt;- knitr::knit_expand(file = here::here(&quot;analysis/child/SampleFilteringAndSCT.Rmd&quot;))</code></pre>
+<p>load libraries</p>
+<pre class="r"><code>library(Seurat)
+library(Matrix)
+library(DropletUtils)
+library(ggplot2)
+library(dplyr)
+options(future.globals.maxSize= 4000*1024^2) # allow global exceeding 4Gb</code></pre>
+<p>Note: This gets run after EB.metadata.Rmd (located in code directory), which read star solo output, adds metadata for species, runs emptydrops and adds QC metadata, runs demuxlet and adds individual metadata, and %MT and %ribosomal to the metadata. This facilitates filtering done here.</p>
+<pre class="r"><code>head(samp.obj)</code></pre>
+<pre><code>An object of class Seurat 
+1 features across 4702 samples within 1 assay 
+Active assay: RNA (1 features, 0 variable features)</code></pre>
+<pre class="r"><code>#remove doublets (and chimp, which are assigned to doublet in this case)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;Doublet&#39;)
+
+#remove cells assigned to individuals not actually in this sample. presumably these are low quality cells that could not be accurately assigned, so their closest match was another individual in the vcf file.
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-12.variant&#39;)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-13.variant&#39;)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-6.variant&#39;)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-7.variant&#39;)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-8.variant&#39;)
+
+#remove non-YRI human individuals (non-YRI humans only included in 1 replicate, so not needed for exploration of bio and tech variance)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-10.variant&#39;)
+samp.obj&lt;- subset(samp.obj, subset = individual != &#39;SNG-SCM-9.variant&#39;)</code></pre>
+<pre class="r"><code>head(samp.obj)</code></pre>
+<pre><code>An object of class Seurat 
+1 features across 2142 samples within 1 assay 
+Active assay: RNA (1 features, 0 variable features)</code></pre>
+<pre class="r"><code>samp.obj&lt;- subset(samp.obj, subset = EmptyDrops.FDR &lt; .0001) # very strict, may lose some &quot;good&quot; cells, but limits set to high quality cells and there are enough cells remaining for downstream analyses</code></pre>
+<pre class="r"><code>head(samp.obj)</code></pre>
+<pre><code>An object of class Seurat 
+1 features across 1566 samples within 1 assay 
+Active assay: RNA (1 features, 0 variable features)</code></pre>
+<pre class="r"><code>VlnPlot(samp.obj, features= &quot;percent.mt&quot;, group.by = &quot;individual&quot;, pt.size = 0)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#visualize feature-feature relationships with FeatureScatter
+plot1&lt;- FeatureScatter(samp.obj, feature1 = &quot;nCount_RNA&quot;, feature2 = &quot;percent.mt&quot;, group.by = &quot;individual&quot;)
+plot2&lt;- FeatureScatter(samp.obj, feature1 = &quot;nCount_RNA&quot;, feature2 = &quot;nFeature_RNA&quot;, group.by = &quot;individual&quot;)
+CombinePlots(plots= list(plot1, plot2), legend = &quot;right&quot;)</code></pre>
+<pre><code>Warning: CombinePlots is being deprecated. Plots should now be combined using
+the patchwork system.</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#filtering out cells with high percent.mt. cutting cells with &gt;20% mt based on the figure above and previous analysis of processed data. 
+samp.obj&lt;- subset(samp.obj, subset = percent.mt &lt; 20)
+samp.obj&lt;- subset(samp.obj, subset = percent.mt &gt; 3) #because low mt cells cluster together into cluster of low quality cells downstream, can eliminate them here. this is very strict and will throw out potentially good cells from &quot;good&quot; clusters too. but those clusters have a range of mt percentage and will not be eliminated entirely like the junk clusters will.</code></pre>
+<pre class="r"><code>head(samp.obj)</code></pre>
+<pre><code>An object of class Seurat 
+1 features across 1245 samples within 1 assay 
+Active assay: RNA (1 features, 0 variable features)</code></pre>
+<pre class="r"><code>VlnPlot(samp.obj, features = &quot;nCount_RNA&quot;,group.by = &quot;individual&quot;, pt.size = 0)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /> 18858 often has higher count/higher feature count. Based on downstream analyses, lots of 18858 remained in a pluripotent state and iPSCs tend to have higher counts than other cells types.</p>
+<pre class="r"><code>VlnPlot(samp.obj, features = &quot;nFeature_RNA&quot;,group.by = &quot;individual&quot;, pt.size = 0)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>head(samp.obj)</code></pre>
+<pre><code>An object of class Seurat 
+1 features across 1245 samples within 1 assay 
+Active assay: RNA (1 features, 0 variable features)</code></pre>
+<pre class="r"><code>summary(samp.obj$nFeature_RNA)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1577    2614    3411    3903    4957    9632 </code></pre>
+<pre class="r"><code>#set a feature threshold
+samp.obj&lt;- subset(samp.obj, subset = nFeature_RNA &gt; 1500) #again, very strict, may lose some &quot;good&quot; cells, but limits set to high quality cells and there are enough cells remaining for downstream analyses</code></pre>
+<pre class="r"><code>head(samp.obj)</code></pre>
+<pre><code>An object of class Seurat 
+1 features across 1245 samples within 1 assay 
+Active assay: RNA (1 features, 0 variable features)</code></pre>
+<pre class="r"><code>#in seurat SCTransform vignette, they regress out MT percentage, but we don&#39;t. Reasoning is that MT percentage probably correlates with cell type for us so its still useful information for clustering.
+
+samp.obj&lt;- suppressWarnings(SCTransform(samp.obj, verbose=F))</code></pre>
+<pre class="r"><code>samp.obj&lt;- RunPCA(samp.obj, npcs= 100, verbose = F)</code></pre>
+<pre class="r"><code>DimPlot(samp.obj, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(samp.obj, reduction = &quot;pca&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(samp.obj, dims = 1:2, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(samp.obj, dims = 3:4, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-22-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(samp.obj, dims = 5:6, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-22-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(samp.obj@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]),
+          max(samp.obj@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]))
+ylim &lt;- c(min(samp.obj@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]),
+          max(samp.obj@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]))
+
+individuals &lt;- table(samp.obj$individual)
+individuals &lt;- individuals[individuals&gt;50]
+individuals &lt;- names(individuals)
+for (i in individuals)
+{
+  print(DimPlot(samp.obj, reduction = &quot;pca&quot;, 
+                cells = WhichCells(samp.obj, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Keep all dims that explain more than 1% of variance
+pva&lt;- samp.obj@reductions$pca@stdev^2/samp.obj@reductions$pca@misc$total.variance
+ndim &lt;- length(which(pva&gt;=0.01))
+ElbowPlot(samp.obj, ndims = ndim*2) + geom_vline(xintercept=ndim, linetype=&quot;dashed&quot;, color = &quot;red&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
+Past versions of unnamed-chunk-24-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>ndim</code></pre>
+<pre><code>[1] 7</code></pre>
+<pre class="r"><code>samp.clust&lt;- FindNeighbors(samp.obj, dims = 1:ndim, verbose = F)
+samp.clust&lt;- FindClusters(samp.clust, verbose = F)</code></pre>
+<pre class="r"><code>samp.clust&lt;- RunUMAP(samp.clust, dims=1:ndim, verbose = F)</code></pre>
+<pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
+This message will be shown once per session</code></pre>
+<pre class="r"><code>samp.clust&lt;- RunTSNE(samp.clust, dims=1:ndim, verbose = F)</code></pre>
+<pre class="r"><code>DimPlot(samp.clust, reduction = &quot;umap&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(samp.clust, reduction = &quot;umap&quot;, group.by = &quot;orig.ident&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-27-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(samp.clust, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-27-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(samp.clust@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
+          max(samp.clust@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
+ylim &lt;- c(min(samp.clust@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
+          max(samp.clust@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
+for (i in individuals)
+{
+  print(DimPlot(samp.clust, reduction = &quot;umap&quot;, 
+                cells = WhichCells(samp.clust, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-27-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-27-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-27-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>FeaturePlot(samp.clust, features = c(&quot;POU5F1&quot;, &quot;PAX6&quot;, &quot;HAND1&quot;, &quot;SOX17&quot;), pt.size = 0.2, ncol=3)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /> above shows the expression of marker genes in UMAP space. POU5F1- pluripotent marker SOX17- endoderm marker HAND1- mesoderm marker PAX6- early ectoderm marker</p>
+<pre class="r"><code>DimPlot(samp.clust, reduction = &quot;tsne&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
+Past versions of unnamed-chunk-29-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>DimPlot(samp.clust, reduction = &quot;tsne&quot;, group.by = &quot;orig.ident&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-29-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-2">
+Past versions of unnamed-chunk-29-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>DimPlot(samp.clust, reduction = &quot;tsne&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-29-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-3">
+Past versions of unnamed-chunk-29-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>xlim &lt;- c(min(samp.clust@reductions$tsne@cell.embeddings[,&#39;tSNE_1&#39;]),
+          max(samp.clust@reductions$tsne@cell.embeddings[,&#39;tSNE_1&#39;]))
+ylim &lt;- c(min(samp.clust@reductions$tsne@cell.embeddings[,&#39;tSNE_2&#39;]),
+          max(samp.clust@reductions$tsne@cell.embeddings[,&#39;tSNE_2&#39;]))
+for (i in individuals)
+{
+  print(DimPlot(samp.clust, reduction = &quot;tsne&quot;, 
+                cells = WhichCells(samp.clust, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-29-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-4">
+Past versions of unnamed-chunk-29-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-29-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-5">
+Past versions of unnamed-chunk-29-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-29-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-6">
+Past versions of unnamed-chunk-29-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>samp&lt;- samp.clust@meta.data$SampleID[1]
+path&lt;- here::here(&quot;output/sampleQCrds/&quot;)
+saveRDS(samp.clust, file=paste0(path,samp,&#39;.seurat.rds&#39;))</code></pre>
+<pre class="r"><code>FeaturePlot(samp.clust, features = &quot;nFeature_RNA&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-31-1">
+Past versions of unnamed-chunk-31-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-31-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>FeaturePlot(samp.clust, features = &quot;nCount_RNA&quot;)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-32-1">
+Past versions of unnamed-chunk-32-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-32-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>VlnPlot(samp.clust, features = &quot;nFeature_RNA&quot;, pt.size = 0)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VlnPlot(samp.clust, features = &quot;percent.mt&quot;, pt.size = 0)</code></pre>
+<p><img src="figure/SampleFilteringandSCT_Batch1Lane1.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-34-1">
+Past versions of unnamed-chunk-34-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-34-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3035ff6
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+<tr>
+<td>
+b36135b
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>#how many cells per cluster from each individual?
+table(samp.clust@meta.data$SCT_snn_res.0.8, samp.clust@meta.data$individual)</code></pre>
+<pre><code>   
+    SNG-NA18511.variant2 SNG-NA18858.variant2 SNG-NA19160.variant2
+  0                    0                  266                    0
+  1                   63                   42                   99
+  2                   98                   11                   64
+  3                   56                    7                   96
+  4                    9                  118                    8
+  5                    8                    0                  103
+  6                   69                    0                    1
+  7                    5                    1                   62
+  8                   17                    2                   40</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -762,30 +1448,31 @@ loaded via a namespace (and not attached):
  [43] viridisLite_0.3.0      xtable_1.8-4           dqrng_0.2.1           
  [46] reticulate_1.16        rsvd_1.0.3             htmlwidgets_1.5.1     
  [49] httr_1.4.2             gplots_3.0.4           RColorBrewer_1.1-2    
- [52] ellipsis_0.3.1         ica_1.0-2              pkgconfig_2.0.3       
- [55] R.methodsS3_1.8.0      uwot_0.1.8             deldir_0.1-28         
- [58] locfit_1.5-9.4         tidyselect_1.1.0       rlang_0.4.7           
- [61] reshape2_1.4.4         later_1.1.0.1          munsell_0.5.0         
- [64] tools_3.6.1            generics_0.0.2         ggridges_0.5.2        
- [67] evaluate_0.14          stringr_1.4.0          fastmap_1.0.1         
- [70] yaml_2.2.1             goftest_1.2-2          npsurv_0.4-0          
- [73] fs_1.4.2               fitdistrplus_1.0-14    caTools_1.18.0        
- [76] purrr_0.3.4            RANN_2.6.1             pbapply_1.4-2         
- [79] future_1.18.0          nlme_3.1-140           whisker_0.4           
- [82] mime_0.9               R.oo_1.23.0            compiler_3.6.1        
- [85] plotly_4.9.2.1         png_0.1-7              lsei_1.2-0            
- [88] spatstat.utils_1.17-0  tibble_3.0.3           stringi_1.4.6         
- [91] lattice_0.20-38        vctrs_0.3.2            pillar_1.4.6          
- [94] lifecycle_0.2.0        lmtest_0.9-37          RcppAnnoy_0.0.16      
- [97] data.table_1.13.0      cowplot_1.0.0          bitops_1.0-6          
-[100] irlba_2.3.3            httpuv_1.5.4           patchwork_1.0.1       
-[103] R6_2.4.1               promises_1.1.1         KernSmooth_2.23-15    
-[106] gridExtra_2.3          codetools_0.2-16       MASS_7.3-51.4         
-[109] gtools_3.8.2           rhdf5_2.30.1           rprojroot_1.3-2       
-[112] withr_2.2.0            sctransform_0.2.1      GenomeInfoDbData_1.2.2
-[115] mgcv_1.8-28            grid_3.6.1             rpart_4.1-15          
-[118] tidyr_1.1.0            rmarkdown_2.3          Rtsne_0.15            
-[121] git2r_0.26.1           shiny_1.5.0           </code></pre>
+ [52] ellipsis_0.3.1         ica_1.0-2              farver_2.0.3          
+ [55] pkgconfig_2.0.3        R.methodsS3_1.8.0      uwot_0.1.8            
+ [58] deldir_0.1-28          locfit_1.5-9.4         labeling_0.3          
+ [61] tidyselect_1.1.0       rlang_0.4.7            reshape2_1.4.4        
+ [64] later_1.1.0.1          munsell_0.5.0          tools_3.6.1           
+ [67] generics_0.0.2         ggridges_0.5.2         evaluate_0.14         
+ [70] stringr_1.4.0          fastmap_1.0.1          yaml_2.2.1            
+ [73] goftest_1.2-2          npsurv_0.4-0           fs_1.4.2              
+ [76] fitdistrplus_1.0-14    caTools_1.18.0         purrr_0.3.4           
+ [79] RANN_2.6.1             pbapply_1.4-2          future_1.18.0         
+ [82] nlme_3.1-140           whisker_0.4            mime_0.9              
+ [85] R.oo_1.23.0            compiler_3.6.1         plotly_4.9.2.1        
+ [88] png_0.1-7              lsei_1.2-0             spatstat.utils_1.17-0 
+ [91] tibble_3.0.3           stringi_1.4.6          RSpectra_0.16-0       
+ [94] lattice_0.20-38        vctrs_0.3.2            pillar_1.4.6          
+ [97] lifecycle_0.2.0        lmtest_0.9-37          RcppAnnoy_0.0.16      
+[100] data.table_1.13.0      cowplot_1.0.0          bitops_1.0-6          
+[103] irlba_2.3.3            httpuv_1.5.4           patchwork_1.0.1       
+[106] R6_2.4.1               promises_1.1.1         KernSmooth_2.23-15    
+[109] gridExtra_2.3          codetools_0.2-16       MASS_7.3-51.4         
+[112] gtools_3.8.2           rhdf5_2.30.1           rprojroot_1.3-2       
+[115] withr_2.2.0            sctransform_0.2.1      GenomeInfoDbData_1.2.2
+[118] mgcv_1.8-28            grid_3.6.1             rpart_4.1-15          
+[121] tidyr_1.1.0            rmarkdown_2.3          Rtsne_0.15            
+[124] git2r_0.26.1           shiny_1.5.0           </code></pre>
 </div>
 
 
