@@ -1,0 +1,592 @@
+---
+title: "Integrate lanes from all batches of EB pilot (Human data only, no doublets"
+output: html_document
+---
+
+
+```{r, message=FALSE}
+library(Seurat)
+library(harmony)
+library(ggplot2)
+library(DataCombine)
+library(here)
+library(RColorBrewer)
+options(future.globals.maxSize= 15000*1024^2) #allow global exceeding 4Gb
+```
+
+
+Read in the files, add metadata, and create an object list
+```{r}
+filelist<-list.files(here::here('output/sampleQCrds/'), full.names = T)
+objectlist<- list()
+for (i in 1:length(filelist)){
+  rds<- readRDS(filelist[i])
+  objectlist[i]<- rds
+  
+}
+
+```
+
+create a merged seurat object
+```{r}
+ids<-substr(basename(filelist),1,12)
+merged<- merge(objectlist[[1]], c(objectlist[[2]], objectlist[[3]],objectlist[[4]],objectlist[[5]],objectlist[[6]],objectlist[[7]],objectlist[[8]],objectlist[[9]],objectlist[[10]],objectlist[[11]],objectlist[[12]],objectlist[[13]],objectlist[[14]],objectlist[[15]],objectlist[[16]]),add.cell.ids=ids, merge.data=T)
+```
+
+```{r}
+#need to fix the individual names because they are slightly different from batch1
+replacements<- data.frame(from= c("SNG-NA18511.variant2", "SNG-NA18858.variant2", "SNG-NA19160.variant2"), to=c("SNG-NA18511", "SNG-NA18858", "SNG-NA19160"))
+merged@meta.data<-FindReplace(merged@meta.data, "individual", replacements, from = "from", to= "to", exact=T, vector=F )
+```
+
+```{r}
+#run PCA on full dataset pre-alignment
+all.genes= rownames(merged)
+merged<-FindVariableFeatures(merged,selection.method="vst", nfeatures = 5000)
+#have previously used all genes (nfeatures=25000) and clustering by individual rather than batch (based on proportion of cells per cluster) was still observed downstream. Now using 5000 because it is the upper bound of what has been recommended in the literature.
+merged<- ScaleData(merged, features = all.genes)
+merged<-RunPCA(merged, npcs = 100, verbose=F)
+```
+
+```{r}
+DimPlot(merged, reduction = "pca", group.by = "Batch")
+```
+
+Now, running harmony to integrate. Here, using Batch, SampleID(10x Lane), and individual to integrate. Since Batch and Lane are confounded, this may over correct for Batch.
+
+```{r}
+merged<- RunHarmony(merged, c("Batch", "individual"), plot_convergence = T, assay.use = "SCT")
+```
+
+
+
+Visualize Harmony embeddings
+```{r}
+DimPlot(merged, reduction="harmony", group.by= c("individual", "Batch"), combine=F)
+```
+
+Now Running UMAP and identifying clusters, etc
+
+```{r}
+merged<- RunUMAP(merged, reduction = "harmony", dims = 1:100, verbose = F)
+merged<- FindNeighbors(merged, reduction="harmony", dims = 1:100, verbose = F)
+merged<- FindClusters(merged, resolution=1, verbose = F)
+merged<- FindClusters(merged, resolution=0.8, verbose = F)
+merged<- FindClusters(merged, resolution=0.5, verbose = F)
+merged<- FindClusters(merged, resolution=0.1, verbose = F)
+```
+
+SAVING merged/aligned/reclustered object
+```{r}
+path<- here::here("output/mergedObjects/")
+saveRDS(merged, file=paste0(path,'Harmony.Batchindividual.rds'))
+```
+
+
+```{r}
+#reassign idents
+Idents(merged)<- 'SCT_snn_res.1'
+```
+
+```{r}
+VizDimLoadings(merged, dims = 1:2, reduction = "harmony")
+VizDimLoadings(merged, dims = 3:4, reduction = "harmony")
+VizDimLoadings(merged, dims = 5:6, reduction = "harmony")
+```
+```{r}
+xlim <- c(min(merged@reductions$harmony@cell.embeddings[,'harmony_1']),
+          max(merged@reductions$harmony@cell.embeddings[,'harmony_1']))
+ylim <- c(min(merged@reductions$harmony@cell.embeddings[,'harmony_2']),
+          max(merged@reductions$harmony@cell.embeddings[,'harmony_2']))
+
+individuals <- table(merged$individual)
+individuals <- individuals[individuals>50]
+individuals <- names(individuals)
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "harmony", group.by = c("Batch"), pt.size = 0.01,
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+
+
+```{r}
+DimPlot(merged, reduction = "umap")
+DimPlot(merged, reduction = "umap", group.by = "Batch")
+DimPlot(merged, reduction = "umap", group.by = "individual")
+xlim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_1']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_1']))
+ylim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_2']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_2']))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "umap", 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+
+```{r}
+plots2<- DimPlot(merged, group.by = "individual", split.by = "Batch")
+plots2
+```
+```{r}
+DimPlot(merged, group.by = "Batch", split.by = c("individual"))
+```
+
+
+
+
+```{r}
+DimPlot(merged, group.by = "SCT_snn_res.1", split.by = c("Batch"), label=T)
+```
+
+```{r}
+DimPlot(merged, reduction = "harmony", group.by = "SCT_snn_res.1", split.by = "Batch", combine = F)
+```
+
+
+```{r}
+VlnPlot(merged, features = c("POU5F1", "PAX6", "TNNT2", "SOX17", "HAND1", "LUM"), ncol=2)
+```
+
+```{r}
+#pluripotent markers
+FeaturePlot(merged, features = c("POU5F1", "SOX2", "NANOG"), pt.size = 0.2, ncol=3)
+```
+
+```{r}
+#Endoderm markers (first 3 definitive endo, 4-6 liver markers, )
+FeaturePlot(merged, features = c("SOX17","CLDN6","FOXA2", "TTR", "AFP", "FGB"), pt.size = 0.2, combine = F)
+
+
+```
+
+```{r}
+#Mesoderm Markers (first 3 early meso markers, 4-6 heart markers, 7-9 endothelial markers (which comes from mesoderm), then some other general muscle markers)
+FeaturePlot(merged, features = c("HAND1", "BMP4", "TNNT2","KDR", "GNG11", "ECSCR", "COL3A1", "ACTC1"), pt.size = 0.2, combine=F)
+```
+
+```{r}
+#Ectoderm Markers (3-1 early ectoderm markers, 4-6schwann cell (myelinating, non myelinating, or precursor), 7-8 oligodendrocytes, 9-10 radial glia)
+FeaturePlot(merged, features = c("PAX6", "GBX2",  "NES", "MPZ", "SOX10","GAP43", "OLIG1", "OLIG2", "VIM", "HES5"), pt.size = 0.2, ncol=3, combine=F)
+```
+
+```{r}
+#More ectoderm, specifically neurons
+#immature neurons: NEUROD1
+#Mature Neurons: MAP2, SYP
+#dopaminergic: TH, FOXA2,
+FeaturePlot(merged, features = c("MAP2", "SYP","NEUROD1", "TH" ), pt.size = 0.2, ncol=3)
+
+```
+
+Identify cluster markers
+```{r}
+#how many cells per cluster?
+t1<-table(merged@meta.data$SCT_snn_res.1, merged@meta.data$Batch)
+t1
+```
+
+```{r}
+#percent of cells in each cluster per batch
+t1colsum<- colSums(t1)
+percT1<-t1/t1colsum
+percT1
+```
+```{r}
+heatmap(t(percT1))
+```
+
+
+```{r}
+#how many cells per cluster from each individual?
+t2<-table(merged@meta.data$SCT_snn_res.1, merged@meta.data$individual)
+t2
+```
+```{r}
+t2colsums<-colSums(t2)
+
+percT2<- t2/t2colsums
+
+percT2
+```
+```{r}
+heatmap(t(percT2))
+```
+```{r}
+cormat<-round(cor(percT2),2)
+library(reshape2)
+melted_cormat<-melt(cormat)
+ugly<-ggplot(data= melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile() +
+  ggtitle("Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster")
+
+get_lower_tri<- function(cormat){
+  cormat[upper.tri(cormat)]<-NA
+  return(cormat)
+}
+
+lower_tri<- get_lower_tri(cormat)
+melted_tri<- melt(lower_tri)
+pretty<-ggplot(data= melted_tri, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile(color="white") +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint = 0, limit= c(-1,1), space= "Lab", name="Pearson\nCorrelation") +
+  theme_minimal() +
+  ggtitle("Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster")
+
+pretty
+```
+
+```{r}
+#exploring similarity in the number of cells per individual between batches
+merged.Batch1<- (subset(merged, Batch == "Batch1"))
+b1t<- table(merged.Batch1$SCT_snn_res.1, merged.Batch1$individual)
+remove("merged.Batch1")
+b1tcolsums<- colSums(b1t)
+percb1t<- b1t/b1tcolsums                
+
+merged.Batch2<- (subset(merged, Batch == "Batch2"))
+b2t<- table(merged.Batch2$SCT_snn_res.1, merged.Batch2$individual)
+remove("merged.Batch2")
+b2tcolsums<- colSums(b2t)
+percb2t<- b2t/b2tcolsums
+
+merged.Batch3<- (subset(merged, Batch == "Batch3"))
+b3t<- table(merged.Batch3$SCT_snn_res.1, merged.Batch3$individual)
+remove("merged.Batch3")
+b3tcolsums<- colSums(b3t)
+percb3t<- b3t/b3tcolsums
+
+```
+
+```{r}
+
+cols1<- c("Batch1_18511","Batch1_18858","Batch1_19160", "Batch2_18511", "Batch2_18858","Batch2_19160",
+         "Batch3_18511","Batch3_18858", "Batch3_19160")
+
+cols2<- c("Batch1_18511", "Batch2_18511", "Batch3_18511","Batch1_18858", "Batch2_18858", "Batch3_18858","Batch1_19160", "Batch2_19160", "Batch3_19160")
+
+fullpercs<- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
+colnames(fullpercs)<-cols1
+fullpercs<- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
+                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
+                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
+colnames(fullpercs)<-cols2
+fullpercs_cor<- round(cor(fullpercs),2)
+fullpercs_melt<- melt(fullpercs_cor)
+ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile(color="white") +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint = 0, limit= c(-1,1), space= "Lab", name="Pearson\nCorrelation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust=1))+
+  ggtitle("Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster (res 1)")
+
+
+```
+```{r}
+#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
+
+beauty<- colorRampPalette(brewer.pal(9,"Purples"))(200)
+
+rownames(fullpercs)<- c(0:(nrow(fullpercs)-1))
+
+heatmap(as.matrix(fullpercs), scale="none", col=beauty, cexCol = .7, cexRow=.6)
+text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
+
+#generate a heatmap of the proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color
+```
+
+
+-------------------------------
+Reclustering with less resolution, check if everything is robust
+
+```{r}
+#reassign idents
+Idents(merged)<- 'SCT_snn_res.0.5'
+```
+
+```{r}
+DimPlot(merged, reduction = "umap")
+DimPlot(merged, reduction = "umap", group.by = "Batch")
+DimPlot(merged, reduction = "umap", group.by = "individual")
+xlim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_1']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_1']))
+ylim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_2']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_2']))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "umap", 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+
+```{r}
+#exploring similarity in the number of cells per individual between batches
+merged.Batch1<- (subset(merged, Batch == "Batch1"))
+b1t<- table(merged.Batch1$SCT_snn_res.0.5, merged.Batch1$individual)
+remove("merged.Batch1")
+b1tcolsums<- colSums(b1t)
+percb1t<- b1t/b1tcolsums                
+
+merged.Batch2<- (subset(merged, Batch == "Batch2"))
+b2t<- table(merged.Batch2$SCT_snn_res.0.5, merged.Batch2$individual)
+remove("merged.Batch2")
+b2tcolsums<- colSums(b2t)
+percb2t<- b2t/b2tcolsums
+
+merged.Batch3<- (subset(merged, Batch == "Batch3"))
+b3t<- table(merged.Batch3$SCT_snn_res.0.5, merged.Batch3$individual)
+remove("merged.Batch3")
+b3tcolsums<- colSums(b3t)
+percb3t<- b3t/b3tcolsums
+
+```
+
+```{r}
+
+cols1<- c("Batch1_18511","Batch1_18858","Batch1_19160", "Batch2_18511", "Batch2_18858","Batch2_19160",
+         "Batch3_18511","Batch3_18858", "Batch3_19160")
+
+cols2<- c("Batch1_18511", "Batch2_18511", "Batch3_18511","Batch1_18858", "Batch2_18858", "Batch3_18858","Batch1_19160", "Batch2_19160", "Batch3_19160")
+
+fullpercs<- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
+colnames(fullpercs)<-cols1
+fullpercs<- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
+                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
+                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
+colnames(fullpercs)<-cols2
+fullpercs_cor<- round(cor(fullpercs),2)
+fullpercs_melt<- melt(fullpercs_cor)
+ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile(color="white") +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint = 0, limit= c(-1,1), space= "Lab", name="Pearson\nCorrelation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust=1))+
+  ggtitle("Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.5")
+
+
+```
+
+```{r}
+#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
+
+beauty<- colorRampPalette(brewer.pal(9,"Purples"))(200)
+
+rownames(fullpercs)<- c(0:(nrow(fullpercs)-1))
+
+heatmap(as.matrix(fullpercs), scale="none", col=beauty, cexCol = .7, cexRow=.6)
+text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
+
+#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color
+```
+
+
+
+-------------------------------------------------------------------
+
+```{r}
+#reassign idents
+Idents(merged)<- 'SCT_snn_res.0.1'
+```
+
+```{r}
+DimPlot(merged, reduction = "umap")
+DimPlot(merged, reduction = "umap", group.by = "Batch")
+DimPlot(merged, reduction = "umap", group.by = "individual")
+xlim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_1']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_1']))
+ylim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_2']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_2']))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "umap", 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+```{r}
+#exploring similarity in the number of cells per individual between batches
+merged.Batch1<- (subset(merged, Batch == "Batch1"))
+b1t<- table(merged.Batch1$SCT_snn_res.0.1, merged.Batch1$individual)
+remove("merged.Batch1")
+b1tcolsums<- colSums(b1t)
+percb1t<- b1t/b1tcolsums                
+
+merged.Batch2<- (subset(merged, Batch == "Batch2"))
+b2t<- table(merged.Batch2$SCT_snn_res.0.1, merged.Batch2$individual)
+remove("merged.Batch2")
+b2tcolsums<- colSums(b2t)
+percb2t<- b2t/b2tcolsums
+
+merged.Batch3<- (subset(merged, Batch == "Batch3"))
+b3t<- table(merged.Batch3$SCT_snn_res.0.1, merged.Batch3$individual)
+remove("merged.Batch3")
+b3tcolsums<- colSums(b3t)
+percb3t<- b3t/b3tcolsums
+
+```
+
+```{r}
+
+cols1<- c("Batch1_18511","Batch1_18858","Batch1_19160", "Batch2_18511", "Batch2_18858","Batch2_19160",
+         "Batch3_18511","Batch3_18858", "Batch3_19160")
+
+cols2<- c("Batch1_18511", "Batch2_18511", "Batch3_18511","Batch1_18858", "Batch2_18858", "Batch3_18858","Batch1_19160", "Batch2_19160", "Batch3_19160")
+
+fullpercs<- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
+colnames(fullpercs)<-cols1
+fullpercs<- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
+                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
+                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
+colnames(fullpercs)<-cols2
+fullpercs_cor<- round(cor(fullpercs),2)
+fullpercs_melt<- melt(fullpercs_cor)
+ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile(color="white") +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint = 0, limit= c(-1,1), space= "Lab", name="Pearson\nCorrelation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust=1))+
+  ggtitle("Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.1")
+
+
+```
+
+```{r}
+#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
+
+beauty<- colorRampPalette(brewer.pal(9,"Purples"))(200)
+#fullnonorm<- as.data.frame(cbind(b1t[,1:3], b2t,b3t))
+#colnames(fullnonorm)<-cols1
+#heatmap((as.matrix(fullnonorm)), scale="column", col= beauty)
+
+rownames(fullpercs)<- c(0:(nrow(fullpercs)-1))
+
+heatmap(as.matrix(fullpercs), scale="none", col=beauty, cexCol = .7, cexRow=.6)
+text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
+
+#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color
+```
+
+
+
+
+```{r}
+#reassign idents
+Idents(merged)<- 'SCT_snn_res.0.8'
+```
+
+```{r}
+DimPlot(merged, reduction = "umap")
+DimPlot(merged, reduction = "umap", group.by = "Batch")
+DimPlot(merged, reduction = "umap", group.by = "individual")
+xlim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_1']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_1']))
+ylim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_2']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_2']))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "umap", 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+```{r}
+#exploring similarity in the number of cells per individual between batches
+merged.Batch1<- (subset(merged, Batch == "Batch1"))
+b1t<- table(merged.Batch1$SCT_snn_res.0.8, merged.Batch1$individual)
+remove("merged.Batch1")
+b1tcolsums<- colSums(b1t)
+percb1t<- b1t/b1tcolsums                
+
+merged.Batch2<- (subset(merged, Batch == "Batch2"))
+b2t<- table(merged.Batch2$SCT_snn_res.0.8, merged.Batch2$individual)
+remove("merged.Batch2")
+b2tcolsums<- colSums(b2t)
+percb2t<- b2t/b2tcolsums
+
+merged.Batch3<- (subset(merged, Batch == "Batch3"))
+b3t<- table(merged.Batch3$SCT_snn_res.0.8, merged.Batch3$individual)
+remove("merged.Batch3")
+b3tcolsums<- colSums(b3t)
+percb3t<- b3t/b3tcolsums
+
+```
+
+```{r}
+
+cols1<- c("Batch1_18511","Batch1_18858","Batch1_19160", "Batch2_18511", "Batch2_18858","Batch2_19160",
+         "Batch3_18511","Batch3_18858", "Batch3_19160")
+
+cols2<- c("Batch1_18511", "Batch2_18511", "Batch3_18511","Batch1_18858", "Batch2_18858", "Batch3_18858","Batch1_19160", "Batch2_19160", "Batch3_19160")
+
+fullpercs<- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
+colnames(fullpercs)<-cols1
+fullpercs<- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
+                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
+                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
+colnames(fullpercs)<-cols2
+fullpercs_cor<- round(cor(fullpercs),2)
+fullpercs_melt<- melt(fullpercs_cor)
+ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile(color="white") +
+  scale_fill_gradient2(low="blue", high="red", mid="white", midpoint = 0, limit= c(-1,1), space= "Lab", name="Pearson\nCorrelation") +
+  theme_minimal() +
+  ggtitle("Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.8")
+
+
+```
+```{r}
+#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
+
+beauty<- colorRampPalette(brewer.pal(9,"Purples"))(200)
+
+rownames(fullpercs)<- c(0:(nrow(fullpercs)-1))
+
+heatmap(as.matrix(fullpercs), scale="none", col=beauty, cexCol = .7, cexRow=.6)
+text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
+
+#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color
+```
+
+
+```{r}
+VlnPlot(merged, features= "percent.mt", group.by = "SCT_snn_res.1", pt.size = 0)
+```
+
+```{r}
+merged[["percent.rps"]]<- PercentageFeatureSet(merged, pattern = "^RPS")
+merged[["percent.rpl"]]<- PercentageFeatureSet(merged, pattern = "^RPL")
+merged[["percent.rp"]]<- merged[["percent.rps"]]+merged[["percent.rpl"]]
+VlnPlot(merged, features= "percent.rp", group.by = "SCT_snn_res.1", pt.size=0)
+```
+
+```{r}
+FeaturePlot(merged, features = "nFeature_RNA")
+```
+
+```{r}
+head(merged)
+```
+
+
+```{r}
+VlnPlot(merged, features= "nFeature_RNA", group.by = "SCT_snn_res.1", pt.size=0)
+```
+
+
+```{r}
+FeaturePlot(merged, features = c("POU5F1", "SOX17",  "HAND1", "PAX6"), pt.size = 0.2, ncol=2, combine=T)
+```
+
+```{r}
+FeaturePlot(merged, features = c("FGB", "ECSCR",  "NEUROD1", "SOX10"), pt.size = 0.2, ncol=2)
+```
+

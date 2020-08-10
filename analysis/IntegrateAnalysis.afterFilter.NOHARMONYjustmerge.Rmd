@@ -1,0 +1,167 @@
+---
+title: "Integrate lanes from all batches of EB pilot (Human data only, no doublets"
+output: html_document
+---
+
+
+```{r, message=FALSE}
+library(Seurat)
+library(harmony)
+library(ggplot2)
+library(DataCombine)
+library(here)
+library(RColorBrewer)
+options(future.globals.maxSize= 15000*1024^2) #allow global exceeding 4Gb
+```
+
+
+Read in the files, add metadata, and create an object list
+```{r}
+filelist<-list.files(here::here('output/sampleQCrds/'), full.names = T)
+objectlist<- list()
+for (i in 1:length(filelist)){
+  rds<- readRDS(filelist[i])
+  objectlist[i]<- rds
+  
+}
+
+```
+
+create a merged seurat object
+```{r}
+ids<-substr(basename(filelist),1,12)
+merged<- merge(objectlist[[1]], c(objectlist[[2]], objectlist[[3]],objectlist[[4]],objectlist[[5]],objectlist[[6]],objectlist[[7]],objectlist[[8]],objectlist[[9]],objectlist[[10]],objectlist[[11]],objectlist[[12]],objectlist[[13]],objectlist[[14]],objectlist[[15]],objectlist[[16]]),add.cell.ids=ids, merge.data=T)
+```
+
+
+```{r}
+#run PCA on full dataset pre-alignment
+all.genes= rownames(merged)
+merged<-FindVariableFeatures(merged,selection.method="vst", nfeatures = 5000)
+#have previously used all genes (nfeatures=25000) and clustering by individual rather than batch (based on proportion of cells per cluster) was still observed downstream. Now using 5000 because it is the upper bound of what has been recommended in the literature.
+merged<- ScaleData(merged, features = all.genes)
+merged<-RunPCA(merged, npcs = 100, verbose=F)
+```
+
+```{r}
+DimPlot(merged, reduction = "pca", group.by = "Batch")
+```
+
+
+
+```{r}
+#need to fix the individual names because they are slightly different from batch1
+replacements<- data.frame(from= c("SNG-NA18511.variant2", "SNG-NA18858.variant2", "SNG-NA19160.variant2"), to=c("SNG-NA18511", "SNG-NA18858", "SNG-NA19160"))
+merged@meta.data<-FindReplace(merged@meta.data, "individual", replacements, from = "from", to= "to", exact=T, vector=F )
+```
+
+
+```{r}
+DimPlot(merged, reduction="pca", group.by= c("individual"), combine=F)
+```
+
+Now Running UMAP and identifying clusters, etc
+
+```{r}
+merged<- RunUMAP(merged, reduction = "pca", dims = 1:100, verbose = F)
+merged<- FindNeighbors(merged, reduction="pca", dims = 1:100, verbose = F)
+```
+
+SAVING merged/aligned/reclustered object
+```{r}
+path<- here::here("output/mergedObjects/")
+saveRDS(merged, file=paste0(path,'merged.noIntegration.rds'))
+```
+
+
+```{r}
+#reassign idents
+Idents(merged)<- 'SCT_snn_res.1'
+```
+
+```{r}
+VizDimLoadings(merged, dims = 1:2, reduction = "pca")
+VizDimLoadings(merged, dims = 3:4, reduction = "pca")
+VizDimLoadings(merged, dims = 5:6, reduction = "pca")
+```
+```{r}
+xlim <- c(min(merged@reductions$pca@cell.embeddings[,'PC_1']),
+          max(merged@reductions$pca@cell.embeddings[,'PC_1']))
+ylim <- c(min(merged@reductions$pca@cell.embeddings[,'PC_2']),
+          max(merged@reductions$pca@cell.embeddings[,'PC_2']))
+
+individuals <- table(merged$individual)
+individuals <- individuals[individuals>50]
+individuals <- names(individuals)
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "pca", group.by = c("Batch"), pt.size = 0.01,
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+
+
+```{r}
+DimPlot(merged, reduction = "umap")
+DimPlot(merged, reduction = "umap", group.by = "Batch")
+DimPlot(merged, reduction = "umap", group.by = "individual")
+xlim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_1']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_1']))
+ylim <- c(min(merged@reductions$umap@cell.embeddings[,'UMAP_2']),
+          max(merged@reductions$umap@cell.embeddings[,'UMAP_2']))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = "umap", 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}
+```
+
+
+
+
+
+```{r}
+#Endoderm markers (first 3 definitive endo, 4-6 liver markers, )
+FeaturePlot(merged, features = c("SOX17","CLDN6","FOXA2", "TTR", "AFP", "FGB"), pt.size = 0.2, combine = F)
+
+
+```
+
+```{r}
+#Mesoderm Markers (first 3 early meso markers, 4-6 heart markers, 7-9 endothelial markers (which comes from mesoderm), then some other general muscle markers)
+FeaturePlot(merged, features = c("HAND1", "BMP4", "TNNT2","KDR", "GNG11", "ECSCR", "COL3A1", "ACTC1"), pt.size = 0.2, combine=F)
+```
+
+```{r}
+#Ectoderm Markers (3-1 early ectoderm markers, 4-6schwann cell (myelinating, non myelinating, or precursor), 7-8 oligodendrocytes, 9-10 radial glia)
+FeaturePlot(merged, features = c("PAX6", "GBX2",  "NES", "MPZ", "SOX10","GAP43", "OLIG1", "OLIG2", "VIM", "HES5"), pt.size = 0.2, ncol=3, combine=F)
+```
+
+```{r}
+#More ectoderm, specifically neurons
+#immature neurons: NEUROD1
+#Mature Neurons: MAP2, SYP
+#dopaminergic: TH, FOXA2,
+FeaturePlot(merged, features = c("MAP2", "SYP","NEUROD1", "TH" ), pt.size = 0.2, ncol=3)
+
+```
+
+
+
+
+```{r}
+FeaturePlot(merged, features = "nFeature_RNA")
+```
+
+
+```{r}
+FeaturePlot(merged, features = c("POU5F1", "SOX17",  "HAND1", "PAX6"), pt.size = 0.2, ncol=2, combine=T)
+```
+
+```{r}
+FeaturePlot(merged, features = c("FGB", "ECSCR",  "NEUROD1", "SOX10"), pt.size = 0.2, ncol=2)
+```
+
