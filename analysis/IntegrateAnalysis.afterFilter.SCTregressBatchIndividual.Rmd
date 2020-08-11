@@ -297,7 +297,6 @@ text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
 ```
 
 
--------------------------------
 Reclustering with less resolution, check if everything is robust
 
 ```{r}
@@ -384,7 +383,6 @@ text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
 
 
 
--------------------------------------------------------------------
 
 ```{r}
 #reassign idents

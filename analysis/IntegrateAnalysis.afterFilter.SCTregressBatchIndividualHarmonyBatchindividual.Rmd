@@ -39,6 +39,9 @@ replacements<- data.frame(from= c("SNG-NA18511.variant2", "SNG-NA18858.variant2"
 merged@meta.data<-FindReplace(merged@meta.data, "individual", replacements, from = "from", to= "to", exact=T, vector=F )
 ```
 
+```{r}
+merged <- SCTransform(merged, variable.features.n = 5000, vars.to.regress = c("Batch","individual"))
+```
 
 ```{r}
 #run PCA on full dataset pre-alignment
@@ -56,7 +59,7 @@ DimPlot(merged, reduction = "pca", group.by = "Batch")
 Now, running harmony to integrate. Here, using Batch, SampleID(10x Lane), and individual to integrate. Since Batch and Lane are confounded, this may over correct for Batch.
 
 ```{r}
-merged<- RunHarmony(merged, c("Batch"), plot_convergence = T, assay.use = "SCT")
+merged<- RunHarmony(merged, c("Batch", "individual"), plot_convergence = T, assay.use = "SCT")
 ```
 
 
@@ -80,7 +83,7 @@ merged<- FindClusters(merged, resolution=0.1, verbose = F)
 SAVING merged/aligned/reclustered object
 ```{r}
 path<- here::here("output/mergedObjects/")
-saveRDS(merged, file=paste0(path,'Harmony.Batch.rds'))
+saveRDS(merged, file=paste0(path,'SCTregress.Batchindividual.Harmony.Batchindividual.rds'))
 ```
 
 
@@ -302,7 +305,6 @@ text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
 ```
 
 
-
 Reclustering with less resolution, check if everything is robust
 
 ```{r}
@@ -386,7 +388,6 @@ text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)
 
 #generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color
 ```
-
 
 
 
