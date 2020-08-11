@@ -550,7 +550,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd</code>) and HTML (<code>docs/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd</code>) and HTML (<code>docs/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -591,40 +591,6 @@ KLRhodes
 wflow_publish("analysis/Integrate*")
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-bc8ec6f
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-<td>
-cleaning various versions of merging/intCurrent working directory
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -633,6 +599,7 @@ cleaning various versions of merging/intCurrent working directory
 </div>
 </div>
 <pre class="r"><code>library(Seurat)
+library(harmony)
 library(ggplot2)
 library(DataCombine)
 library(here)
@@ -700,7 +667,7 @@ merged&lt;- merge(objectlist[[1]], c(objectlist[[2]], objectlist[[3]],objectlist
 replacements&lt;- data.frame(from= c(&quot;SNG-NA18511.variant2&quot;, &quot;SNG-NA18858.variant2&quot;, &quot;SNG-NA19160.variant2&quot;), to=c(&quot;SNG-NA18511&quot;, &quot;SNG-NA18858&quot;, &quot;SNG-NA19160&quot;))
 merged@meta.data&lt;-FindReplace(merged@meta.data, &quot;individual&quot;, replacements, from = &quot;from&quot;, to= &quot;to&quot;, exact=T, vector=F )</code></pre>
 <pre><code>Only exact matches will be replaced.</code></pre>
-<pre class="r"><code>merged &lt;- SCTransform(merged, variable.features.n = 5000, vars.to.regress = c(&quot;Batch&quot;, &quot;individual&quot;))</code></pre>
+<pre class="r"><code>merged &lt;- SCTransform(merged, variable.features.n = 5000, vars.to.regress = c(&quot;Batch&quot;,&quot;individual&quot;))</code></pre>
 <pre><code>Calculating cell attributes for input UMI matrix</code></pre>
 <pre><code>Variance stabilizing transformation of count matrix of size 18065 by 42488</code></pre>
 <pre><code>Model formula is y ~ log_umi</code></pre>
@@ -3692,7 +3659,7 @@ Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre
   |                                                                            
   |======================================================================| 100%</code></pre>
 <pre><code>Calculating gene attributes</code></pre>
-<pre><code>Wall clock passed: Time difference of 17.05362 mins</code></pre>
+<pre><code>Wall clock passed: Time difference of 16.86706 mins</code></pre>
 <pre><code>Determine variable features</code></pre>
 <pre><code>Set 5000 variable features</code></pre>
 <pre><code>Place corrected count matrix in counts slot</code></pre>
@@ -3707,501 +3674,66 @@ merged&lt;- ScaleData(merged, features = all.genes)</code></pre>
 <pre><code>Centering and scaling data matrix</code></pre>
 <pre class="r"><code>merged&lt;-RunPCA(merged, npcs = 100, verbose=F)</code></pre>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;pca&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
-Past versions of unnamed-chunk-7-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-7-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction=&quot;pca&quot;, group.by= c(&quot;individual&quot;, &quot;Batch&quot;), combine=F)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Now, running harmony to integrate. Here, using Batch, SampleID(10x Lane), and individual to integrate. Since Batch and Lane are confounded, this may over correct for Batch.</p>
+<pre class="r"><code>merged&lt;- RunHarmony(merged, c(&quot;Batch&quot;, &quot;individual&quot;), plot_convergence = T, assay.use = &quot;SCT&quot;)</code></pre>
+<pre><code>Harmony 1/10</code></pre>
+<pre><code>Harmony 2/10</code></pre>
+<pre><code>Harmony 3/10</code></pre>
+<pre><code>Harmony converged after 3 iterations</code></pre>
+<pre><code>Warning: Invalid name supplied, making object name syntactically valid. New
+object name is Seurat..ProjectDim.SCT.harmony; see ?make.names for more details
+on syntax validity</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Visualize Harmony embeddings</p>
+<pre class="r"><code>DimPlot(merged, reduction=&quot;harmony&quot;, group.by= c(&quot;individual&quot;, &quot;Batch&quot;), combine=F)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
-Past versions of unnamed-chunk-8-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-8-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-2">
-Past versions of unnamed-chunk-8-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-8-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Now Running UMAP and identifying clusters, etc</p>
-<pre class="r"><code>merged&lt;- RunUMAP(merged, reduction = &quot;pca&quot;, dims = 1:100, verbose = F)</code></pre>
+<pre class="r"><code>merged&lt;- RunUMAP(merged, reduction = &quot;harmony&quot;, dims = 1:100, verbose = F)</code></pre>
 <pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
 This message will be shown once per session</code></pre>
-<pre class="r"><code>merged&lt;- FindNeighbors(merged, reduction=&quot;pca&quot;, dims = 1:100, verbose = F)
+<pre class="r"><code>merged&lt;- FindNeighbors(merged, reduction=&quot;harmony&quot;, dims = 1:100, verbose = F)
 merged&lt;- FindClusters(merged, resolution=1, verbose = F)
 merged&lt;- FindClusters(merged, resolution=0.8, verbose = F)
 merged&lt;- FindClusters(merged, resolution=0.5, verbose = F)
 merged&lt;- FindClusters(merged, resolution=0.1, verbose = F)</code></pre>
 <p>SAVING merged/aligned/reclustered object</p>
 <pre class="r"><code>path&lt;- here::here(&quot;output/mergedObjects/&quot;)
-saveRDS(merged, file=paste0(path,&#39;SCTregress.BatchIndividual.rds&#39;))</code></pre>
+saveRDS(merged, file=paste0(path,&#39;SCTregress.Batchindividual.Harmony.Batchindividual.rds&#39;))</code></pre>
 <pre class="r"><code>#reassign idents
 Idents(merged)&lt;- &#39;SCT_snn_res.1&#39;</code></pre>
-<pre class="r"><code>VizDimLoadings(merged, dims = 1:2, reduction = &quot;pca&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
-Past versions of unnamed-chunk-12-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-12-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>VizDimLoadings(merged, dims = 3:4, reduction = &quot;pca&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-2">
-Past versions of unnamed-chunk-12-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-12-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>VizDimLoadings(merged, dims = 5:6, reduction = &quot;pca&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-3">
-Past versions of unnamed-chunk-12-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-12-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>xlim &lt;- c(min(merged@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]),
-          max(merged@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]))
-ylim &lt;- c(min(merged@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]),
-          max(merged@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]))
+<pre class="r"><code>VizDimLoadings(merged, dims = 1:2, reduction = &quot;harmony&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(merged, dims = 3:4, reduction = &quot;harmony&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(merged, dims = 5:6, reduction = &quot;harmony&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(merged@reductions$harmony@cell.embeddings[,&#39;harmony_1&#39;]),
+          max(merged@reductions$harmony@cell.embeddings[,&#39;harmony_1&#39;]))
+ylim &lt;- c(min(merged@reductions$harmony@cell.embeddings[,&#39;harmony_2&#39;]),
+          max(merged@reductions$harmony@cell.embeddings[,&#39;harmony_2&#39;]))
 
 individuals &lt;- table(merged$individual)
 individuals &lt;- individuals[individuals&gt;50]
 individuals &lt;- names(individuals)
 for (i in individuals)
 {
-  print(DimPlot(merged, reduction = &quot;pca&quot;, group.by = c(&quot;Batch&quot;), pt.size = 0.01,
+  print(DimPlot(merged, reduction = &quot;harmony&quot;, group.by = c(&quot;Batch&quot;), pt.size = 0.01,
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-2">
-Past versions of unnamed-chunk-13-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-3">
-Past versions of unnamed-chunk-13-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
-Past versions of unnamed-chunk-14-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-2">
-Past versions of unnamed-chunk-14-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-3">
-Past versions of unnamed-chunk-14-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
           max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
 ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
@@ -4212,1502 +3744,200 @@ for (i in individuals)
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-4">
-Past versions of unnamed-chunk-14-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-14-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-5">
-Past versions of unnamed-chunk-14-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-14-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-6">
-Past versions of unnamed-chunk-14-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-15-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-15-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-15-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plots2&lt;- DimPlot(merged, group.by = &quot;individual&quot;, split.by = &quot;Batch&quot;)
 plots2</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
-Past versions of unnamed-chunk-15-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-15-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, group.by = &quot;Batch&quot;, split.by = c(&quot;individual&quot;))</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, group.by = &quot;SCT_snn_res.1&quot;, split.by = c(&quot;Batch&quot;), label=T)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
-Past versions of unnamed-chunk-17-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-17-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;pca&quot;, group.by = &quot;SCT_snn_res.1&quot;, split.by = &quot;Batch&quot;, combine = F)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;harmony&quot;, group.by = &quot;SCT_snn_res.1&quot;, split.by = &quot;Batch&quot;, combine = F)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
-Past versions of unnamed-chunk-18-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-18-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>VlnPlot(merged, features = c(&quot;POU5F1&quot;, &quot;PAX6&quot;, &quot;TNNT2&quot;, &quot;SOX17&quot;, &quot;HAND1&quot;, &quot;LUM&quot;), ncol=2)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
-Past versions of unnamed-chunk-19-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-19-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#pluripotent markers
 FeaturePlot(merged, features = c(&quot;POU5F1&quot;, &quot;SOX2&quot;, &quot;NANOG&quot;), pt.size = 0.2, ncol=3)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
-Past versions of unnamed-chunk-20-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-20-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#Endoderm markers (first 3 definitive endo, 4-6 liver markers, )
 FeaturePlot(merged, features = c(&quot;SOX17&quot;,&quot;CLDN6&quot;,&quot;FOXA2&quot;, &quot;TTR&quot;, &quot;AFP&quot;, &quot;FGB&quot;), pt.size = 0.2, combine = F)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
-Past versions of unnamed-chunk-21-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-21-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-2">
-Past versions of unnamed-chunk-21-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-21-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[3]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-3">
-Past versions of unnamed-chunk-21-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-21-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[4]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-4">
-Past versions of unnamed-chunk-21-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-21-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-22-4.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[5]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-21-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-5">
-Past versions of unnamed-chunk-21-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-21-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-22-5.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[6]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-21-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-6">
-Past versions of unnamed-chunk-21-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-21-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-22-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#Mesoderm Markers (first 3 early meso markers, 4-6 heart markers, 7-9 endothelial markers (which comes from mesoderm), then some other general muscle markers)
 FeaturePlot(merged, features = c(&quot;HAND1&quot;, &quot;BMP4&quot;, &quot;TNNT2&quot;,&quot;KDR&quot;, &quot;GNG11&quot;, &quot;ECSCR&quot;, &quot;COL3A1&quot;, &quot;ACTC1&quot;), pt.size = 0.2, combine=F)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
-Past versions of unnamed-chunk-22-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-2">
-Past versions of unnamed-chunk-22-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[3]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-3">
-Past versions of unnamed-chunk-22-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[4]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-4">
-Past versions of unnamed-chunk-22-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-4.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[5]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-5">
-Past versions of unnamed-chunk-22-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-5.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[6]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-6">
-Past versions of unnamed-chunk-22-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[7]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-7.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-7">
-Past versions of unnamed-chunk-22-7.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-7" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-7.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[8]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-22-8.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-8">
-Past versions of unnamed-chunk-22-8.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-8" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-23-8.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#Ectoderm Markers (3-1 early ectoderm markers, 4-6schwann cell (myelinating, non myelinating, or precursor), 7-8 oligodendrocytes, 9-10 radial glia)
 FeaturePlot(merged, features = c(&quot;PAX6&quot;, &quot;GBX2&quot;,  &quot;NES&quot;, &quot;MPZ&quot;, &quot;SOX10&quot;,&quot;GAP43&quot;, &quot;OLIG1&quot;, &quot;OLIG2&quot;, &quot;VIM&quot;, &quot;HES5&quot;), pt.size = 0.2, ncol=3, combine=F)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
-Past versions of unnamed-chunk-23-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-2">
-Past versions of unnamed-chunk-23-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[3]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-3">
-Past versions of unnamed-chunk-23-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[4]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-4">
-Past versions of unnamed-chunk-23-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-4.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[5]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-5">
-Past versions of unnamed-chunk-23-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-5.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[6]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-6">
-Past versions of unnamed-chunk-23-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[7]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-7.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-7">
-Past versions of unnamed-chunk-23-7.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-7" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-7.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[8]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-8.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-8">
-Past versions of unnamed-chunk-23-8.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-8" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-8.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[9]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-9.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-9">
-Past versions of unnamed-chunk-23-9.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-9" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-9.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[10]]</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-23-10.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-10">
-Past versions of unnamed-chunk-23-10.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-10" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-24-10.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#More ectoderm, specifically neurons
 #immature neurons: NEUROD1
 #Mature Neurons: MAP2, SYP
 #dopaminergic: TH, FOXA2,
 FeaturePlot(merged, features = c(&quot;MAP2&quot;, &quot;SYP&quot;,&quot;NEUROD1&quot;, &quot;TH&quot; ), pt.size = 0.2, ncol=3)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
-Past versions of unnamed-chunk-24-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-24-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Identify cluster markers</p>
 <pre class="r"><code>#how many cells per cluster?
 t1&lt;-table(merged@meta.data$SCT_snn_res.1, merged@meta.data$Batch)
 t1</code></pre>
 <pre><code>    
      Batch1 Batch2 Batch3
-  0    4251     15     11
-  1     115    563   2902
-  2      61   2977    429
-  3    1362    444    845
-  4    1182    404    910
-  5     524     85   1811
-  6    1560    533    171
-  7      35    231   1581
-  8     202    368   1091
-  9      66    111   1458
-  10    571    575    458
-  11   1479      7      3
-  12    223   1184     22
-  13    246    274    866
-  14    498    658    207
-  15   1099      0      0
-  16    349    124    618
-  17    587    184    292
-  18    751    167     39
-  19    299    117    535
-  20    546    274     35
-  21    279    223    239
-  22     92    116    355
-  23     74     66    285
-  24    250     61     80
-  25    101     59    135
-  26      2     32    261
-  27     69     13    111</code></pre>
+  0    3386   1805   2758
+  1    2178   1180   1055
+  10    533    332    342
+  11    471    142    551
+  12    613    215    321
+  13    165    260    496
+  14    334    207    321
+  15    384    138    280
+  16     17     49    667
+  17    264    244    211
+  18     37     81    594
+  19    104    120    371
+  2    2017    896    935
+  20    289    169     39
+  21     97     75    266
+  22    233     62     98
+  23    104     59    135
+  24    107     36    111
+  25    100     10     25
+  3    1248    928   1566
+  4    1359    437    858
+  5    1206    407    936
+  6     472    954    882
+  7     378    322    693
+  8     247    279    855
+  9     530    458    384</code></pre>
 <pre class="r"><code>#percent of cells in each cluster per batch
 t1colsum&lt;- colSums(t1)
 percT1&lt;-t1/t1colsum
 percT1</code></pre>
 <pre><code>    
            Batch1       Batch2       Batch3
-  0  0.2519409708 0.0015205271 0.0006984127
-  1  0.0116573746 0.0357460317 0.1719907545
-  2  0.0038730159 0.1764357257 0.0434870755
-  3  0.0807206780 0.0450076026 0.0536507937
-  4  0.1198175367 0.0256507937 0.0539323179
-  5  0.0332698413 0.0050376341 0.1835783071
-  6  0.0924554021 0.0540293969 0.0108571429
-  7  0.0035478966 0.0146666667 0.0936999941
-  8  0.0128253968 0.0218099923 0.1105930056
-  9  0.0039115747 0.0112519007 0.0925714286
-  10 0.0578813989 0.0365079365 0.0271439578
-  11 0.0939047619 0.0004148640 0.0003041054
-  12 0.0132163812 0.1200202737 0.0013968254
-  13 0.0249366447 0.0173968254 0.0513246014
-  14 0.0316190476 0.0389972145 0.0209832742
-  15 0.0651336455 0.0000000000 0.0000000000
-  16 0.0353775976 0.0078730159 0.0366265631
-  17 0.0372698413 0.0109049961 0.0295995945
-  18 0.0445089788 0.0169285352 0.0024761905
-  19 0.0303091738 0.0074285714 0.0317074616
-  20 0.0346666667 0.0162389617 0.0035478966
-  21 0.0165352931 0.0226051698 0.0151746032
-  22 0.0093258996 0.0073650794 0.0210395306
-  23 0.0046984127 0.0039115747 0.0288900152
-  24 0.0148165709 0.0061834769 0.0050793651
-  25 0.0102382159 0.0037460317 0.0080009483
-  26 0.0001269841 0.0018965211 0.0264571718
-  27 0.0040893736 0.0013177902 0.0070476190</code></pre>
+  0  0.2006756356 0.1146031746 0.2795742524
+  1  0.2207805373 0.0699342144 0.0669841270
+  10 0.0338412698 0.0336543335 0.0202690689
+  11 0.0279144195 0.0090158730 0.0558540294
+  12 0.0621388748 0.0127422509 0.0203809524
+  13 0.0104761905 0.0263558033 0.0293960766
+  14 0.0197949387 0.0131428571 0.0325392803
+  15 0.0389254942 0.0081787471 0.0177777778
+  16 0.0010793651 0.0049670552 0.0395306110
+  17 0.0156462988 0.0154920635 0.0213887481
+  18 0.0037506336 0.0048005690 0.0377142857
+  19 0.0066031746 0.0121642169 0.0219877911
+  2  0.1195400936 0.0568888889 0.0947795236
+  20 0.0292954891 0.0100160019 0.0024761905
+  21 0.0061587302 0.0076026356 0.0157648314
+  22 0.0138090440 0.0039365079 0.0099341105
+  23 0.0105423213 0.0034967107 0.0085714286
+  24 0.0067936508 0.0036492651 0.0065785575
+  25 0.0059266283 0.0006349206 0.0025342119
+  3  0.1265078561 0.0549991110 0.0994285714
+  4  0.0862857143 0.0442980233 0.0508504712
+  5  0.0714751378 0.0258412698 0.0948808920
+  6  0.0478459199 0.0565400344 0.0560000000
+  7  0.0240000000 0.0326406488 0.0410715344
+  8  0.0146387720 0.0177142857 0.0866700456
+  9  0.0537252914 0.0271439578 0.0243809524</code></pre>
 <pre class="r"><code>heatmap(t(percT1))</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
-Past versions of unnamed-chunk-27-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-27-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#how many cells per cluster from each individual?
 t2&lt;-table(merged@meta.data$SCT_snn_res.1, merged@meta.data$individual)
 t2</code></pre>
 <pre><code>    
      SNG-NA18511 SNG-NA18858 SNG-NA19160
-  0           15        4259           3
-  1           19        3557           4
-  2            3        3462           2
-  3          843          14        1794
-  4          271           2        2223
-  5         2043          36         341
-  6          215          95        1954
-  7            4        1843           0
-  8          474           4        1183
-  9         1617           0          18
-  10        1155          29         420
-  11        1456          18          15
-  12        1402          16          11
-  13         553           2         831
-  14         135        1213          15
-  15           1        1098           0
-  16          59           3        1029
-  17          74           2         987
-  18          82          15         860
-  19         427           1         523
-  20          22         814          19
-  21         635          10          96
-  22         134           0         429
-  23         106           4         315
-  24          74         167         150
-  25          89           2         204
-  26           5           0         290
-  27          36           4         153</code></pre>
+  0          282        7549         118
+  1         2985         166        1262
+  10         113         999          95
+  11          89          10        1065
+  12         139          21         989
+  13         403          99         419
+  14         591          36         235
+  15          61         714          27
+  16         480           7         246
+  17         440          59         220
+  18         406           6         300
+  19         155          14         426
+  2         1825         316        1707
+  20         127         356          14
+  21         123           8         307
+  22          82         133         178
+  23          90           4         204
+  24          23         220          11
+  25           0         135           0
+  3          239        3393         110
+  4          820          36        1798
+  5          281          37        2231
+  6          126        2020         162
+  7          651         201         541
+  8          525          39         817
+  9          893          92         387</code></pre>
 <pre class="r"><code>t2colsums&lt;-colSums(t2)
 
 percT2&lt;- t2/t2colsums
@@ -5715,73 +3945,34 @@ percT2&lt;- t2/t2colsums
 percT2</code></pre>
 <pre><code>    
       SNG-NA18511  SNG-NA18858  SNG-NA19160
-  0  1.255335e-03 2.554889e-01 2.163098e-04
-  1  1.139772e-03 2.564713e-01 3.347560e-04
-  2  2.163098e-04 2.897314e-01 1.199760e-04
-  3  7.054984e-02 8.398320e-04 1.293532e-01
-  4  1.625675e-02 1.442065e-04 1.860407e-01
-  5  1.473069e-01 3.012804e-03 2.045591e-02
-  6  1.799314e-02 5.698860e-03 1.408898e-01
-  7  2.399520e-04 1.328863e-01 0.000000e+00
-  8  3.417694e-02 3.347560e-04 7.096581e-02
-  9  1.353251e-01 0.000000e+00 1.297859e-03
-  10 6.928614e-02 2.090994e-03 3.514938e-02
-  11 1.049823e-01 1.506402e-03 8.998200e-04
-  12 1.173320e-01 9.598080e-04 7.931358e-04
-  13 3.317337e-02 1.442065e-04 6.954557e-02
-  14 9.733939e-03 1.015148e-01 8.998200e-04
-  15 8.368901e-05 6.586683e-02 0.000000e+00
-  16 3.539292e-03 2.163098e-04 8.611599e-02
-  17 5.335641e-03 1.673780e-04 5.920816e-02
-  18 6.862499e-03 8.998200e-04 6.200880e-02
-  19 2.561488e-02 7.210325e-05 4.376935e-02
-  20 1.586272e-03 6.812286e-02 1.139772e-03
-  21 5.314252e-02 5.998800e-04 6.921912e-03
-  22 8.038392e-03 0.000000e+00 3.590259e-02
-  23 7.642945e-03 3.347560e-04 1.889622e-02
-  24 6.192987e-03 1.001800e-02 1.081549e-02
-  25 5.338932e-03 1.442065e-04 1.707256e-02
-  26 3.605163e-04 0.000000e+00 1.739652e-02
-  27 3.012804e-03 2.399520e-04 1.103180e-02</code></pre>
+  0  0.0236003013 0.5443074483 0.0070785843
+  1  0.1790641872 0.0138923759 0.0909943038
+  10 0.0081476675 0.0599280144 0.0079504561
+  11 0.0074483220 0.0007210325 0.0638872226
+  12 0.0083383323 0.0017574692 0.0713101161
+  13 0.0290576105 0.0059388122 0.0350656959
+  14 0.0494602059 0.0025957171 0.0140971806
+  15 0.0036592681 0.0597539543 0.0019467878
+  16 0.0346095609 0.0004199160 0.0205874969
+  17 0.0368231651 0.0042540919 0.0131973605
+  18 0.0243551290 0.0005021341 0.0216309756
+  19 0.0111760040 0.0008398320 0.0356515190
+  2  0.1527324462 0.0227846276 0.1023995201
+  20 0.0076184763 0.0297932881 0.0010094455
+  21 0.0088687000 0.0004799040 0.0256925266
+  22 0.0068624990 0.0095897325 0.0106778644
+  23 0.0053989202 0.0003347560 0.0147090634
+  24 0.0016583748 0.0131973605 0.0009205791
+  25 0.0000000000 0.0097339390 0.0000000000
+  3  0.0143371326 0.2839568165 0.0079313577
+  4  0.0591246665 0.0021595681 0.1504728429
+  5  0.0235166123 0.0026678203 0.1338332334
+  6  0.0075584883 0.1690518035 0.0116807268
+  7  0.0469392170 0.0120575885 0.0452757553
+  8  0.0439367311 0.0028120268 0.0490101980
+  9  0.0535692861 0.0076993891 0.0279039585</code></pre>
 <pre class="r"><code>heatmap(t(percT2))</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
-Past versions of unnamed-chunk-30-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-30-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>cormat&lt;-round(cor(percT2),2)
 library(reshape2)
 melted_cormat&lt;-melt(cormat)
@@ -5803,44 +3994,7 @@ pretty&lt;-ggplot(data= melted_tri, aes(x=Var1, y=Var2, fill=value)) +
   ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster&quot;)
 
 pretty</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-31-1">
-Past versions of unnamed-chunk-31-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-31-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#exploring similarity in the number of cells per individual between batches
 merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
 b1t&lt;- table(merged.Batch1$SCT_snn_res.1, merged.Batch1$individual)
@@ -5878,44 +4032,7 @@ ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust=1))+
   ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster (res 1)&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-33-1">
-Past versions of unnamed-chunk-33-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-33-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
 
 beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
@@ -5924,165 +4041,17 @@ rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
 
 heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
 text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-34-1">
-Past versions of unnamed-chunk-34-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-34-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#generate a heatmap of the proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
 <p>Reclustering with less resolution, check if everything is robust</p>
 <pre class="r"><code>#reassign idents
 Idents(merged)&lt;- &#39;SCT_snn_res.0.5&#39;</code></pre>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-1">
-Past versions of unnamed-chunk-36-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-36-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-2">
-Past versions of unnamed-chunk-36-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-37-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-36-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-3">
-Past versions of unnamed-chunk-36-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-37-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
           max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
 ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
@@ -6093,120 +4062,7 @@ for (i in individuals)
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-36-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-4">
-Past versions of unnamed-chunk-36-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-36-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-5">
-Past versions of unnamed-chunk-36-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-36-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-6">
-Past versions of unnamed-chunk-36-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-37-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-37-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-37-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#exploring similarity in the number of cells per individual between batches
 merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
 b1t&lt;- table(merged.Batch1$SCT_snn_res.0.5, merged.Batch1$individual)
@@ -6244,44 +4100,7 @@ ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust=1))+
   ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.5&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-38-1">
-Past versions of unnamed-chunk-38-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-38-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
 
 beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
@@ -6290,164 +4109,16 @@ rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
 
 heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
 text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-39-1">
-Past versions of unnamed-chunk-39-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-39-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
 <pre class="r"><code>#reassign idents
 Idents(merged)&lt;- &#39;SCT_snn_res.0.1&#39;</code></pre>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-1">
-Past versions of unnamed-chunk-41-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-41-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-2">
-Past versions of unnamed-chunk-41-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-42-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-41-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-3">
-Past versions of unnamed-chunk-41-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-42-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
           max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
 ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
@@ -6458,120 +4129,7 @@ for (i in individuals)
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-41-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-4">
-Past versions of unnamed-chunk-41-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-41-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-5">
-Past versions of unnamed-chunk-41-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-41-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-6">
-Past versions of unnamed-chunk-41-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-42-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-42-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-42-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#exploring similarity in the number of cells per individual between batches
 merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
 b1t&lt;- table(merged.Batch1$SCT_snn_res.0.1, merged.Batch1$individual)
@@ -6609,44 +4167,7 @@ ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust=1))+
   ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.1&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-43-1">
-Past versions of unnamed-chunk-43-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-43-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
 
 beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
@@ -6658,164 +4179,16 @@ rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
 
 heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
 text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-44-1">
-Past versions of unnamed-chunk-44-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-44-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
 <pre class="r"><code>#reassign idents
 Idents(merged)&lt;- &#39;SCT_snn_res.0.8&#39;</code></pre>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-1">
-Past versions of unnamed-chunk-46-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-46-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-2">
-Past versions of unnamed-chunk-46-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-47-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-46-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-3">
-Past versions of unnamed-chunk-46-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-47-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
           max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
 ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
@@ -6826,120 +4199,7 @@ for (i in individuals)
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-46-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-4">
-Past versions of unnamed-chunk-46-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-46-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-5">
-Past versions of unnamed-chunk-46-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-46-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-6">
-Past versions of unnamed-chunk-46-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-47-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-47-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-47-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#exploring similarity in the number of cells per individual between batches
 merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
 b1t&lt;- table(merged.Batch1$SCT_snn_res.0.8, merged.Batch1$individual)
@@ -6976,44 +4236,7 @@ ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
   scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, midpoint = 0, limit= c(-1,1), space= &quot;Lab&quot;, name=&quot;Pearson\nCorrelation&quot;) +
   theme_minimal() +
   ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.8&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-48-1">
-Past versions of unnamed-chunk-48-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-48-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
 
 beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
@@ -7022,288 +4245,29 @@ rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
 
 heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
 text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-49-1">
-Past versions of unnamed-chunk-49-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-49-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
 <pre class="r"><code>VlnPlot(merged, features= &quot;percent.mt&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size = 0)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-50-1">
-Past versions of unnamed-chunk-50-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-50-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>merged[[&quot;percent.rps&quot;]]&lt;- PercentageFeatureSet(merged, pattern = &quot;^RPS&quot;)
 merged[[&quot;percent.rpl&quot;]]&lt;- PercentageFeatureSet(merged, pattern = &quot;^RPL&quot;)
 merged[[&quot;percent.rp&quot;]]&lt;- merged[[&quot;percent.rps&quot;]]+merged[[&quot;percent.rpl&quot;]]
 VlnPlot(merged, features= &quot;percent.rp&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size=0)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-51-1">
-Past versions of unnamed-chunk-51-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-51-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>FeaturePlot(merged, features = &quot;nFeature_RNA&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-52-1">
-Past versions of unnamed-chunk-52-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-52-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>head(merged)</code></pre>
 <pre><code>An object of class Seurat 
 2 features across 42488 samples within 2 assays 
 Active assay: SCT (1 features, 1 variable features)
  1 other assay present: RNA
- 2 dimensional reductions calculated: pca, umap</code></pre>
+ 3 dimensional reductions calculated: pca, harmony, umap</code></pre>
 <pre class="r"><code>VlnPlot(merged, features= &quot;nFeature_RNA&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size=0)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-54-1">
-Past versions of unnamed-chunk-54-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-54-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>FeaturePlot(merged, features = c(&quot;POU5F1&quot;, &quot;SOX17&quot;,  &quot;HAND1&quot;, &quot;PAX6&quot;), pt.size = 0.2, ncol=2, combine=T)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-55-1">
-Past versions of unnamed-chunk-55-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-55-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>FeaturePlot(merged, features = c(&quot;FGB&quot;, &quot;ECSCR&quot;,  &quot;NEUROD1&quot;, &quot;SOX10&quot;), pt.size = 0.2, ncol=2)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-56-1">
-Past versions of unnamed-chunk-56-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-56-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -7327,7 +4291,8 @@ attached base packages:
 
 other attached packages:
 [1] reshape2_1.4.4     RColorBrewer_1.1-2 here_0.1-11        DataCombine_0.2.21
-[5] ggplot2_3.3.2      Seurat_3.2.0       workflowr_1.6.2   
+[5] ggplot2_3.3.2      harmony_1.0        Rcpp_1.0.5         Seurat_3.2.0      
+[9] workflowr_1.6.2   
 
 loaded via a namespace (and not attached):
   [1] Rtsne_0.15            colorspace_1.4-1      deldir_0.1-28        
@@ -7344,30 +4309,30 @@ loaded via a namespace (and not attached):
  [34] htmltools_0.5.0       tools_3.6.1           rsvd_1.0.3           
  [37] igraph_1.2.5          gtable_0.3.0          glue_1.4.1           
  [40] RANN_2.6.1            dplyr_1.0.0           rappdirs_0.3.1       
- [43] Rcpp_1.0.5            spatstat_1.64-1       vctrs_0.3.2          
- [46] gdata_2.18.0          ape_5.3               nlme_3.1-140         
- [49] lmtest_0.9-37         xfun_0.16             stringr_1.4.0        
- [52] globals_0.12.5        mime_0.9              miniUI_0.1.1.1       
- [55] lifecycle_0.2.0       irlba_2.3.3           gtools_3.8.2         
- [58] goftest_1.2-2         future_1.18.0         MASS_7.3-51.4        
- [61] zoo_1.8-8             scales_1.1.1          promises_1.1.1       
- [64] spatstat.utils_1.17-0 parallel_3.6.1        yaml_2.2.1           
- [67] reticulate_1.16       pbapply_1.4-2         gridExtra_2.3        
- [70] rpart_4.1-15          stringi_1.4.6         caTools_1.18.0       
- [73] rlang_0.4.7           pkgconfig_2.0.3       bitops_1.0-6         
- [76] evaluate_0.14         lattice_0.20-38       ROCR_1.0-7           
- [79] purrr_0.3.4           tensor_1.5            labeling_0.3         
- [82] patchwork_1.0.1       htmlwidgets_1.5.1     cowplot_1.0.0        
- [85] tidyselect_1.1.0      RcppAnnoy_0.0.16      plyr_1.8.6           
- [88] magrittr_1.5          R6_2.4.1              gplots_3.0.4         
- [91] generics_0.0.2        pillar_1.4.6          whisker_0.4          
- [94] withr_2.2.0           mgcv_1.8-28           fitdistrplus_1.0-14  
- [97] survival_3.2-3        abind_1.4-5           tibble_3.0.3         
-[100] future.apply_1.6.0    crayon_1.3.4          KernSmooth_2.23-15   
-[103] plotly_4.9.2.1        rmarkdown_2.3         grid_3.6.1           
-[106] data.table_1.13.0     git2r_0.26.1          digest_0.6.25        
-[109] xtable_1.8-4          tidyr_1.1.0           httpuv_1.5.4         
-[112] munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+ [43] spatstat_1.64-1       vctrs_0.3.2           gdata_2.18.0         
+ [46] ape_5.3               nlme_3.1-140          lmtest_0.9-37        
+ [49] xfun_0.16             stringr_1.4.0         globals_0.12.5       
+ [52] mime_0.9              miniUI_0.1.1.1        lifecycle_0.2.0      
+ [55] irlba_2.3.3           gtools_3.8.2          goftest_1.2-2        
+ [58] future_1.18.0         MASS_7.3-51.4         zoo_1.8-8            
+ [61] scales_1.1.1          promises_1.1.1        spatstat.utils_1.17-0
+ [64] parallel_3.6.1        yaml_2.2.1            reticulate_1.16      
+ [67] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
+ [70] stringi_1.4.6         caTools_1.18.0        rlang_0.4.7          
+ [73] pkgconfig_2.0.3       bitops_1.0-6          evaluate_0.14        
+ [76] lattice_0.20-38       ROCR_1.0-7            purrr_0.3.4          
+ [79] tensor_1.5            labeling_0.3          patchwork_1.0.1      
+ [82] htmlwidgets_1.5.1     cowplot_1.0.0         tidyselect_1.1.0     
+ [85] RcppAnnoy_0.0.16      plyr_1.8.6            magrittr_1.5         
+ [88] R6_2.4.1              gplots_3.0.4          generics_0.0.2       
+ [91] withr_2.2.0           pillar_1.4.6          whisker_0.4          
+ [94] mgcv_1.8-28           fitdistrplus_1.0-14   survival_3.2-3       
+ [97] abind_1.4-5           tibble_3.0.3          future.apply_1.6.0   
+[100] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
+[103] rmarkdown_2.3         grid_3.6.1            data.table_1.13.0    
+[106] git2r_0.26.1          digest_0.6.25         xtable_1.8-4         
+[109] tidyr_1.1.0           httpuv_1.5.4          munsell_0.5.0        
+[112] viridisLite_0.3.0    </code></pre>
 </div>
 
 

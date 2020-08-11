@@ -495,16 +495,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongbc8ec6f"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> bc8ec6f </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongf50ebd3"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> f50ebd3 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongbc8ec6f" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongf50ebd3" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version bc8ec6f. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version f50ebd3. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -574,6 +574,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -672,6 +689,43 @@ merged&lt;- ScaleData(merged, features = all.genes)</code></pre>
 <pre class="r"><code>merged&lt;-RunPCA(merged, npcs = 100, verbose=F)</code></pre>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;pca&quot;, group.by = &quot;Batch&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#need to fix the individual names because they are slightly different from batch1
 replacements&lt;- data.frame(from= c(&quot;SNG-NA18511.variant2&quot;, &quot;SNG-NA18858.variant2&quot;, &quot;SNG-NA19160.variant2&quot;), to=c(&quot;SNG-NA18511&quot;, &quot;SNG-NA18858&quot;, &quot;SNG-NA19160&quot;))
 merged@meta.data&lt;-FindReplace(merged@meta.data, &quot;individual&quot;, replacements, from = &quot;from&quot;, to= &quot;to&quot;, exact=T, vector=F )</code></pre>
@@ -679,6 +733,43 @@ merged@meta.data&lt;-FindReplace(merged@meta.data, &quot;individual&quot;, repla
 <pre class="r"><code>DimPlot(merged, reduction=&quot;pca&quot;, group.by= c(&quot;individual&quot;), combine=F)</code></pre>
 <pre><code>[[1]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Now Running UMAP and identifying clusters, etc</p>
 <pre class="r"><code>merged&lt;- RunUMAP(merged, reduction = &quot;pca&quot;, dims = 1:100, verbose = F)</code></pre>
 <pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
@@ -692,10 +783,121 @@ saveRDS(merged, file=paste0(path,&#39;merged.noIntegration.rds&#39;))</code></pr
 Idents(merged)&lt;- &#39;SCT_snn_res.1&#39;</code></pre>
 <pre class="r"><code>VizDimLoadings(merged, dims = 1:2, reduction = &quot;pca&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>VizDimLoadings(merged, dims = 3:4, reduction = &quot;pca&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-11-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-2">
+Past versions of unnamed-chunk-11-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>VizDimLoadings(merged, dims = 5:6, reduction = &quot;pca&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-11-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-3">
+Past versions of unnamed-chunk-11-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>xlim &lt;- c(min(merged@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]),
           max(merged@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]))
 ylim &lt;- c(min(merged@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]),
@@ -710,13 +912,237 @@ for (i in individuals)
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-2">
+Past versions of unnamed-chunk-12-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-3">
+Past versions of unnamed-chunk-12-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-2">
+Past versions of unnamed-chunk-13-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-3">
+Past versions of unnamed-chunk-13-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
           max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
 ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
@@ -727,94 +1153,1243 @@ for (i in individuals)
                 cells = WhichCells(merged, expression = individual == i)) +
           xlim(xlim) + ylim(ylim) + ggtitle(i))
 }</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-4">
+Past versions of unnamed-chunk-13-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-5">
+Past versions of unnamed-chunk-13-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-6">
+Past versions of unnamed-chunk-13-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#Endoderm markers (first 3 definitive endo, 4-6 liver markers, )
 FeaturePlot(merged, features = c(&quot;SOX17&quot;,&quot;CLDN6&quot;,&quot;FOXA2&quot;, &quot;TTR&quot;, &quot;AFP&quot;, &quot;FGB&quot;), pt.size = 0.2, combine = F)</code></pre>
 <pre><code>[[1]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[2]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-2">
+Past versions of unnamed-chunk-14-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[3]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-3">
+Past versions of unnamed-chunk-14-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[4]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-4">
+Past versions of unnamed-chunk-14-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[5]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-5">
+Past versions of unnamed-chunk-14-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[6]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-6">
+Past versions of unnamed-chunk-14-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#Mesoderm Markers (first 3 early meso markers, 4-6 heart markers, 7-9 endothelial markers (which comes from mesoderm), then some other general muscle markers)
 FeaturePlot(merged, features = c(&quot;HAND1&quot;, &quot;BMP4&quot;, &quot;TNNT2&quot;,&quot;KDR&quot;, &quot;GNG11&quot;, &quot;ECSCR&quot;, &quot;COL3A1&quot;, &quot;ACTC1&quot;), pt.size = 0.2, combine=F)</code></pre>
 <pre><code>[[1]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[2]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-2">
+Past versions of unnamed-chunk-15-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[3]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-3">
+Past versions of unnamed-chunk-15-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[4]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-4">
+Past versions of unnamed-chunk-15-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[5]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-5">
+Past versions of unnamed-chunk-15-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[6]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-6">
+Past versions of unnamed-chunk-15-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[7]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-7">
+Past versions of unnamed-chunk-15-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[8]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-8">
+Past versions of unnamed-chunk-15-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#Ectoderm Markers (3-1 early ectoderm markers, 4-6schwann cell (myelinating, non myelinating, or precursor), 7-8 oligodendrocytes, 9-10 radial glia)
 FeaturePlot(merged, features = c(&quot;PAX6&quot;, &quot;GBX2&quot;,  &quot;NES&quot;, &quot;MPZ&quot;, &quot;SOX10&quot;,&quot;GAP43&quot;, &quot;OLIG1&quot;, &quot;OLIG2&quot;, &quot;VIM&quot;, &quot;HES5&quot;), pt.size = 0.2, ncol=3, combine=F)</code></pre>
 <pre><code>[[1]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[2]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-2">
+Past versions of unnamed-chunk-16-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[3]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-3">
+Past versions of unnamed-chunk-16-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[4]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-4">
+Past versions of unnamed-chunk-16-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[5]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-5">
+Past versions of unnamed-chunk-16-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[6]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-6">
+Past versions of unnamed-chunk-16-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[7]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-7">
+Past versions of unnamed-chunk-16-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[8]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-8">
+Past versions of unnamed-chunk-16-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[9]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-9.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-9">
+Past versions of unnamed-chunk-16-9.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[10]]</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-10">
+Past versions of unnamed-chunk-16-10.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#More ectoderm, specifically neurons
 #immature neurons: NEUROD1
 #Mature Neurons: MAP2, SYP
 #dopaminergic: TH, FOXA2,
 FeaturePlot(merged, features = c(&quot;MAP2&quot;, &quot;SYP&quot;,&quot;NEUROD1&quot;, &quot;TH&quot; ), pt.size = 0.2, ncol=3)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>FeaturePlot(merged, features = &quot;nFeature_RNA&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>FeaturePlot(merged, features = c(&quot;POU5F1&quot;, &quot;SOX17&quot;,  &quot;HAND1&quot;, &quot;PAX6&quot;), pt.size = 0.2, ncol=2, combine=T)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>FeaturePlot(merged, features = c(&quot;FGB&quot;, &quot;ECSCR&quot;,  &quot;NEUROD1&quot;, &quot;SOX10&quot;), pt.size = 0.2, ncol=2)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+421a225
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
