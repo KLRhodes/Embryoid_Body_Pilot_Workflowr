@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Integrate lanes from all batches of EB pilot (Human data only, no doublets</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Embryoid_Body_Pilot_Workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Integrate lanes from all batches of EB pilot (Human data only, no doublets</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-08-10
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200804code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200804)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200804code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200804)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongbc8ec6f"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> bc8ec6f </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongbc8ec6f" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version bc8ec6f. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    output/.Rhistory
+
+Untracked files:
+    Untracked:  analysis/child/
+    Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  figure/
+    Untracked:  output/mergedObjects/
+    Untracked:  output/sampleQCrds/
+
+Unstaged changes:
+    Modified:   .Rprofile
+    Modified:   .gitattributes
+    Modified:   .gitignore
+    Modified:   Embryoid_Body_Pilot_Workflowr.Rproj
+    Modified:   README.md
+    Modified:   _workflowr.yml
+    Modified:   analysis/_site.yml
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/license.Rmd
+    Modified:   code/README.md
+    Modified:   data/README.md
+    Modified:   output/README.md
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd</code>) and HTML (<code>docs/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+bc8ec6f
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-10
+</td>
+<td>
+cleaning various versions of merging/intCurrent working directory
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(Seurat)
+library(harmony)
+library(ggplot2)
+library(DataCombine)
+library(here)
+library(RColorBrewer)
+options(future.globals.maxSize= 15000*1024^2) #allow global exceeding 4Gb</code></pre>
+<p>Read in the files, add metadata, and create an object list</p>
+<pre class="r"><code>filelist&lt;-list.files(here::here(&#39;output/sampleQCrds/&#39;), full.names = T)
+objectlist&lt;- list()
+for (i in 1:length(filelist)){
+  rds&lt;- readRDS(filelist[i])
+  objectlist[i]&lt;- rds
+  
+}</code></pre>
+<pre><code>Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated
+
+Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
+is deprecated</code></pre>
+<p>create a merged seurat object</p>
+<pre class="r"><code>ids&lt;-substr(basename(filelist),1,12)
+merged&lt;- merge(objectlist[[1]], c(objectlist[[2]], objectlist[[3]],objectlist[[4]],objectlist[[5]],objectlist[[6]],objectlist[[7]],objectlist[[8]],objectlist[[9]],objectlist[[10]],objectlist[[11]],objectlist[[12]],objectlist[[13]],objectlist[[14]],objectlist[[15]],objectlist[[16]]),add.cell.ids=ids, merge.data=T)</code></pre>
+<pre class="r"><code>#run PCA on full dataset pre-alignment
+all.genes= rownames(merged)
+merged&lt;-FindVariableFeatures(merged,selection.method=&quot;vst&quot;, nfeatures = 5000)
+#have previously used all genes (nfeatures=25000) and clustering by individual rather than batch (based on proportion of cells per cluster) was still observed downstream. Now using 5000 because it is the upper bound of what has been recommended in the literature.
+merged&lt;- ScaleData(merged, features = all.genes)</code></pre>
+<pre><code>Centering and scaling data matrix</code></pre>
+<pre class="r"><code>merged&lt;-RunPCA(merged, npcs = 100, verbose=F)</code></pre>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;pca&quot;, group.by = &quot;Batch&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#need to fix the individual names because they are slightly different from batch1
+replacements&lt;- data.frame(from= c(&quot;SNG-NA18511.variant2&quot;, &quot;SNG-NA18858.variant2&quot;, &quot;SNG-NA19160.variant2&quot;), to=c(&quot;SNG-NA18511&quot;, &quot;SNG-NA18858&quot;, &quot;SNG-NA19160&quot;))
+merged@meta.data&lt;-FindReplace(merged@meta.data, &quot;individual&quot;, replacements, from = &quot;from&quot;, to= &quot;to&quot;, exact=T, vector=F )</code></pre>
+<pre><code>Only exact matches will be replaced.</code></pre>
+<pre class="r"><code>DimPlot(merged, reduction=&quot;pca&quot;, group.by= c(&quot;individual&quot;), combine=F)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Now Running UMAP and identifying clusters, etc</p>
+<pre class="r"><code>merged&lt;- RunUMAP(merged, reduction = &quot;pca&quot;, dims = 1:100, verbose = F)</code></pre>
+<pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
+This message will be shown once per session</code></pre>
+<pre class="r"><code>merged&lt;- FindNeighbors(merged, reduction=&quot;pca&quot;, dims = 1:100, verbose = F)</code></pre>
+<p>SAVING merged/aligned/reclustered object</p>
+<pre class="r"><code>path&lt;- here::here(&quot;output/mergedObjects/&quot;)
+saveRDS(merged, file=paste0(path,&#39;merged.noIntegration.rds&#39;))</code></pre>
+<pre class="r"><code>#reassign idents
+Idents(merged)&lt;- &#39;SCT_snn_res.1&#39;</code></pre>
+<pre class="r"><code>VizDimLoadings(merged, dims = 1:2, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(merged, dims = 3:4, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-11-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VizDimLoadings(merged, dims = 5:6, reduction = &quot;pca&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-11-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(merged@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]),
+          max(merged@reductions$pca@cell.embeddings[,&#39;PC_1&#39;]))
+ylim &lt;- c(min(merged@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]),
+          max(merged@reductions$pca@cell.embeddings[,&#39;PC_2&#39;]))
+
+individuals &lt;- table(merged$individual)
+individuals &lt;- individuals[individuals&gt;50]
+individuals &lt;- names(individuals)
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = &quot;pca&quot;, group.by = c(&quot;Batch&quot;), pt.size = 0.01,
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
+ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = &quot;umap&quot;, 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-13-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Endoderm markers (first 3 definitive endo, 4-6 liver markers, )
+FeaturePlot(merged, features = c(&quot;SOX17&quot;,&quot;CLDN6&quot;,&quot;FOXA2&quot;, &quot;TTR&quot;, &quot;AFP&quot;, &quot;FGB&quot;), pt.size = 0.2, combine = F)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-14-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Mesoderm Markers (first 3 early meso markers, 4-6 heart markers, 7-9 endothelial markers (which comes from mesoderm), then some other general muscle markers)
+FeaturePlot(merged, features = c(&quot;HAND1&quot;, &quot;BMP4&quot;, &quot;TNNT2&quot;,&quot;KDR&quot;, &quot;GNG11&quot;, &quot;ECSCR&quot;, &quot;COL3A1&quot;, &quot;ACTC1&quot;), pt.size = 0.2, combine=F)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[7]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[8]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-15-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Ectoderm Markers (3-1 early ectoderm markers, 4-6schwann cell (myelinating, non myelinating, or precursor), 7-8 oligodendrocytes, 9-10 radial glia)
+FeaturePlot(merged, features = c(&quot;PAX6&quot;, &quot;GBX2&quot;,  &quot;NES&quot;, &quot;MPZ&quot;, &quot;SOX10&quot;,&quot;GAP43&quot;, &quot;OLIG1&quot;, &quot;OLIG2&quot;, &quot;VIM&quot;, &quot;HES5&quot;), pt.size = 0.2, ncol=3, combine=F)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[7]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[8]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[9]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[10]]</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-16-10.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#More ectoderm, specifically neurons
+#immature neurons: NEUROD1
+#Mature Neurons: MAP2, SYP
+#dopaminergic: TH, FOXA2,
+FeaturePlot(merged, features = c(&quot;MAP2&quot;, &quot;SYP&quot;,&quot;NEUROD1&quot;, &quot;TH&quot; ), pt.size = 0.2, ncol=3)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>FeaturePlot(merged, features = &quot;nFeature_RNA&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>FeaturePlot(merged, features = c(&quot;POU5F1&quot;, &quot;SOX17&quot;,  &quot;HAND1&quot;, &quot;PAX6&quot;), pt.size = 0.2, ncol=2, combine=T)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>FeaturePlot(merged, features = c(&quot;FGB&quot;, &quot;ECSCR&quot;,  &quot;NEUROD1&quot;, &quot;SOX10&quot;), pt.size = 0.2, ncol=2)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] RColorBrewer_1.1-2 here_0.1-11        DataCombine_0.2.21 ggplot2_3.3.2     
+[5] harmony_1.0        Rcpp_1.0.5         Seurat_3.2.0       workflowr_1.6.2   
+
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15            colorspace_1.4-1      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_1.3-2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
+ [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
+ [13] ggrepel_0.8.2         RSpectra_0.16-0       codetools_0.2-16     
+ [16] splines_3.6.1         lsei_1.2-0            knitr_1.29           
+ [19] polyclip_1.10-0       jsonlite_1.7.0        ica_1.0-2            
+ [22] cluster_2.1.0         png_0.1-7             uwot_0.1.8           
+ [25] shiny_1.5.0           sctransform_0.2.1     compiler_3.6.1       
+ [28] httr_1.4.2            backports_1.1.8       Matrix_1.2-18        
+ [31] fastmap_1.0.1         lazyeval_0.2.2        later_1.1.0.1        
+ [34] htmltools_0.5.0       tools_3.6.1           rsvd_1.0.3           
+ [37] igraph_1.2.5          gtable_0.3.0          glue_1.4.1           
+ [40] RANN_2.6.1            reshape2_1.4.4        dplyr_1.0.0          
+ [43] rappdirs_0.3.1        spatstat_1.64-1       vctrs_0.3.2          
+ [46] gdata_2.18.0          ape_5.3               nlme_3.1-140         
+ [49] lmtest_0.9-37         xfun_0.16             stringr_1.4.0        
+ [52] globals_0.12.5        mime_0.9              miniUI_0.1.1.1       
+ [55] lifecycle_0.2.0       irlba_2.3.3           gtools_3.8.2         
+ [58] goftest_1.2-2         future_1.18.0         MASS_7.3-51.4        
+ [61] zoo_1.8-8             scales_1.1.1          promises_1.1.1       
+ [64] spatstat.utils_1.17-0 parallel_3.6.1        yaml_2.2.1           
+ [67] reticulate_1.16       pbapply_1.4-2         gridExtra_2.3        
+ [70] rpart_4.1-15          stringi_1.4.6         caTools_1.18.0       
+ [73] rlang_0.4.7           pkgconfig_2.0.3       bitops_1.0-6         
+ [76] evaluate_0.14         lattice_0.20-38       ROCR_1.0-7           
+ [79] purrr_0.3.4           tensor_1.5            labeling_0.3         
+ [82] patchwork_1.0.1       htmlwidgets_1.5.1     cowplot_1.0.0        
+ [85] tidyselect_1.1.0      RcppAnnoy_0.0.16      plyr_1.8.6           
+ [88] magrittr_1.5          R6_2.4.1              gplots_3.0.4         
+ [91] generics_0.0.2        withr_2.2.0           pillar_1.4.6         
+ [94] whisker_0.4           mgcv_1.8-28           fitdistrplus_1.0-14  
+ [97] survival_3.2-3        abind_1.4-5           tibble_3.0.3         
+[100] future.apply_1.6.0    crayon_1.3.4          KernSmooth_2.23-15   
+[103] plotly_4.9.2.1        rmarkdown_2.3         grid_3.6.1           
+[106] data.table_1.13.0     git2r_0.26.1          digest_0.6.25        
+[109] xtable_1.8-4          tidyr_1.1.0           httpuv_1.5.4         
+[112] munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
