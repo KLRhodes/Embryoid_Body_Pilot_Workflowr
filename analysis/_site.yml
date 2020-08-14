@@ -1,7 +1,7 @@
-name: "Embryoid_Body_Pilot_Workflowr"
+name: Embryoid_Body_Pilot_Workflowr
 output_dir: ../docs
 navbar:
-  title: "Embryoid_Body_Pilot_Workflowr"
+  title: Embryoid_Body_Pilot_Workflowr
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr
 output:
   workflowr::wflow_html:
     toc: yes
