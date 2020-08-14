@@ -35,7 +35,7 @@ Preprocessing, QC, and filtering
       -[Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)  
       
 
-Merging and integration
+Merging and integration  
 [Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)  
 [Harmony correcting for Batch, Individual](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)  
 [Harmony correcting for Batch, Individual, and Lane](IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
