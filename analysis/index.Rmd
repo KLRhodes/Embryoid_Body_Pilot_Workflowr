@@ -34,5 +34,15 @@ Preprocessing, QC, and filtering
       -[Batch3Lane3](SampleFilteringandSCT_Batch3Lane3.html)  
       -[Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)  
       
+
+Merging and integration
+[Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)  
+[Harmony correcting for Batch, Individual](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)  
+[Harmony correcting for Batch, Individual, and SampleID(Lane)] (IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
+[SCTransform regressing out Batch,individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html)  
+[SCTransform regressing out Batch,individual then Harmony correcting batch and individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html)  
+
+[No Integration, Just Merged](IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html)
+      
       
       
