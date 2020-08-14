@@ -19,22 +19,22 @@ After running cell ranger,
 Preprocessing, QC, and filtering
 1. Run EmptyDrops, Add Metadata to Seurat object from each 10x lane
 2. Filter and run SCTransform on each 10x lane
-      -[Batch1Lane1] (SampleFilteringandSCT_Batch1Lane1.html)
-      -[Batch1Lane3] (SampleFilteringandSCT_Batch1Lane3.html)
-      -[Batch1Lane4] (SampleFilteringandSCT_Batch1Lane4.html)
-      -[Batch1Lane5] (SampleFilteringandSCT_Batch1Lane5.html)
-      -[Batch1Lane6] (SampleFilteringandSCT_Batch1Lane6.html)
-      -[Batch1Lane7] (SampleFilteringandSCT_Batch1Lane7.html)
-      -[Batch1Lane8] (SampleFilteringandSCT_Batch1Lane8.html)
-      -[Batch1Lane9] (SampleFilteringandSCT_Batch1Lane9.html)
-      -[Batch2Lane1] (SampleFilteringandSCT_Batch2Lane1.html)
-      -[Batch2Lane2] (SampleFilteringandSCT_Batch2Lane2.html)
-      -[Batch2Lane3] (SampleFilteringandSCT_Batch2Lane3.html)
-      -[Batch2Lane4] (SampleFilteringandSCT_Batch2Lane4.html)
-      -[Batch3Lane1] (SampleFilteringandSCT_Batch3Lane1.html)
-      -[Batch3Lane2] (SampleFilteringandSCT_Batch3Lane2.html)
-      -[Batch3Lane3] (SampleFilteringandSCT_Batch3Lane3.html)
-      -[Batch3Lane4] (SampleFilteringandSCT_Batch3Lane4.html)
+      -[Batch1Lane1](SampleFilteringandSCT_Batch1Lane1.html)
+      -[Batch1Lane3](SampleFilteringandSCT_Batch1Lane3.html)
+      -[Batch1Lane4](SampleFilteringandSCT_Batch1Lane4.html)
+      -[Batch1Lane5](SampleFilteringandSCT_Batch1Lane5.html)
+      -[Batch1Lane6](SampleFilteringandSCT_Batch1Lane6.html)
+      -[Batch1Lane7](SampleFilteringandSCT_Batch1Lane7.html)
+      -[Batch1Lane8](SampleFilteringandSCT_Batch1Lane8.html)
+      -[Batch1Lane9](SampleFilteringandSCT_Batch1Lane9.html)
+      -[Batch2Lane1](SampleFilteringandSCT_Batch2Lane1.html)
+      -[Batch2Lane2](SampleFilteringandSCT_Batch2Lane2.html)
+      -[Batch2Lane3](SampleFilteringandSCT_Batch2Lane3.html)
+      -[Batch2Lane4](SampleFilteringandSCT_Batch2Lane4.html)
+      -[Batch3Lane1](SampleFilteringandSCT_Batch3Lane1.html)
+      -[Batch3Lane2](SampleFilteringandSCT_Batch3Lane2.html)
+      -[Batch3Lane3](SampleFilteringandSCT_Batch3Lane3.html)
+      -[Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)
       
       
       
