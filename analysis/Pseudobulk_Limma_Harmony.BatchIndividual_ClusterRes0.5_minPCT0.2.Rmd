@@ -1,0 +1,442 @@
+---
+title: "Differential Expression with Limma"
+output: html_document
+---
+
+```{r, message=F}
+library(Seurat)
+library(Matrix)
+library(dplyr)
+library(edgeR)
+library(limma)
+library(reshape2)
+library(ggplot2)
+library(UpSetR)
+```
+
+
+choose parameters (integration type, clustering res, min pct threshold)
+```{r}
+f<- 'Harmony.Batchindividual'
+pct<-0.2
+res<- 'SCT_snn_res.0.5'
+```
+
+```{r}
+path<- here::here("output/DGELists/")
+dge<- readRDS(paste0(path,"Pseudobulk_dge_",f, "_", res,"_minPCT",pct,".rds"))
+```
+
+```{r}
+cpm<- cpmByGroup(dge, group=dge$samples$cluster)
+lcpm<- cpmByGroup(dge, group=dge$samples$cluster, log=TRUE)
+```
+
+```{r}
+hist(lcpm)
+```
+
+
+
+```{r}
+L<- mean(dge$samples$lib.size) *1e-6
+M<- median(dge$samples$lib.size) *1e-6
+```
+
+
+```{r}
+genes.ribo <- grep('^RP',rownames(dge),value=T)
+genes.no.ribo <- rownames(dge)[which(!(rownames(dge) %in% genes.ribo))]
+dge$counts <- dge$counts[which(rownames(dge$counts) %in% genes.no.ribo),] #remove ribosomal genes
+```
+
+```{r}
+dge<- calcNormFactors(dge, method="TMM")
+
+summary(dge$samples$norm.factors)
+```
+
+```{r}
+design<- model.matrix(~0+ dge$samples$cluster + dge$samples$batch + dge$samples$ind)
+```
+
+
+```{r}
+v<- voom(dge, design, plot=TRUE)
+v
+```
+
+
+```{r}
+fit<- lmFit(v,design)
+```
+
+```{r}
+dim(fit)
+```
+
+```{r}
+head(fit)
+```
+
+```{r}
+#all pairwise cluster comparisons
+nclust<- length(unique(dge$samples$cluster))
+nterms<- ncol(fit)
+contrasts<- NULL
+for (b in 1:nclust){
+for (i in 1:nclust){
+    c<- rep(0,nterms)
+    c[b]<- 1
+    c[i]<- -1
+    contrasts<- cbind(contrasts, c)
+}
+}
+
+selfcols<- c()
+el<- 1
+while (length(selfcols) <= nclust){
+  selfcols<- c(selfcols, el)
+  el<- el + nclust + 1
+}
+
+contrasts<- contrasts[,-selfcols]
+```
+
+```{r}
+contrasts
+```
+
+
+```{r}
+#first, testing all pairwise cluster comparisons. 
+fit<- contrasts.fit(fit, contrasts= contrasts)
+```
+
+```{r}
+efit<- eBayes(fit)
+```
+
+```{r}
+plotSA(efit)
+```
+
+
+```{r}
+summary(decideTests(efit))
+```
+
+
+```{r}
+qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
+abline(0,1)
+```
+
+
+```{r}
+topTable(efit, coef=1, sort.by= "P")
+```
+
+Comparing the subclusters of the pluripotent blob
+
+clust0 v clust14
+```{r}
+topTable(efit, coef=14, sort.by= "P", n=20)
+```
+
+```{r}
+vol<- topTable(efit, coef=14, n=nrow(fit))
+labsig<- vol[(vol$logFC) >=3 & vol$adj.P.Val < 5e-30 | vol$logFC <=-5 & vol$adj.P.Val < 1e-35,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+
+```{r}
+some<-topTable(efit, coef=14, sort.by= "P", n=60)
+up<- some[some$logFC>0,]
+down<-some[some$logFC<0,]
+```
+
+```{r}
+head(up,10)
+```
+
+```{r}
+head(down,10)
+```
+
+
+clust0 v clust10
+```{r}
+vol<- topTable(efit, coef=10, n=nrow(fit))
+labsig<-  vol[(vol$adj.P.Val < 5e-45) | (vol$logFC> 0 & vol$adj.P.Val < 1e-30) |vol$logFC> 7 |vol$logFC < -7,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+
+```{r}
+some<-topTable(efit, coef=10, sort.by= "P", n=200)
+up<- some[some$logFC>0,]
+down<-some[some$logFC<0,]
+```
+
+```{r}
+head(up,10)
+```
+
+```{r}
+head(down,10)
+```
+
+clust0 v clust7
+```{r}
+vol<- topTable(efit, coef=7, n=nrow(fit))
+labsig<-  vol[(vol$adj.P.Val < 5e-37) | (vol$logFC> 0 & vol$adj.P.Val < 1e-21) |vol$logFC> 6 |vol$logFC < -7,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+
+```{r}
+some<-topTable(efit, coef=7, sort.by= "P", n=300)
+up<- some[some$logFC>0,]
+down<-some[some$logFC<0,]
+```
+
+```{r}
+head(up,10)
+```
+
+```{r}
+head(down, 10)
+```
+
+
+comparing the two mature neuron clusters
+
+clust9 v clust12
+```{r}
+vol<- topTable(efit, coef=165, n=nrow(fit))
+labsig<-  vol[(vol$adj.P.Val < 5e-37) | (vol$logFC< 0 & vol$adj.P.Val < 1e-15) |vol$logFC> 9.5 |vol$logFC < -6,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+
+```{r}
+some<-topTable(efit, coef=165, sort.by= "P", n=400)
+up<- some[some$logFC>0,]
+down<-some[some$logFC<0,]
+```
+
+```{r}
+head(up,10)
+```
+
+```{r}
+head(down,10)
+```
+cluster 4 v12
+```{r}
+vol<- topTable(efit, coef=80, n=nrow(fit))
+labsig<-  vol[(vol$adj.P.Val < 5e-40) |vol$logFC> 7 |vol$logFC < -6 | vol$adj.P.Val<1e-27 & vol$logFC<0,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+```{r}
+some<-topTable(efit, coef=80, sort.by= "P", n=400)
+up<- some[some$logFC>0,]
+down<-some[some$logFC<0,]
+```
+
+```{r}
+head(up,10)
+```
+
+```{r}
+head(down,10)
+```
+
+
+cluster2 v cluster13
+```{r}
+vol<- topTable(efit, coef=47, n=nrow(fit))
+labsig<-  vol[(vol$adj.P.Val < 5e-15) |vol$logFC> 3 |vol$logFC < -4,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+```{r}
+some<-topTable(efit, coef=47, sort.by= "P", n=400)
+up<- some[some$logFC>0,]
+down<-some[some$logFC<0,]
+```
+
+```{r}
+head(up,10)
+```
+
+```{r}
+head(down,10)
+```
+
+
+
+1 v all contrasts
+
+```{r}
+fit<- lmFit(v,design)
+```
+
+```{r}
+contrasts<- NULL
+for (i in 1:nclust){
+    c<- c(rep(-1,nclust),0,0,0,0)
+    c[i]<- nclust-1
+    
+    contrasts<- cbind(contrasts, c)
+}
+```
+
+```{r}
+contrasts
+```
+
+```{r}
+#first, testing all pairwise cluster comparisons. 
+fit<- contrasts.fit(fit, contrasts= contrasts)
+```
+
+```{r}
+efit<- eBayes(fit)
+```
+
+```{r}
+plotSA(efit)
+```
+```{r}
+qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
+abline(0,1)
+```
+
+```{r}
+summary(decideTests(efit))
+```
+
+```{r}
+c16vall<- topTable(efit, coef=17, sort.by= "P", n=nrow(fit))
+
+head(c16vall, n=30)
+```
+
+
+```{r}
+vol<- topTable(efit, coef=17, n=nrow(fit))
+labsig<- vol[(vol$adj.P.Val < 5e-50) | (vol$logFC< 0 & vol$adj.P.Val < 5e-20) |vol$logFC> 65 |vol$logFC < -55,]
+labsiggenes<- rownames(labsig)
+thresh<- vol$adj.P.Val < 0.05
+vol<-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
+  geom_text(data=labsig, aes(label=labsiggenes))
+```
+
+
+```{r}
+c12vall<- topTable(efit, coef=13, sort.by="P",n=nrow(fit))
+
+head(c12vall, n=40)
+```
+
+
+batch + ind comparisons
+
+```{r}
+fit<- lmFit(v,design)
+```
+
+```{r}
+fit<-contrasts.fit(fit, coefficients = (nclust+1):(nclust+4))
+```
+
+
+```{r}
+efit<- eBayes(fit)
+```
+
+```{r}
+plotSA(efit)
+```
+
+```{r}
+qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
+abline(0,1)
+```
+
+```{r}
+topsBatch<- topTable(efit, coef=c(1:2),n=nrow(fit))
+
+head(topsBatch, n=40)
+```
+
+```{r}
+topsInd<- topTable(efit, coef=c(3:4),n=nrow(fit))
+
+head(topsInd, n=40)
+```
+
+```{r}
+"UTF1" %in% rownames(topsInd)
+```
+
+```{r}
+topsInd[rownames(topsInd)== "UTF1",]
+```
+
+
+
+```{r}
+plot(density(topsBatch$adj.P.Val))
+lines(density(topsInd$adj.P.Val), col= "red")
+```
+
+```{r}
+boxplot(-log10(topsBatch$adj.P.Val), -log10(topsInd$adj.P.Val), names= c("Batch", "Individual"), main="Distribution of p values from F tests", ylab="-log10(adjusted.p.val)")
+```
+
+```{r}
+median(topsBatch$F)
+```
+
+```{r}
+median(topsInd$F)
+```
+
