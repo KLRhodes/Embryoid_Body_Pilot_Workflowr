@@ -1,0 +1,118 @@
+---
+title: "Variance Partition on Pseudobulk data"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(limma)
+library(edgeR)
+library(variancePartition)
+```
+
+
+choose parameters (integration type, clustering res, min pct threshold)
+```{r}
+f<- 'Harmony.Batchindividual'
+pct<-0.2
+res<- 'SCT_snn_res.0.8'
+```
+
+```{r}
+path<- here::here("output/DGELists/")
+submerged<- readRDS(paste0(path,"Pseudobulk_dge_",f, "_", res,"_minPCT",pct,".rds"))
+```
+
+```{r}
+cpm<- cpm(submerged)
+lcpm<- cpm(submerged, log=TRUE)
+```
+
+```{r}
+L<- mean(submerged$samples$lib.size) *1e-6
+M<- median(submerged$samples$lib.size) *1e-6
+```
+
+```{r}
+genes.ribo <- grep('^RP',rownames(submerged),value=T)
+genes.no.ribo <- rownames(submerged)[which(!(rownames(submerged) %in% genes.ribo))]
+submerged$counts <- submerged$counts[which(rownames(submerged$counts) %in% genes.no.ribo),] #remove ribosomal genes
+```
+
+```{r}
+submerged<- calcNormFactors(submerged, method="TMM")
+
+summary(submerged$samples$norm.factors)
+```
+```{r}
+design<- model.matrix(~submerged$samples$cluster+submerged$samples$batch+submerged$samples$ind)
+```
+
+```{r}
+v<- voom(submerged, design, plot=T)
+v
+```
+
+```{r}
+form<- ~ (1|cluster) + (1|batch) + (1|ind)
+```
+
+```{r}
+remove(cpm)
+remove(lcpm)
+```
+
+
+```{r, message=FALSE}
+varpart<- suppressWarnings(fitExtractVarPartModel(v, form, submerged$samples))
+```
+
+```{r}
+head(varpart)
+```
+    
+    
+
+```{r}
+vp<- sortCols(varpart)
+```
+
+
+```{r}
+plotPercentBars(vp[1:10,])
+```
+
+```{r}
+plotVarPart(vp)
+```
+
+```{r}
+#do the genes most effected by individual match what I did in limma?
+vp<- vp[order(vp$ind, decreasing=T),]
+head(vp, 30)
+```
+
+```{r}
+#do the genes most effected by batch match what I did in limma?
+vp<- vp[order(vp$batch, decreasing=T),]
+head(vp, 30)
+```
+
+```{r}
+summary(vp$ind)
+```
+
+```{r}
+summary(vp$batch)
+```
+
+```{r}
+#genes for which individual contributes more to variance than batch?
+vp.indgreaterthanbatch<- vp[vp$ind>vp$batch,]
+
+dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356
+```
+
+```{r}
+head(vp.indgreaterthanbatch, 20)
+```
