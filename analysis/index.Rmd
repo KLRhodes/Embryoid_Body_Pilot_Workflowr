@@ -3,7 +3,8 @@ title: "Home"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: true
+    toc_depth: 1
 editor_options:
   chunk_output_type: console
 ---
@@ -14,9 +15,9 @@ This site contains analyses performed on human Embryoid bodies, spheroids of spo
 
 Single Cell RNA-seq data was collected using the 10x platform.
 
-Preprocessing, QC, and filtering  
-1. Run EmptyDrops, Add Metadata to Seurat object from each 10x lane  
-2. Filter and run SCTransform on each 10x lane  
+#Preprocessing, QC, and filtering {.tabset}
+##1. Run EmptyDrops, Add Metadata to Seurat object from each 10x lane  
+##2. Filter and run SCTransform on each 10x lane  {.tabset-dropdown}
       -[Batch1Lane1](SampleFilteringandSCT_Batch1Lane1.html)  
       -[Batch1Lane3](SampleFilteringandSCT_Batch1Lane3.html)  
       -[Batch1Lane4](SampleFilteringandSCT_Batch1Lane4.html)  
@@ -35,7 +36,8 @@ Preprocessing, QC, and filtering
       -[Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)  
       
 
-Merging and integration  
+#Merging and integration {.tabset}{.tabset-dropdown}
+
 [Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)  
 [Harmony correcting for Batch, Individual](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)  
 [Harmony correcting for Batch, Individual, and Lane](IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
