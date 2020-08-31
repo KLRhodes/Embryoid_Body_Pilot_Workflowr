@@ -1,0 +1,50 @@
+---
+title: "Hierarchical Clustering-ComplexHeatmap"
+output: html_document
+---
+
+```{r}
+library(ComplexHeatmap)
+library(edgeR)
+```
+
+
+```{r}
+f<- 'Harmony.Batchindividual'
+pct<-0.2
+res<- 'SCT_snn_res.0.8'
+```
+
+```{r}
+path<- here::here("output/DGELists/")
+dge<- readRDS(paste0(path,"Pseudobulk_dge_",f, "_", res,"_minPCT",pct,".rds"))
+```
+
+```{r}
+pseudo.lcpm<- cpm(dge, log=TRUE)
+```
+
+
+```{r}
+ha<- HeatmapAnnotation(cluster= dge$samples$cluster, batch= dge$samples$batch, individual= dge$samples$ind)
+
+Heatmap(pseudo.lcpm, bottom_annotation = ha, show_column_names = F, show_row_names = F, name = "lcpm", use_raster = TRUE)
+```
+
+Same thing, removing ribosomal to see if it changes anything
+
+```{r}
+genes.ribo <- grep('^RP',rownames(dge),value=T)
+genes.no.ribo <- rownames(dge)[which(!(rownames(dge) %in% genes.ribo))]
+dge$counts <- dge$counts[which(rownames(dge$counts) %in% genes.no.ribo),] #remove ribosomal genes
+```
+
+```{r}
+pseudo.lcpm<- cpm(dge, log=TRUE)
+```
+
+```{r}
+ha<- HeatmapAnnotation(cluster= dge$samples$cluster, batch= dge$samples$batch, individual= dge$samples$ind)
+
+Heatmap(pseudo.lcpm, bottom_annotation = ha, show_column_names = F, show_row_names = F, name = "lcpm", use_raster = TRUE)
+```
