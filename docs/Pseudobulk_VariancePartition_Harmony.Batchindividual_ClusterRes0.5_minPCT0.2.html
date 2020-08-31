@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Variance Partition on Pseudobulk data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Embryoid_Body_Pilot_Workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Variance Partition on Pseudobulk data</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-08-31
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it's best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200804code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200804)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200804code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200804)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee16856a07a49bf62bd2fe77b63ab93227d6d25c8targetblanke16856aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e16856a07a49bf62bd2fe77b63ab93227d6d25c8" target="_blank">e16856a</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee16856a07a49bf62bd2fe77b63ab93227d6d25c8targetblanke16856aa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e16856a07a49bf62bd2fe77b63ab93227d6d25c8" target="_blank">e16856a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    output/.Rhistory
+    Ignored:    output/pdfs/
+
+Untracked files:
+    Untracked:  analysis/RunscHCL_HarmonyBatchInd.Rmd
+    Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/child/
+    Untracked:  code/ConvertToDGE.Rmd
+    Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  figure/
+    Untracked:  output/DGELists/
+    Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/mergedObjects/
+    Untracked:  output/sampleQCrds/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd</code>) and HTML (<code>docs/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.html</code>) files. If you've configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/e16856a07a49bf62bd2fe77b63ab93227d6d25c8/analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd" target="_blank">e16856a</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+<td>
+wflow_publish(&quot;analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes*&quot;)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(limma)
+library(edgeR)
+library(variancePartition)</code></pre>
+<pre><code>Loading required package: ggplot2</code></pre>
+<pre><code>Loading required package: foreach</code></pre>
+<pre><code>Loading required package: scales</code></pre>
+<pre><code>Loading required package: Biobase</code></pre>
+<pre><code>Loading required package: BiocGenerics</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code>
+Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>The following object is masked from &#39;package:limma&#39;:
+
+    plotMA</code></pre>
+<pre><code>The following objects are masked from &#39;package:dplyr&#39;:
+
+    combine, intersect, setdiff, union</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+    as.data.frame, basename, cbind, colnames, dirname, do.call,
+    duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,
+    lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+    pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,
+    tapply, union, unique, unsplit, which, which.max, which.min</code></pre>
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>
+Attaching package: &#39;variancePartition&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:limma&#39;:
+
+    classifyTestsF</code></pre>
+<p>choose parameters (integration type, clustering res, min pct threshold)</p>
+<pre class="r"><code>f&lt;- &#39;Harmony.Batchindividual&#39;
+pct&lt;-0.2
+res&lt;- &#39;SCT_snn_res.0.5&#39;</code></pre>
+<pre class="r"><code>path&lt;- here::here(&quot;output/DGELists/&quot;)
+submerged&lt;- readRDS(paste0(path,&quot;Pseudobulk_dge_&quot;,f, &quot;_&quot;, res,&quot;_minPCT&quot;,pct,&quot;.rds&quot;))</code></pre>
+<pre class="r"><code>cpm&lt;- cpm(submerged)
+lcpm&lt;- cpm(submerged, log=TRUE)</code></pre>
+<pre class="r"><code>L&lt;- mean(submerged$samples$lib.size) *1e-6
+M&lt;- median(submerged$samples$lib.size) *1e-6</code></pre>
+<pre class="r"><code>genes.ribo &lt;- grep(&#39;^RP&#39;,rownames(submerged),value=T)
+genes.no.ribo &lt;- rownames(submerged)[which(!(rownames(submerged) %in% genes.ribo))]
+submerged$counts &lt;- submerged$counts[which(rownames(submerged$counts) %in% genes.no.ribo),] #remove ribosomal genes</code></pre>
+<pre class="r"><code>submerged&lt;- calcNormFactors(submerged, method=&quot;TMM&quot;)
+
+summary(submerged$samples$norm.factors)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.7736  0.8998  0.9755  1.0174  1.0565  2.1383 </code></pre>
+<pre class="r"><code>design&lt;- model.matrix(~submerged$samples$cluster+submerged$samples$batch+submerged$samples$ind)</code></pre>
+<pre class="r"><code>v&lt;- voom(submerged, design, plot=T)</code></pre>
+<p><img src="figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>v</code></pre>
+<pre><code>An object of class &quot;EList&quot;
+$targets
+                     group   lib.size norm.factors cluster  batch     ind
+0.Batch1.SNG-NA18511     1   624484.3    1.0373235       0 Batch1 NA18511
+0.Batch1.SNG-NA18858     1 77077818.7    1.0417138       0 Batch1 NA18858
+0.Batch1.SNG-NA19160     1   491756.2    1.0074803       0 Batch1 NA19160
+0.Batch2.SNG-NA18511     1  1017488.0    0.9970768       0 Batch2 NA18511
+0.Batch2.SNG-NA18858     1 71713598.7    1.0374122       0 Batch2 NA18858
+                                    Group
+0.Batch1.SNG-NA18511 0.Batch1.SNG-NA18511
+0.Batch1.SNG-NA18858 0.Batch1.SNG-NA18858
+0.Batch1.SNG-NA19160 0.Batch1.SNG-NA19160
+0.Batch2.SNG-NA18511 0.Batch2.SNG-NA18511
+0.Batch2.SNG-NA18858 0.Batch2.SNG-NA18858
+153 more rows ...
+
+$E
+        0.Batch1.SNG-NA18511 0.Batch1.SNG-NA18858 0.Batch1.SNG-NA19160
+SAMD11              3.138692             1.469848             2.345910
+NOC2L               6.777293             6.599711             6.623895
+PLEKHN1             1.264223             1.734571             2.345910
+HES4                5.656540             4.876733             4.111445
+ISG15               4.808543             5.517413             5.906625
+        0.Batch2.SNG-NA18511 0.Batch2.SNG-NA18858 0.Batch2.SNG-NA19160
+SAMD11              2.675427            0.8414497             2.125949
+NOC2L               6.341309            6.1443064             6.086778
+PLEKHN1             2.434418            1.8159647             2.125949
+HES4                6.030269            4.5392962             4.873183
+ISG15               5.716454            5.3916126             5.888449
+        0.Batch3.SNG-NA18511 0.Batch3.SNG-NA18858 0.Batch3.SNG-NA19160
+SAMD11              2.324023            0.8580432             3.446319
+NOC2L               6.430052            6.0721084             6.277720
+PLEKHN1             1.965230            1.2667834             2.081323
+HES4                5.793049            4.8552128             4.716409
+ISG15               6.128539            5.4187155             5.958769
+        1.Batch1.SNG-NA18511 1.Batch1.SNG-NA18858 1.Batch1.SNG-NA19160
+SAMD11              2.781860             3.747049             2.864050
+NOC2L               6.405942             6.047444             6.273040
+PLEKHN1            -1.988214            -1.007839            -2.539672
+HES4                9.438874             7.989341             8.843852
+ISG15               5.363041             5.980846             5.615146
+        1.Batch2.SNG-NA18511 1.Batch2.SNG-NA18858 1.Batch2.SNG-NA19160
+SAMD11              2.752753             2.951904            2.6216420
+NOC2L               6.078731             5.861258            6.1130558
+PLEKHN1            -5.207249            -2.333498           -0.7608277
+HES4                9.275370             7.619243            8.5222607
+ISG15               5.697386             5.759259            5.6191695
+        1.Batch3.SNG-NA18511 1.Batch3.SNG-NA18858 1.Batch3.SNG-NA19160
+SAMD11              1.961524            3.6595341             3.977466
+NOC2L               5.910084            5.9561511             6.052904
+PLEKHN1            -2.224342           -0.8640278            -3.371262
+HES4                8.757368            7.2074345             7.668342
+ISG15               5.803564            5.5789156             5.755442
+        10.Batch1.SNG-NA18511 10.Batch1.SNG-NA18858 10.Batch1.SNG-NA19160
+SAMD11               4.904920             1.3686231              1.611808
+NOC2L                7.226848             6.5631454              6.004125
+PLEKHN1              2.097565             0.1462306              1.611808
+HES4                 2.097565             5.6237641              7.444698
+ISG15                6.185028             5.2194796              5.518699
+        10.Batch2.SNG-NA18511 10.Batch2.SNG-NA18858 10.Batch2.SNG-NA19160
+SAMD11               3.555120           -0.31459966             3.4115716
+NOC2L                5.939784            6.00896694             6.2640144
+PLEKHN1              2.707123           -0.07359156             0.2416466
+HES4                 6.315932            5.82773951             5.7962355
+ISG15                5.339391            4.98419194             4.6339640
+        10.Batch3.SNG-NA18511 10.Batch3.SNG-NA18858 10.Batch3.SNG-NA19160
+SAMD11              3.4499162             -2.083251             4.7410919
+NOC2L               6.4593765              6.278693             6.6004936
+PLEKHN1             0.7869512              1.376181            -0.3881911
+HES4                5.8884892              5.135918             3.6992718
+ISG15               5.4308074              6.188212             5.7615560
+        11.Batch1.SNG-NA18511 11.Batch1.SNG-NA18858 11.Batch1.SNG-NA19160
+SAMD11              3.1760213              1.888963              3.184850
+NOC2L               6.2557485              6.412525              5.850302
+PLEKHN1            -0.2834103              1.888963             -1.160925
+HES4                9.5636470              8.396757              9.303621
+ISG15               6.7052744              5.795853              6.317508
+        11.Batch2.SNG-NA18511 11.Batch2.SNG-NA18858 11.Batch2.SNG-NA19160
+SAMD11               3.287500              3.749486              3.415984
+NOC2L                6.175025              3.749486              5.665460
+PLEKHN1              0.965572              3.749486             -2.198726
+HES4                 8.512466              8.273048              8.915667
+ISG15                5.357889              6.556841              5.749642
+        11.Batch3.SNG-NA18511 11.Batch3.SNG-NA18858 11.Batch3.SNG-NA19160
+SAMD11              3.0439263              3.400259              4.225455
+NOC2L               5.5941234              5.722187              5.853294
+PLEKHN1             0.2365714              3.400259             -1.240519
+HES4                7.8439017              8.155146              8.056397
+ISG15               6.0179311              6.570184              6.136257
+        12.Batch1.SNG-NA18511 12.Batch1.SNG-NA18858 12.Batch1.SNG-NA19160
+SAMD11               5.848751             4.5393720              5.853125
+NOC2L                6.592653             6.6985706              6.265320
+PLEKHN1             -2.111251             0.6324814             -1.135560
+HES4                 8.198226             5.3873689              8.081186
+ISG15                4.734239             5.3873689              6.140565
+        12.Batch2.SNG-NA18511 12.Batch2.SNG-NA18858 12.Batch2.SNG-NA19160
+SAMD11               5.167884              1.363631             4.7123906
+NOC2L                6.177142              6.007487             6.2973531
+PLEKHN1             -1.111340              1.363631            -0.1455904
+HES4                 7.913800              6.007487             7.4764614
+ISG15                4.896155              5.270521             5.2119616
+        12.Batch3.SNG-NA18511 12.Batch3.SNG-NA18858 12.Batch3.SNG-NA19160
+SAMD11               4.836266              3.315688              6.399018
+NOC2L                6.003003              5.431165              5.892739
+PLEKHN1             -2.402139              1.730725             -1.401882
+HES4                 7.357750              5.190157              7.133394
+ISG15                4.653144              5.190157              4.747865
+        13.Batch1.SNG-NA18511 13.Batch1.SNG-NA18858 13.Batch1.SNG-NA19160
+SAMD11               2.271123           3.067434361              1.742686
+NOC2L                6.020061           6.185129403              6.102942
+PLEKHN1             -2.483765           0.008540672             -1.957754
+HES4                 9.330417           8.125750856              8.676150
+ISG15                5.860531           5.623250516              5.881450
+        13.Batch2.SNG-NA18511 13.Batch2.SNG-NA18858 13.Batch2.SNG-NA19160
+SAMD11               4.081243             2.5387459              3.993239
+NOC2L                5.666205             6.2391856              6.315167
+PLEKHN1              4.081243             0.2168178              3.993239
+HES4                 7.251168             8.1651851              6.315167
+ISG15                4.081243             5.3461009              3.993239
+        13.Batch3.SNG-NA18858 14.Batch1.SNG-NA18511 14.Batch1.SNG-NA18858
+SAMD11              2.5322300              5.065982              4.327362
+NOC2L               5.9916616              5.959067              5.912325
+PLEKHN1             0.2103019              2.258627              4.327362
+HES4                8.1818454              3.843589              4.327362
+ISG15               5.7021550              5.065982              5.912325
+        14.Batch1.SNG-NA19160 14.Batch2.SNG-NA18511 14.Batch2.SNG-NA18858
+SAMD11                4.04968              2.987145              3.737233
+NOC2L                 4.04968              6.260163              6.059161
+PLEKHN1               4.04968              2.987145              3.737233
+HES4                  4.04968              4.946503              6.544588
+ISG15                 4.04968              5.545140              6.059161
+        14.Batch2.SNG-NA19160 14.Batch3.SNG-NA18511 14.Batch3.SNG-NA18858
+SAMD11               5.488174              3.216760              3.917588
+NOC2L                6.550101              6.426520              5.502551
+PLEKHN1              1.977212              1.513477              3.917588
+HES4                 5.147137              5.799828              6.724943
+ISG15                5.147137              5.753596              5.502551
+        14.Batch3.SNG-NA19160 15.Batch1.SNG-NA18511 15.Batch1.SNG-NA18858
+SAMD11               4.960079              5.705990             4.3190354
+NOC2L                6.372644              6.238100             6.1850181
+PLEKHN1              1.940180             -1.412951             0.9498016
+HES4                 5.156836              8.271797             7.6048353
+ISG15                5.590434              5.094843             4.8566922
+        15.Batch1.SNG-NA19160 15.Batch2.SNG-NA18511 15.Batch2.SNG-NA18858
+SAMD11               4.868455              4.964905              4.067750
+NOC2L                5.520532              5.788027              5.931688
+PLEKHN1              2.061100              1.264465             -1.313072
+HES4                 6.453418              8.699093              7.227379
+ISG15                3.646063              1.264465              5.734961
+        15.Batch2.SNG-NA19160 15.Batch3.SNG-NA18511 15.Batch3.SNG-NA18858
+SAMD11               3.647037              2.084104             0.7259728
+NOC2L                4.869429              5.254029             6.0835248
+PLEKHN1              2.062074              2.084104             0.7259728
+HES4                 6.920055              7.756530             7.3258857
+ISG15                5.231999              5.990995             6.7032527
+        15.Batch3.SNG-NA19160 16.Batch1.SNG-NA18511 16.Batch1.SNG-NA18858
+SAMD11               3.377015              2.761433              2.625863
+NOC2L                4.599407              5.931358              5.224901
+PLEKHN1              1.792052              5.083361              4.913440
+HES4                 6.435908              8.071288              6.926417
+ISG15                4.113980              5.017773              8.121483
+        16.Batch1.SNG-NA19160 16.Batch2.SNG-NA18511 16.Batch2.SNG-NA18858
+SAMD11               4.245240              5.889975              3.845817
+NOC2L                5.623752              5.153009              5.743937
+PLEKHN1              5.742072              4.416044              4.634313
+HES4                 6.814083              6.104100              7.127852
+ISG15                6.084304              6.455572              8.023010
+        16.Batch2.SNG-NA19160 16.Batch3.SNG-NA18511 16.Batch3.SNG-NA18858
+SAMD11               4.349821              4.928228              2.930750
+NOC2L                5.907039              5.435188              5.904755
+PLEKHN1              4.264932              4.139732              5.332848
+HES4                 6.420211              4.928228              6.943574
+ISG15                4.775127              4.380741              8.288302
+        16.Batch3.SNG-NA19160 17.Batch1.SNG-NA18511 17.Batch1.SNG-NA18858
+SAMD11               5.423176            2.33381637              3.100060
+NOC2L                5.511985            6.03425609              5.421988
+PLEKHN1              3.969458            0.01188828              3.100060
+HES4                 6.015751            7.23105680              5.907415
+ISG15                5.278786            9.65754671              5.421988
+        17.Batch1.SNG-NA19160 17.Batch2.SNG-NA18511 17.Batch2.SNG-NA19160
+SAMD11              1.6766868             0.2434696            -0.8078316
+NOC2L               5.7297981             6.1261127             5.7920813
+PLEKHN1            -0.6452413             0.2434696            -0.8078316
+HES4                6.9472157             6.0763597             6.8575044
+ISG15               8.1588897             8.0700181             7.5185979
+        17.Batch3.SNG-NA18511 17.Batch3.SNG-NA19160 2.Batch1.SNG-NA18511
+SAMD11            -0.03310476            0.79402418            2.2563784
+NOC2L              5.58160508            5.71050082            6.4543889
+PLEKHN1           -0.03310476            0.05705858           -0.9586345
+HES4               7.02217767            6.45508966            9.1634539
+ISG15              8.07018305            8.38648122            5.7789750
+        2.Batch1.SNG-NA18858 2.Batch1.SNG-NA19160 2.Batch2.SNG-NA18511
+SAMD11              3.371089             3.347964             1.689570
+NOC2L               6.146383             6.216891             6.145876
+PLEKHN1             1.255612            -1.442113            -2.702747
+HES4                7.277980             8.816453             8.803891
+ISG15               5.601387             6.054186             5.847999
+        2.Batch2.SNG-NA18858 2.Batch2.SNG-NA19160 2.Batch3.SNG-NA18511
+SAMD11              2.732835             2.168768             2.184671
+NOC2L               5.786350             6.170406             6.126751
+PLEKHN1            -0.371502            -2.027630            -1.833251
+HES4                6.812381             8.443707             8.169846
+ISG15               6.051404             5.688904             5.803374
+        2.Batch3.SNG-NA18858 2.Batch3.SNG-NA19160 3.Batch1.SNG-NA18511
+SAMD11             1.6522064             4.053993            2.8900071
+NOC2L              6.0445238             6.321567            6.2101960
+PLEKHN1           -0.6697217            -2.840825            0.4218583
+HES4               6.7978838             7.646010            5.4836345
+ISG15              6.2727928             6.361299            6.4263597
+        3.Batch1.SNG-NA18858 3.Batch1.SNG-NA19160 3.Batch2.SNG-NA18511
+SAMD11              3.314066             3.219328            3.2494233
+NOC2L               6.519180             6.247685            5.7109353
+PLEKHN1             1.729103            -1.185427           -0.4059285
+HES4                5.925500             5.927842            4.9516235
+ISG15               6.802352             6.621343            6.4545378
+        3.Batch2.SNG-NA18858 3.Batch2.SNG-NA19160 3.Batch3.SNG-NA18511
+SAMD11              4.442953             2.984379           2.97513203
+NOC2L               5.580457             5.967890           6.02099904
+PLEKHN1             2.121025            -0.234045          -0.04116978
+HES4                3.705987             5.197372           3.81228156
+ISG15               6.208488             6.316998           6.22901935
+        3.Batch3.SNG-NA18858 3.Batch3.SNG-NA19160 4.Batch1.SNG-NA18511
+SAMD11              2.342371             3.308837           4.64058645
+NOC2L               5.801803             6.135238           6.43920657
+PLEKHN1             2.342371            -1.269431           0.07580184
+HES4                5.149726             4.920394           7.03387116
+ISG15               6.865933             6.403780           6.03773380
+        4.Batch1.SNG-NA18858 4.Batch1.SNG-NA19160 4.Batch2.SNG-NA18511
+SAMD11             4.1871834             3.048785            5.1585532
+NOC2L              6.5606418             6.254799            6.2580889
+PLEKHN1            0.7277518            -1.373747           -0.4561566
+HES4               6.8362763             6.582387            6.3120277
+ISG15              4.8152147             5.112753            5.8836934
+        4.Batch2.SNG-NA18858 4.Batch2.SNG-NA19160 4.Batch3.SNG-NA18511
+SAMD11              2.596729             3.410961            2.4756421
+NOC2L               5.766654             6.181896            6.0794637
+PLEKHN1             2.596729            -1.486280           -0.1873229
+HES4                5.404084             6.501269            4.4945012
+ISG15               4.918657             4.943336            4.6706581
+        4.Batch3.SNG-NA18858 4.Batch3.SNG-NA19160 5.Batch1.SNG-NA18511
+SAMD11              1.904391             4.451682            3.9378483
+NOC2L               6.659279             6.030057            6.2301309
+PLEKHN1             1.904391            -2.741433            0.3771334
+HES4                5.811282             5.590977            8.2413195
+ISG15               5.074316             4.232026            5.5709051
+        5.Batch1.SNG-NA18858 5.Batch1.SNG-NA19160 5.Batch2.SNG-NA18511
+SAMD11              4.491454            1.8299187            2.9613083
+NOC2L               6.055807            6.0645800            6.0063548
+PLEKHN1             1.258794           -0.3717152            0.5956588
+HES4                5.240646            6.6124184            6.6450885
+ISG15               5.731281            5.6595036            5.2745975
+        5.Batch2.SNG-NA18858 5.Batch2.SNG-NA19160 5.Batch3.SNG-NA18511
+SAMD11              3.147236            3.0621076            2.2925337
+NOC2L               5.639475            5.7920754            5.9991685
+PLEKHN1             1.416052            0.6104116            0.4180646
+HES4                5.523740            4.7756142            5.0289947
+ISG15               6.136331            5.3715717            5.5704144
+        5.Batch3.SNG-NA18858 5.Batch3.SNG-NA19160 6.Batch1.SNG-NA18511
+SAMD11              2.512142            3.1373449            4.7206961
+NOC2L               5.710922            6.0961633            6.0154881
+PLEKHN1             2.222636            0.8453183            0.8492108
+HES4                4.983448            5.2655485            7.0815227
+ISG15               6.018495            5.7705874            6.9728620
+        6.Batch1.SNG-NA18858 6.Batch1.SNG-NA19160 6.Batch2.SNG-NA18511
+SAMD11              2.725273             4.488108             4.579490
+NOC2L               5.760897             5.937718             5.942410
+PLEKHN1             5.447739             3.376215             1.132604
+HES4                6.812736             7.025645             7.144364
+ISG15               6.778384             7.517415             6.783314
+        6.Batch2.SNG-NA18858 6.Batch2.SNG-NA19160 6.Batch3.SNG-NA18511
+SAMD11              4.369502             3.789253            4.9796225
+NOC2L               5.287039             5.771975            6.0276697
+PLEKHN1             3.521505             1.467325            0.7085187
+HES4                6.625841             6.756246            5.7050465
+ISG15               5.954464             7.131645            6.2678222
+        6.Batch3.SNG-NA18858 6.Batch3.SNG-NA19160 7.Batch1.SNG-NA18511
+SAMD11              3.334450            4.4266903             3.718819
+NOC2L               5.812497            5.9923199             6.151778
+PLEKHN1             2.112058            0.1496654             2.981853
+HES4                7.213596            6.4079655             6.606344
+ISG15               7.241341            7.0967132             5.303781
+        7.Batch1.SNG-NA18858 7.Batch1.SNG-NA19160 7.Batch2.SNG-NA18511
+SAMD11              1.860589             2.202334             3.227946
+NOC2L               6.238745             5.661766             6.332282
+PLEKHN1             1.098748             0.617372             2.490980
+HES4                5.538082             4.076804             5.153945
+ISG15               5.110462             6.109225             4.365449
+        7.Batch2.SNG-NA18858 7.Batch2.SNG-NA19160 7.Batch3.SNG-NA18511
+SAMD11              1.070192             3.885427             2.816636
+NOC2L               5.884888             6.141767             6.316902
+PLEKHN1             1.597821             0.715502             2.028141
+HES4                5.643396             5.013183             5.708260
+ISG15               5.347403             5.759896             5.666741
+        7.Batch3.SNG-NA18858 7.Batch3.SNG-NA19160 8.Batch1.SNG-NA18511
+SAMD11             0.9598028            2.8576628             2.707524
+NOC2L              5.7741038            6.0609464             5.889967
+PLEKHN1            1.3650593            0.1946978            -2.964902
+HES4               5.2797800            4.7995599             9.128846
+ISG15              5.5398831            5.7896444             4.935965
+        8.Batch1.SNG-NA18858 8.Batch1.SNG-NA19160 8.Batch2.SNG-NA18511
+SAMD11             2.5725796            3.0196698             2.910340
+NOC2L              5.6478677            5.9582693             5.894180
+PLEKHN1           -0.2347754           -0.8872208            -3.747871
+HES4               7.7367682            8.6278219             8.975576
+ISG15              4.8945077            4.8941389             5.209231
+        8.Batch2.SNG-NA18858 8.Batch2.SNG-NA19160 8.Batch3.SNG-NA18511
+SAMD11              2.352117             1.509119             2.128847
+NOC2L               5.393145             5.583467             5.698313
+PLEKHN1            -1.348322            -2.191320            -3.156555
+HES4                7.065306             8.344927             8.441962
+ISG15               4.801425             4.774464             5.741290
+        8.Batch3.SNG-NA18858 8.Batch3.SNG-NA19160 9.Batch1.SNG-NA18511
+SAMD11             3.4885531             3.896876            4.0997227
+NOC2L              6.0387501             5.771345            6.5538986
+PLEKHN1            0.6811981            -1.594977           -0.5441335
+HES4               6.5140881             7.557308            6.6357756
+ISG15              5.8906515             5.299841            3.9794285
+        9.Batch1.SNG-NA18858 9.Batch1.SNG-NA19160 9.Batch2.SNG-NA18511
+SAMD11              3.717622            3.1891642           0.01814573
+NOC2L               6.440088            6.6459964           5.30354795
+PLEKHN1             1.395694           -0.2991222           0.01814573
+HES4                5.919256            6.7220120           6.73239125
+ISG15               6.821959            2.7207773           4.10560857
+        9.Batch2.SNG-NA18858 9.Batch2.SNG-NA19160 9.Batch3.SNG-NA18511
+SAMD11              5.938852            2.7629643             3.440982
+NOC2L               5.201886            6.1343611             5.969361
+PLEKHN1             3.616923            0.7961311             1.325505
+HES4                6.424278            6.2703902             5.295131
+ISG15               3.616923            2.5461529             4.495430
+        9.Batch3.SNG-NA18858 9.Batch3.SNG-NA19160
+SAMD11              2.305067            3.9919915
+NOC2L               5.764498            6.2076266
+PLEKHN1             2.305067           -2.7494755
+HES4                3.890029            5.5405434
+ISG15               3.890029            0.9509643
+10910 more rows ...
+
+$weights
+          [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
+[1,] 0.6587441  8.587138 0.5843784 0.8252667  7.769479 0.7249437  3.799485
+[2,] 4.3135933 25.043467 3.6375757 5.0410984 22.969680 4.2885870 13.012541
+[3,] 0.4158378 10.831053 0.3324969 0.6074312 10.838554 0.4758115  2.950604
+[4,] 3.0874766 18.280112 2.4908495 3.5619379 16.850399 2.8911868  9.222214
+[5,] 3.0762373 22.334402 2.7058661 3.5541463 20.601241 3.1051165 10.839747
+          [,8]     [,9]      [,10]     [,11]      [,12]      [,13]     [,14]
+[1,]  7.869231 2.433157  6.5881252 1.1230348  5.5203708  6.8678532  2.092545
+[2,] 24.204796 8.860101 13.7453542 4.6635647 11.4722013 14.2125769  6.577533
+[3,] 10.461609 1.406987  0.4825516 0.2080015  0.3325939  0.6177012  0.301547
+[4,] 15.878245 5.472454 25.3591693 9.1653480 20.0255896 26.3480912 11.909890
+[5,] 22.633563 7.221276 11.8636018 4.4249882  9.8924002 12.3421086  6.338589
+          [,15]      [,16]     [,17]      [,18]     [,19]    [,20]     [,21]
+[1,]  4.1271560  5.4368576 0.8322290  3.6979367 0.2441284 2.303058 0.3081592
+[2,]  9.3931155 12.4485151 4.1371662  9.1224045 1.7558841 9.271693 2.1270991
+[3,]  0.2766965  0.3968922 0.2080015  0.2291551 0.2080015 2.134896 0.2080015
+[4,] 16.6172590 20.5551341 7.4211944 14.4883886 1.1296832 6.909100 1.2389702
+[5,]  8.0553047 11.2361737 4.2243646  8.1921537 0.8704064 7.814890 1.1010931
+         [,22]     [,23]     [,24]     [,25]    [,26]     [,27]     [,28]
+[1,] 0.4459915  2.734088 0.4990666 0.7552570 1.099570 0.6450228 1.2196079
+[2,] 3.0859269 10.458252 3.1148382 4.7930294 6.828974 3.9599959 3.3343653
+[3,] 0.2210935  2.906349 0.2188338 0.3140179 1.105092 0.2489624 0.2394964
+[4,] 2.4858189  7.964700 2.3061704 3.1711667 4.079742 2.5151600 9.2129528
+[5,] 2.0792385  8.935351 2.1343222 3.3994914 5.958126 2.9338926 3.5507134
+         [,29]      [,30]     [,31]     [,32]      [,33]     [,34]     [,35]
+[1,] 0.3037654  3.6588423 0.5343900 0.2080015  2.8387822 0.7300130 0.2080015
+[2,] 1.1749407  7.3201048 1.9489119 0.3944973  5.7316445 2.7044948 0.4793473
+[3,] 0.2080015  0.6524826 0.2080015 0.2080015  0.5272902 0.2080015 0.2080015
+[4,] 3.9591241 15.2094495 6.0563773 1.8380514 12.6805498 6.6865864 1.7856515
+[5,] 1.7947740  7.7732217 2.1570739 0.5451580  6.1697806 3.0393174 0.7369443
+          [,36]     [,37]     [,38]     [,39]     [,40]     [,41]     [,42]
+[1,]  4.3273543 4.6921055 1.1195769 3.4085503  5.225845 0.6428270 2.2589629
+[2,]  8.6882836 7.1765901 2.7595744 5.1166806  7.851157 1.8274189 3.2724494
+[3,]  0.9141361 0.3194983 0.2080015 0.2080015  0.431199 0.2080015 0.2080015
+[4,] 15.8044594 9.7920693 3.5088251 6.8803173 10.632415 2.5971500 4.6191543
+[5,]  9.6598469 4.8165233 2.0547341 3.2904803  5.412747 1.1516903 2.1839577
+         [,43]     [,44]     [,45]      [,46]     [,47]      [,48]     [,49]
+[1,] 4.5641440 0.5143735 3.3006544  2.9261643 1.4891881  2.5565736 0.2080015
+[2,] 7.4013625 1.5444793 5.2624448  7.8033063 5.6499510  6.4867127 0.4359909
+[3,] 0.3343099 0.2080015 0.2108786  0.5691947 0.6824614  0.4120908 0.2080015
+[4,] 8.9417868 1.8710096 6.1320782 13.4532630 9.5033688 10.9997053 1.4556132
+[5,] 5.3517147 1.0777190 3.6188554  5.5871602 4.5664421  4.5323694 0.2738797
+         [,50]     [,51]     [,52]     [,53]     [,54]     [,55]    [,56]
+[1,] 0.4793482 0.2080015 0.4600711 0.5121899 0.2080015 0.2487624 1.730523
+[2,] 2.8241916 0.4314390 2.8993987 1.1815882 0.3757571 0.4376436 3.172458
+[3,] 0.3156964 0.2080015 0.2813270 0.2246075 0.2080015 0.2080015 0.681648
+[4,] 5.2890046 1.2384215 4.6159670 0.9407158 0.2744911 0.3360564 2.859136
+[5,] 2.2844289 0.2740604 2.5290024 0.7670135 0.3374574 0.3202842 2.542607
+         [,57]     [,58]    [,59]     [,60]    [,61]     [,62]    [,63]
+[1,] 0.2080015 1.9929490 6.141099 0.2080015 4.624573 2.7303654 2.884054
+[2,] 0.4339925 3.2197263 9.919958 0.4152339 7.505168 4.8505100 5.972016
+[3,] 0.2167931 0.6784974 3.320939 0.2080015 2.308673 0.4373443 1.325870
+[4,] 0.3153412 2.7067212 7.985575 0.2498984 5.422698 9.1714728 9.771311
+[5,] 0.3921263 2.6108008 8.642884 0.4062111 6.446268 3.2541497 4.859487
+         [,64]     [,65]     [,66]     [,67]     [,68]     [,69]     [,70]
+[1,] 0.4786378 0.5848768  3.244416 0.4226024 0.3836692 0.5354967 0.4573445
+[2,] 1.0407639 1.5614711  6.765571 0.8906886 0.9833042 2.0040299 1.0966775
+[3,] 0.2080015 0.2080015  2.085504 0.2080015 0.2080015 0.2802513 0.2080015
+[4,] 2.7764653 3.6544339 10.851010 2.5578589 2.4824552 3.1860434 2.4395324
+[5,] 0.5805583 0.8036459  5.625121 0.5171138 0.6039863 1.5814490 0.6684977
+        [,71]    [,72]    [,73]     [,74]     [,75]    [,76]    [,77]    [,78]
+[1,] 2.141213 2.536088 2.981907 0.7054845 0.7972339 2.329382 0.909571 0.874213
+[2,] 3.367408 4.630409 4.387778 1.5759442 2.2472641 3.361670 2.214840 2.564768
+[3,] 2.024516 4.601827 2.642694 0.8080964 2.5738744 2.316917 0.943660 2.549410
+[4,] 5.433527 6.350653 6.353622 2.8545938 3.1170374 5.051530 2.995236 2.995930
+[5,] 3.907704 6.250236 5.127412 2.0167330 3.0755193 3.971508 2.774660 3.631510
+        [,79]     [,80]     [,81]     [,82]     [,83]     [,84]     [,85]
+[1,] 2.024206 0.3198359 0.2080015 0.4446973 0.2609945 0.4231984 0.2803674
+[2,] 3.216193 3.0798894 0.6114562 3.6683070 2.6509157 3.5359717 2.9601297
+[3,] 1.814655 0.2093324 0.2080015 0.2514421 0.2080015 0.2795738 0.2080015
+[4,] 4.030213 4.5936682 0.9177950 5.1304646 3.8436653 4.9829980 3.6705814
+[5,] 4.023942 6.0559021 2.3852717 7.1843735 5.1988330 7.0183933 6.1738920
+         [,86]      [,87]     [,88]      [,89]      [,90]      [,91]      [,92]
+[1,] 0.5655783  4.0358702 0.6122809  5.6255623  4.4301697  2.0270423  3.5762036
+[2,] 4.7487802 11.0242631 3.7344984 13.0851404 11.7138590  7.4817829  9.6894290
+[3,] 0.3335675  0.4688847 0.2080015  0.6470125  0.6323808  0.5423601  0.4247085
+[4,] 5.5445755 18.2631591 6.8760549 20.5488384 19.4632939 11.8631233 15.3956433
+[5,] 9.1531619  9.8483790 3.7738650 11.8200657 10.5466863  7.5897151  8.7138990
+          [,93]     [,94]     [,95]      [,96]     [,97]     [,98]     [,99]
+[1,]  4.0682805 0.6040924  2.743424  4.5187826 0.6469616  6.799996 3.1486342
+[2,] 11.5757158 3.9615386  8.110215  9.9658911 3.0674144 12.781135 7.6409073
+[3,]  0.5161951 0.2080015  0.271301  0.9506118 0.3086999  1.753181 0.6693673
+[4,] 17.1966847 6.2684923 11.760628  8.4199874 2.1383248 10.362096 6.3275657
+[5,] 10.8759919 4.3186180  7.600788 10.4964578 3.8707739 13.492559 8.1446330
+        [,100]    [,101]     [,102]    [,103]    [,104]    [,105]    [,106]
+[1,] 0.2418022  4.982213  3.9636269 0.2146084  5.707824 2.6302508 0.5771402
+[2,] 1.0553311 10.147442  9.5588262 0.9710074 11.678328 6.1694818 2.7602555
+[3,] 0.2080015  1.202271  0.8642126 0.2080015  1.380097 0.2945989 0.2080015
+[4,] 0.6072277  8.118405  7.0688840 0.4527203  8.343652 6.4895819 2.5748142
+[5,] 1.6672540 10.807187 10.5822239 1.7066073 12.926899 3.7742961 1.9004922
+        [,107]    [,108]    [,109]     [,110]    [,111]    [,112]     [,113]
+[1,]  7.313648 1.3674333 0.2304960  5.3724396 2.5363450 0.2910128  6.1449248
+[2,] 13.152674 3.9201214 0.9108757 10.3972645 6.3215457 1.4712261 11.9920165
+[3,]  1.210921 0.2080015 0.2080015  0.8335916 0.3044335 0.2080015  0.9487866
+[4,] 12.969798 4.2031179 0.8170940 10.2863765 5.7646316 0.9633160 10.5832774
+[5,]  9.433666 2.4947596 0.5705278  7.2714321 4.1974323 0.9375251  8.9659590
+        [,114]    [,115]    [,116]   [,117]   [,118]   [,119]    [,120]
+[1,] 2.5732660 1.1670013 3.3321101 3.372442 2.905708 3.996730  6.034138
+[2,] 6.4419187 4.5523512 7.7542931 8.307511 8.190047 8.892964 13.029161
+[3,] 0.5358885 0.6489274 0.7115043 1.044922 2.310630 1.183572  2.377239
+[4,] 6.8600365 4.2800064 7.7152430 8.815727 7.863385 8.890306 12.283663
+[5,] 5.4702103 4.5017429 6.7139683 7.239514 8.172758 7.844046 12.094490
+        [,121]    [,122]    [,123]    [,124]    [,125]    [,126]    [,127]
+[1,] 0.8746361  5.437274  4.667359 0.9436474 3.3321374  5.312832 0.5426446
+[2,] 4.0759616 11.498286  7.566451 2.6869020 5.3439359  8.392817 1.6776752
+[3,] 0.5611363  1.797855  1.589554 0.5881908 0.7695679  2.329926 0.4263396
+[4,] 3.2584493 10.238616 10.487333 3.5207485 7.3429899 11.540733 2.5468104
+[5,] 4.3438012 10.711149  9.282867 4.0505924 6.8489799 10.274224 2.8838701
+       [,128]    [,129]    [,130]    [,131]    [,132]   [,133]    [,134]
+[1,] 4.906621  4.690456 0.7208601  8.402172 0.3541681 2.854388 0.5264401
+[2,] 7.436713  7.988575 2.4108431 12.185855 2.1437669 9.490563 2.7526030
+[3,] 1.838781  1.786653 0.5083354  3.299111 0.2080015 2.952120 0.2210246
+[4,] 9.808512  9.821654 2.7852738 13.894474 1.7503882 7.747257 2.1855487
+[5,] 9.251173 10.255212 3.8924813 15.325287 1.3077562 8.623161 1.9743526
+        [,135]    [,136]    [,137]    [,138]    [,139]    [,140]    [,141]
+[1,] 0.3893749  4.735203 0.9900201 1.2410678  3.260434 1.2893143  3.194116
+[2,] 2.3556930 13.570135 4.0969404 5.3533541 11.100627 5.0859999  8.164818
+[3,] 0.2201520  5.595792 0.4245559 0.5206975  3.600769 0.4716777  0.276699
+[4,] 1.9934519 11.382466 3.2993097 3.9330690  8.124000 3.4280556 15.364851
+[5,] 1.5322707 12.523126 3.1001201 4.2384504 10.652753 4.0396019  6.398980
+        [,142]     [,143]     [,144]    [,145]     [,146]     [,147]    [,148]
+[1,] 0.6215747  2.8507008  3.7922673 0.9739062  2.3586125  3.0353457 0.3454113
+[2,] 3.1769970  6.8903612  9.3386884 4.2766794  5.8384105  8.1830512 2.1983235
+[3,] 0.2080015  0.2144732  0.4022401 0.2524875  0.2080015  0.2776995 0.2080015
+[4,] 6.7875551 12.7021814 17.3764770 8.6299043 11.2267058 13.8394955 4.0259093
+[5,] 2.8636735  5.3315572  7.5034786 3.7699647  4.4474726  6.8141108 2.0481007
+        [,149]   [,150]    [,151]    [,152]    [,153]    [,154]    [,155]
+[1,] 1.6834395 1.451467 0.3757177 4.7933313 0.8696654 0.2080015 3.2600460
+[2,] 4.9254779 4.117287 1.9341539 9.6632011 3.1036773 0.4856851 7.2767409
+[3,] 0.2080015 0.270927 0.2103745 0.9950778 0.2272734 0.2080015 0.6793922
+[4,] 8.7711245 4.539112 1.8183528 9.7506262 3.3779583 0.4642358 7.3879275
+[5,] 3.9212741 1.465926 0.5836596 4.5117504 0.8926882 0.2080015 3.1281272
+        [,156]    [,157]    [,158]
+[1,] 0.9652068 0.2243569 3.2504393
+[2,] 3.4678662 0.9942515 7.6310988
+[3,] 0.2262572 0.2080015 0.6142165
+[4,] 3.2502862 0.7209098 6.7372140
+[5,] 1.2356906 0.3870356 3.4842327
+10910 more rows ...
+
+$design
+  (Intercept) submerged$samples$cluster1 submerged$samples$cluster10
+1           1                          0                           0
+2           1                          0                           0
+3           1                          0                           0
+4           1                          0                           0
+5           1                          0                           0
+  submerged$samples$cluster11 submerged$samples$cluster12
+1                           0                           0
+2                           0                           0
+3                           0                           0
+4                           0                           0
+5                           0                           0
+  submerged$samples$cluster13 submerged$samples$cluster14
+1                           0                           0
+2                           0                           0
+3                           0                           0
+4                           0                           0
+5                           0                           0
+  submerged$samples$cluster15 submerged$samples$cluster16
+1                           0                           0
+2                           0                           0
+3                           0                           0
+4                           0                           0
+5                           0                           0
+  submerged$samples$cluster17 submerged$samples$cluster2
+1                           0                          0
+2                           0                          0
+3                           0                          0
+4                           0                          0
+5                           0                          0
+  submerged$samples$cluster3 submerged$samples$cluster4
+1                          0                          0
+2                          0                          0
+3                          0                          0
+4                          0                          0
+5                          0                          0
+  submerged$samples$cluster5 submerged$samples$cluster6
+1                          0                          0
+2                          0                          0
+3                          0                          0
+4                          0                          0
+5                          0                          0
+  submerged$samples$cluster7 submerged$samples$cluster8
+1                          0                          0
+2                          0                          0
+3                          0                          0
+4                          0                          0
+5                          0                          0
+  submerged$samples$cluster9 submerged$samples$batchBatch2
+1                          0                             0
+2                          0                             0
+3                          0                             0
+4                          0                             1
+5                          0                             1
+  submerged$samples$batchBatch3 submerged$samples$indNA18858
+1                             0                            0
+2                             0                            1
+3                             0                            0
+4                             0                            0
+5                             0                            1
+  submerged$samples$indNA19160
+1                            0
+2                            0
+3                            1
+4                            0
+5                            0
+153 more rows ...</code></pre>
+<pre class="r"><code>form&lt;- ~ (1|cluster) + (1|batch) + (1|ind)</code></pre>
+<pre class="r"><code>remove(cpm)
+remove(lcpm)</code></pre>
+<pre class="r"><code>varpart&lt;- suppressWarnings(fitExtractVarPartModel(v, form, submerged$samples))</code></pre>
+<pre class="r"><code>head(varpart)</code></pre>
+<pre><code>              batch   cluster         ind Residuals
+SAMD11  0.002799719 0.5429372 0.096601793 0.3576613
+NOC2L   0.149957205 0.3864233 0.035753172 0.4278663
+PLEKHN1 0.001463317 0.7223096 0.037157698 0.2390694
+HES4    0.081212319 0.6843282 0.088018345 0.1464411
+ISG15   0.001168324 0.7520208 0.000000000 0.2468109
+AGRN    0.093225600 0.5196503 0.004175498 0.3829486</code></pre>
+<pre class="r"><code>vp&lt;- sortCols(varpart)</code></pre>
+<pre class="r"><code>plotPercentBars(vp[1:10,])</code></pre>
+<p><img src="figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plotVarPart(vp)</code></pre>
+<p><img src="figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#do the genes most effected by individual match what I did in limma?
+vp&lt;- vp[order(vp$ind, decreasing=T),]
+head(vp, 30)</code></pre>
+<pre><code>               cluster        batch       ind  Residuals
+EIF1AY     0.006056199 1.630896e-04 0.9687224 0.02505827
+TYW3       0.016044549 2.632478e-04 0.9634700 0.02022221
+DDX3Y      0.007466603 0.000000e+00 0.9420062 0.05052720
+CRYZ       0.020581155 0.000000e+00 0.9366369 0.04278189
+USP9Y      0.010607063 0.000000e+00 0.9319171 0.05747579
+CAT        0.016701539 3.759428e-03 0.9291598 0.05037924
+AC004556.3 0.025558899 1.332542e-02 0.9072925 0.05382319
+USP51      0.062809732 0.000000e+00 0.8702684 0.06692190
+RRAGB      0.060873141 2.176313e-03 0.8658992 0.07105134
+ZNF248     0.034672597 3.893244e-03 0.8617221 0.09971210
+ZNF280D    0.024247071 0.000000e+00 0.8600373 0.11571565
+TRIM61     0.025738022 1.041216e-02 0.8508388 0.11301099
+MAGEH1     0.112875303 1.586753e-02 0.8278961 0.04336102
+TSPYL5     0.009575607 1.763938e-03 0.8227102 0.16595021
+TAF9B      0.007771881 2.113038e-02 0.8197301 0.15136760
+IAH1       0.098476663 5.994039e-03 0.8053270 0.09020233
+ZNF717     0.081245670 4.325480e-03 0.7874866 0.12694225
+PRKY       0.058114147 1.638350e-10 0.7639476 0.17793821
+ZNF300     0.098065748 0.000000e+00 0.7563901 0.14554419
+CHCHD2     0.026112556 0.000000e+00 0.7423313 0.23155617
+THOC3      0.132757376 8.437761e-03 0.7111300 0.14767490
+QPCT       0.196648213 3.577643e-03 0.7076413 0.09213289
+MRPS14     0.071026852 0.000000e+00 0.6961753 0.23279783
+HEPH       0.169047777 2.303834e-02 0.6922256 0.11568833
+NDUFS2     0.169031809 1.406084e-03 0.6868309 0.14273117
+PSMD4      0.122100637 1.693527e-02 0.6820493 0.17891483
+PNPLA4     0.091558726 4.426092e-02 0.6810775 0.18310281
+HAX1       0.125717228 5.096895e-02 0.6766626 0.14665120
+SP5        0.194588213 2.094276e-02 0.6705651 0.11390396
+INPP5F     0.063949131 5.384900e-02 0.6693502 0.21285166</code></pre>
+<pre class="r"><code>#do the genes most effected by batch match what I did in limma?
+vp&lt;- vp[order(vp$batch, decreasing=T),]
+head(vp, 30)</code></pre>
+<pre><code>              cluster     batch          ind  Residuals
+AP001267.5 0.02924022 0.7957063 5.041800e-02 0.12463545
+EEF1A1     0.11980663 0.7321807 5.071019e-02 0.09730243
+SF3A2      0.04652698 0.7285281 8.125107e-02 0.14369387
+TBL1XR1    0.12485359 0.7258867 5.354097e-05 0.14920617
+SMARCB1    0.12503979 0.7175742 2.182838e-02 0.13555760
+MED21      0.11861264 0.7116417 2.831116e-03 0.16691460
+CLIC1      0.14012194 0.7106406 3.226263e-02 0.11697486
+CAPZA1     0.16697815 0.6994491 5.268294e-03 0.12830446
+PRPF31     0.13791801 0.6817758 0.000000e+00 0.18030623
+TMED2      0.10133690 0.6801096 8.503009e-03 0.21005048
+LRRC75A    0.19115624 0.6780323 1.524408e-02 0.11556739
+PPP1CB     0.23685359 0.6645484 3.025083e-04 0.09829548
+PAN3       0.01604053 0.6544504 5.177421e-03 0.32433169
+TMEM167A   0.12432376 0.6523057 2.841913e-02 0.19495144
+USP14      0.12543213 0.6415741 6.337160e-03 0.22665659
+LSM2       0.09708889 0.6350278 2.237171e-02 0.24551162
+EIF4E      0.20357374 0.6334272 0.000000e+00 0.16299911
+LYPLA2     0.15760290 0.6323046 0.000000e+00 0.21009253
+MOB4       0.16492930 0.6194043 1.630290e-02 0.19936354
+UBE2W      0.11951005 0.6185053 2.762684e-11 0.26198460
+STRN3      0.07270111 0.6117959 2.690620e-02 0.28859675
+MRPL42     0.24325560 0.5931007 6.349586e-02 0.10014788
+ZFAND6     0.21190999 0.5920832 1.276013e-02 0.18324666
+PUF60      0.15029086 0.5902717 1.693118e-04 0.25926813
+HSF1       0.05286916 0.5870064 1.043437e-03 0.35908102
+TRA2A      0.25553322 0.5798440 4.176718e-02 0.12285556
+PSMD9      0.12868449 0.5780620 8.528791e-03 0.28472472
+QSER1      0.20460366 0.5766015 1.764243e-10 0.21879484
+TSTA3      0.19144441 0.5748793 8.038499e-03 0.22563776
+PDCD10     0.21324747 0.5734357 3.977944e-11 0.21331681</code></pre>
+<pre class="r"><code>summary(vp$ind)</code></pre>
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.008912 0.036037 0.069530 0.086874 0.968722 </code></pre>
+<pre class="r"><code>summary(vp$batch)</code></pre>
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.009714 0.040345 0.076982 0.108384 0.795706 </code></pre>
+<pre class="r"><code>#genes for which individual contributes more to variance than batch?
+vp.indgreaterthanbatch&lt;- vp[vp$ind&gt;vp$batch,]
+
+dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356</code></pre>
+<pre><code>[1] 5203    4</code></pre>
+<pre class="r"><code>head(vp.indgreaterthanbatch, 20)</code></pre>
+<pre><code>            cluster     batch       ind Residuals
+TSNAX    0.10516774 0.3184507 0.4048210 0.1715606
+UHMK1    0.06551171 0.3161128 0.3239734 0.2944021
+MDM4     0.16945409 0.3043024 0.4035009 0.1227426
+SF3B4    0.12731902 0.2998926 0.3907234 0.1820650
+SNAP47   0.04257368 0.2892635 0.4384036 0.2297592
+CDC73    0.10351765 0.2640608 0.4608451 0.1715764
+ADNP     0.33351307 0.2622948 0.2684509 0.1357412
+TOR1AIP2 0.25641631 0.2564138 0.2838155 0.2033545
+PFKFB4   0.25582652 0.2508210 0.2585593 0.2347932
+RAP2C    0.27249752 0.2501271 0.3323323 0.1450431
+LBR      0.37384770 0.2497258 0.2603981 0.1160284
+PRCC     0.19161988 0.2445727 0.3259689 0.2378386
+FNTA     0.17852576 0.2381401 0.3267866 0.2565475
+ACBD3    0.19141131 0.2375936 0.2550699 0.3159252
+SMG9     0.14010265 0.2368916 0.4115361 0.2114697
+CDK16    0.15026381 0.2325361 0.4426566 0.1745435
+EIF2S3   0.33793423 0.2323612 0.2891242 0.1405804
+ZNF678   0.24818548 0.2311941 0.2531715 0.2674489
+NUDT12   0.20969801 0.2305364 0.2336649 0.3261007
+ADCK1    0.21141675 0.2287885 0.3040930 0.2557017</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] variancePartition_1.16.1 Biobase_2.46.0           BiocGenerics_0.32.0     
+ [4] scales_1.1.1             foreach_1.5.0            ggplot2_3.3.2           
+ [7] edgeR_3.28.1             limma_3.42.2             dplyr_1.0.0             
+[10] workflowr_1.6.2         
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5          locfit_1.5-9.4      here_0.1-11        
+ [4] lattice_0.20-38     prettyunits_1.1.1   gtools_3.8.2       
+ [7] rprojroot_1.3-2     digest_0.6.25       plyr_1.8.6         
+[10] R6_2.4.1            backports_1.1.8     evaluate_0.14      
+[13] pillar_1.4.6        gplots_3.0.4        rlang_0.4.7        
+[16] progress_1.2.2      minqa_1.2.4         gdata_2.18.0       
+[19] whisker_0.4         nloptr_1.2.2.2      Matrix_1.2-18      
+[22] rmarkdown_2.3       labeling_0.3        splines_3.6.1      
+[25] BiocParallel_1.20.1 lme4_1.1-23         statmod_1.4.34     
+[28] stringr_1.4.0       munsell_0.5.0       compiler_3.6.1     
+[31] httpuv_1.5.4        xfun_0.16           pkgconfig_2.0.3    
+[34] htmltools_0.5.0     tidyselect_1.1.0    tibble_3.0.3       
+[37] codetools_0.2-16    crayon_1.3.4        withr_2.2.0        
+[40] later_1.1.0.1       MASS_7.3-51.4       bitops_1.0-6       
+[43] grid_3.6.1          nlme_3.1-140        gtable_0.3.0       
+[46] lifecycle_0.2.0     git2r_0.26.1        magrittr_1.5       
+[49] KernSmooth_2.23-15  stringi_1.4.6       farver_2.0.3       
+[52] reshape2_1.4.4      fs_1.4.2            promises_1.1.1     
+[55] doParallel_1.0.15   colorRamps_2.3      ellipsis_0.3.1     
+[58] generics_0.0.2      vctrs_0.3.2         boot_1.3-23        
+[61] iterators_1.0.12    tools_3.6.1         glue_1.4.1         
+[64] purrr_0.3.4         hms_0.5.3           pbkrtest_0.4-8.6   
+[67] yaml_2.2.1          colorspace_1.4-1    caTools_1.18.0     
+[70] knitr_1.29         </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
