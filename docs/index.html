@@ -13,13 +13,15 @@
 
 <title>Home</title>
 
-<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -33,8 +35,6 @@ div.section {
   padding-top: 12px;
 }
 </style>
-
-
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -261,6 +261,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -268,6 +331,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -336,7 +409,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-08-14
+<strong>Last updated:</strong> 2020-08-31
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -367,16 +440,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree7ccb0e11a60049138d0fad3b30875bcc8fd9cf48targetblank7ccb0e1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/7ccb0e11a60049138d0fad3b30875bcc8fd9cf48" target="_blank">7ccb0e1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee50c78b76ba71d6731d49764c5db264e78b35847targetblanke50c78ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e50c78b76ba71d6731d49764c5db264e78b35847" target="_blank">e50c78b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree7ccb0e11a60049138d0fad3b30875bcc8fd9cf48targetblank7ccb0e1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee50c78b76ba71d6731d49764c5db264e78b35847targetblanke50c78ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/7ccb0e11a60049138d0fad3b30875bcc8fd9cf48" target="_blank">7ccb0e1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e50c78b76ba71d6731d49764c5db264e78b35847" target="_blank">e50c78b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -385,18 +458,33 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
     Ignored:    output/.Rhistory
+    Ignored:    output/pdfs/
 
 Untracked files:
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Untracked:  analysis/RunscHCL_HarmonyBatchInd.Rmd
+    Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
     Untracked:  analysis/child/
+    Untracked:  code/ConvertToDGE.Rmd
+    Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
     Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/get_genelist_byPCTthresh.Rmd
     Untracked:  figure/
+    Untracked:  output/DGELists/
+    Untracked:  output/GeneLists_by_minPCT/
     Untracked:  output/mergedObjects/
     Untracked:  output/sampleQCrds/
 
 </code></pre>
 <p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
 </p>
 </div>
 </div>
@@ -407,7 +495,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you've configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -436,6 +524,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/e50c78b76ba71d6731d49764c5db264e78b35847/analysis/index.Rmd" target="_blank">e50c78b</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+<td>
+wflow_publish(&quot;analysis/index.Rmd&quot;)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/63a84ab82b33e2dd5cf963b759f045f9c38a6c00/docs/index.html" target="_blank">63a84ab</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-14
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7ccb0e11a60049138d0fad3b30875bcc8fd9cf48/analysis/index.Rmd" target="_blank">7ccb0e1</a>
 </td>
 <td>
@@ -445,7 +567,7 @@ KLRhodes
 2020-08-14
 </td>
 <td>
-wflow_publish(“analysis/index.Rmd”)
+wflow_publish(&quot;analysis/index.Rmd&quot;)
 </td>
 </tr>
 <tr>
@@ -479,7 +601,7 @@ KLRhodes
 2020-08-14
 </td>
 <td>
-wflow_publish(“analysis/index.Rmd”)
+wflow_publish(&quot;analysis/index.Rmd&quot;)
 </td>
 </tr>
 <tr>
@@ -513,7 +635,7 @@ KLRhodes
 2020-08-14
 </td>
 <td>
-wflow_publish(“analysis/index.Rmd”)
+wflow_publish(&quot;analysis/index.Rmd&quot;)
 </td>
 </tr>
 <tr>
@@ -547,7 +669,7 @@ KLRhodes
 2020-08-14
 </td>
 <td>
-wflow_publish(“analysis/index.Rmd”)
+wflow_publish(&quot;analysis/index.Rmd&quot;)
 </td>
 </tr>
 <tr>
@@ -581,7 +703,7 @@ KLRhodes
 2020-08-14
 </td>
 <td>
-wflow_publish(“analysis/index.Rmd”)
+wflow_publish(&quot;analysis/index.Rmd&quot;)
 </td>
 </tr>
 <tr>
@@ -615,7 +737,7 @@ KLRhodes
 2020-08-14
 </td>
 <td>
-wflow_publish(“analysis/index.Rmd”)
+wflow_publish(&quot;analysis/index.Rmd&quot;)
 </td>
 </tr>
 <tr>
@@ -696,32 +818,36 @@ Start workflowr project.
 <p>Welcome to my research website.</p>
 <p>This site contains analyses performed on human Embryoid bodies, spheroids of spontaneously differentiating cells generated from induced pluripotent stem cells.</p>
 <p>Single Cell RNA-seq data was collected using the 10x platform.</p>
-<p>Preprocessing, QC, and filtering<br />
-1. Run EmptyDrops, Add Metadata to Seurat object from each 10x lane<br />
-2. Filter and run SCTransform on each 10x lane<br />
--<a href="SampleFilteringandSCT_Batch1Lane1.html">Batch1Lane1</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane3.html">Batch1Lane3</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane4.html">Batch1Lane4</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane5.html">Batch1Lane5</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane6.html">Batch1Lane6</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane7.html">Batch1Lane7</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane8.html">Batch1Lane8</a><br />
--<a href="SampleFilteringandSCT_Batch1Lane9.html">Batch1Lane9</a><br />
--<a href="SampleFilteringandSCT_Batch2Lane1.html">Batch2Lane1</a><br />
--<a href="SampleFilteringandSCT_Batch2Lane2.html">Batch2Lane2</a><br />
--<a href="SampleFilteringandSCT_Batch2Lane3.html">Batch2Lane3</a><br />
--<a href="SampleFilteringandSCT_Batch2Lane4.html">Batch2Lane4</a><br />
--<a href="SampleFilteringandSCT_Batch3Lane1.html">Batch3Lane1</a><br />
--<a href="SampleFilteringandSCT_Batch3Lane2.html">Batch3Lane2</a><br />
--<a href="SampleFilteringandSCT_Batch3Lane3.html">Batch3Lane3</a><br />
--<a href="SampleFilteringandSCT_Batch3Lane4.html">Batch3Lane4</a></p>
-<p>Merging and integration<br />
-<a href="IntegrateAnalysis.afterFilter.HarmonyBatch.html">Harmony correcting for Batch</a><br />
-<a href="IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html">Harmony correcting for Batch, Individual</a><br />
-<a href="IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html">Harmony correcting for Batch, Individual, and Lane</a><br />
-<a href="IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html">SCTransform regressing out Batch,individual</a><br />
-<a href="IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html">SCTransform regressing out Batch,individual then Harmony correcting batch and individual</a><br />
-<a href="IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html">No Integration, Just Merged</a></p>
+<div id="preprocessing-qc-and-filtering" class="section level1 tabset">
+<h1>Preprocessing, QC, and filtering</h1>
+<div id="run-emptydrops-add-metadata-to-seurat-object-from-each-10x-lane" class="section level2">
+<h2>1. Run EmptyDrops, Add Metadata to Seurat object from each 10x lane</h2>
+</div>
+<div id="filter-and-run-sctransform-on-each-10x-lane" class="section level2 tabset-dropdown">
+<h2>2. Filter and run SCTransform on each 10x lane</h2>
+<pre><code>  -[Batch1Lane1](SampleFilteringandSCT_Batch1Lane1.html)  
+  -[Batch1Lane3](SampleFilteringandSCT_Batch1Lane3.html)  
+  -[Batch1Lane4](SampleFilteringandSCT_Batch1Lane4.html)  
+  -[Batch1Lane5](SampleFilteringandSCT_Batch1Lane5.html)  
+  -[Batch1Lane6](SampleFilteringandSCT_Batch1Lane6.html)  
+  -[Batch1Lane7](SampleFilteringandSCT_Batch1Lane7.html)  
+  -[Batch1Lane8](SampleFilteringandSCT_Batch1Lane8.html)  
+  -[Batch1Lane9](SampleFilteringandSCT_Batch1Lane9.html)  
+  -[Batch2Lane1](SampleFilteringandSCT_Batch2Lane1.html)  
+  -[Batch2Lane2](SampleFilteringandSCT_Batch2Lane2.html)  
+  -[Batch2Lane3](SampleFilteringandSCT_Batch2Lane3.html)  
+  -[Batch2Lane4](SampleFilteringandSCT_Batch2Lane4.html)  
+  -[Batch3Lane1](SampleFilteringandSCT_Batch3Lane1.html)  
+  -[Batch3Lane2](SampleFilteringandSCT_Batch3Lane2.html)  
+  -[Batch3Lane3](SampleFilteringandSCT_Batch3Lane3.html)  
+  -[Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)  
+  </code></pre>
+</div>
+</div>
+<div id="merging-and-integration-.tabset" class="section level1 tabset-dropdown">
+<h1>Merging and integration {.tabset}</h1>
+<p><a href="IntegrateAnalysis.afterFilter.HarmonyBatch.html">Harmony correcting for Batch</a><br /><a href="IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html">Harmony correcting for Batch, Individual</a><br /><a href="IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html">Harmony correcting for Batch, Individual, and Lane</a><br /><a href="IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html">SCTransform regressing out Batch,individual</a><br /><a href="IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html">SCTransform regressing out Batch,individual then Harmony correcting batch and individual</a><br /><a href="IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html">No Integration, Just Merged</a></p>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -737,8 +863,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
-
-
+</div>
+</div>
 
 </div>
 
@@ -771,6 +897,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
