@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>scHCL run on data integrated with Harmony(Batch, Individual)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Embryoid_Body_Pilot_Workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">scHCL run on data integrated with Harmony(Batch, Individual)</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-09-01
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it's best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200804code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200804)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200804code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200804)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree0b0d22093b6a8c2caf049822d88024bb8f525ca2targetblank0b0d220a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/0b0d22093b6a8c2caf049822d88024bb8f525ca2" target="_blank">0b0d220</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree0b0d22093b6a8c2caf049822d88024bb8f525ca2targetblank0b0d220a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/0b0d22093b6a8c2caf049822d88024bb8f525ca2" target="_blank">0b0d220</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    analysis/figure/
+    Ignored:    output/.Rhistory
+
+Untracked files:
+    Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/child/
+    Untracked:  code/ConvertToDGE.Rmd
+    Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  figure/
+    Untracked:  output/DGELists/
+    Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
+    Untracked:  output/sampleQCrds/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/RunscHCL_HarmonyBatchInd.Rmd</code>) and HTML (<code>docs/RunscHCL_HarmonyBatchInd.html</code>) files. If you've configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/0b0d22093b6a8c2caf049822d88024bb8f525ca2/analysis/RunscHCL_HarmonyBatchInd.Rmd" target="_blank">0b0d220</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-09-01
+</td>
+<td>
+wflow_publish(&quot;analysis/RunscHCL_HarmonyBatchInd.Rmd&quot;)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(Seurat)
+library(Matrix)
+library(scran)</code></pre>
+<pre><code>Loading required package: SingleCellExperiment</code></pre>
+<pre><code>Loading required package: SummarizedExperiment</code></pre>
+<pre><code>Loading required package: GenomicRanges</code></pre>
+<pre><code>Loading required package: stats4</code></pre>
+<pre><code>Loading required package: BiocGenerics</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code>
+Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>The following object is masked from &#39;package:Matrix&#39;:
+
+    which</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+    as.data.frame, basename, cbind, colnames, dirname, do.call,
+    duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,
+    lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+    pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,
+    tapply, union, unique, unsplit, which, which.max, which.min</code></pre>
+<pre><code>Loading required package: S4Vectors</code></pre>
+<pre><code>
+Attaching package: &#39;S4Vectors&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:Matrix&#39;:
+
+    expand</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    expand.grid</code></pre>
+<pre><code>Loading required package: IRanges</code></pre>
+<pre><code>Loading required package: GenomeInfoDb</code></pre>
+<pre><code>Loading required package: Biobase</code></pre>
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>Loading required package: DelayedArray</code></pre>
+<pre><code>Loading required package: matrixStats</code></pre>
+<pre><code>
+Attaching package: &#39;matrixStats&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:Biobase&#39;:
+
+    anyMissing, rowMedians</code></pre>
+<pre><code>Loading required package: BiocParallel</code></pre>
+<pre><code>
+Attaching package: &#39;DelayedArray&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:matrixStats&#39;:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    aperm, apply, rowsum</code></pre>
+<pre><code>
+Attaching package: &#39;SummarizedExperiment&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:Seurat&#39;:
+
+    Assays</code></pre>
+<pre class="r"><code>library(scHCL)</code></pre>
+<pre><code>Warning: replacing previous import &#39;shiny::dataTableOutput&#39; by
+&#39;DT::dataTableOutput&#39; when loading &#39;scHCL&#39;</code></pre>
+<pre><code>Warning: replacing previous import &#39;shiny::renderDataTable&#39; by
+&#39;DT::renderDataTable&#39; when loading &#39;scHCL&#39;</code></pre>
+<p>Load seurat object</p>
+<pre class="r"><code>path&lt;- here::here(&quot;output/mergedObjects/&quot;)
+merged&lt;- readRDS(paste0(path,&#39;Harmony.Batchindividual.rds&#39;))</code></pre>
+<p>Convert to DGE (Here, I am not using the Convert_to_DGE script because a) I want to use raw counts rather than normalized and b)I do not want to filter genes by min pct (just keep all genes)).</p>
+<pre class="r"><code>#save metadata
+samps&lt;- merged@meta.data</code></pre>
+<pre class="r"><code>sce&lt;- as.SingleCellExperiment(merged, assay=&quot;RNA&quot;)</code></pre>
+<pre class="r"><code>dge&lt;- convertTo(sce, type= &quot;edgeR&quot;)</code></pre>
+<pre class="r"><code>remove(sce)</code></pre>
+<pre class="r"><code>dge$samples&lt;- cbind(dge$samples, samps)</code></pre>
+<pre class="r"><code>run&lt;- knitr::knit_expand(file = here::here(&quot;analysis/child/scHCL_child.Rmd&quot;))</code></pre>
+<pre class="r"><code>library(scHCL)
+library(reshape2)
+library(dplyr)
+library(ComplexHeatmap)</code></pre>
+<pre class="r"><code>schcl.result&lt;- scHCL(scdata=dge$counts, numbers_plot=6)</code></pre>
+<pre class="r"><code>mat&lt;-as.matrix(acast(schcl.result$scHCL_probility, formula=schcl.result$scHCL_probility$`Cell`~schcl.result$scHCL_probility$`Cell type`, value.var=&quot;Score&quot;))
+
+#replacing NAs with zeros so that heatmap with run
+mat[is.na(mat)]&lt;-0
+
+rownames(mat)&lt;-NULL
+
+Heatmap(mat, column_names_gp = gpar(fontsize=5))</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>top.celltype&lt;- schcl.result[[4]] %&gt;% filter(row_number() %% 6 == 1)</code></pre>
+<pre class="r"><code>submerged&lt;- AddMetaData(object = merged, metadata = top.celltype$`Cell type`, col.name= &quot;scHCL.type&quot;)</code></pre>
+<pre class="r"><code>length(unique(top.celltype$`Cell type`))</code></pre>
+<pre><code>[1] 74</code></pre>
+<pre class="r"><code>DimPlot(submerged, group.by = &quot;scHCL.type&quot;) + NoLegend()</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#based on dimplot, seems like majority ofcells are assigned to very few cell types. exploring what those are.
+t&lt;- table(top.celltype$`Cell type`)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+                                ES_TERF1.high.Embryonic.Stem.Cell. 
+                                                             19448 
+                                      Stem.cell.ES.to.EB_8Day_Han. 
+                                                              8032 
+                                       Endoderm.ES.to.EB_8Day_Han. 
+                                                              5606 
+                                         Neuron.ES.to.EB_8Day_Han. 
+                                                              4542 
+                                   Stromal.cell.ES.to.EB_8Day_Han. 
+                                                              2875 
+                                              Neuron.Fetal.Brain4. 
+                                                               833 
+                                              Neuron.Fetal.Brain5. 
+                                                               171 
+                               ES_S100A6.high.Embryonic.Stem.Cell. 
+                                                               155 
+                                 Neuron_PPP1R17.high.Fetal.Brain6. 
+                                                               145 
+                               Endothelial.cell.ES.to.EB_8Day_Han. 
+                                                               143 
+                    Chromaffin.cell_VIP.high.Fetal.Adrenal.Gland2. 
+                                                                77 
+       Vascular.endothelial.cell_IGFBP3.high.Fetal.Adrenal.Gland2. 
+                                                                59 
+                           Proliferating.radial.glia.Fetal.Brain5. 
+                                                                54 
+                                ES_ANXA1.high.Embryonic.Stem.Cell. 
+                                                                40 
+                               Radial.glia_HES1_high.Fetal.Brain3. 
+                                                                40 
+                       Proliferating.cell_UBE2C_high.Fetal.Brain3. 
+                                                                29 
+                                 Neuron_NEUROD6.high.Fetal.Brain6. 
+                                                                21 
+                     Fibroblast_COL3A1.high..Fetal.Adrenal.Gland2. 
+                                                                20 
+                  Luminal.cell_AGR2.high.Breast.Epithelium_Nguyen. 
+                                                                15 
+                                    Muscle.cell.ES.to.EB_8Day_Han. 
+                                                                12 
+                                        Cytotrophoblast.Placenta1. 
+                                                                12 
+                                 Neuron_NEUROD6.high.Fetal.Brain3. 
+                                                                11 
+                                     Fibroblast.Fetal.Male.Gonad1. 
+                                                                10 
+                            Endothelial.cell.Adult.Pancreas_Baron. 
+                                                                 9 
+                       Contaminated.cell.Breast.Epithelium_Nguyen. 
+                                                                 9 
+                     Cytotrophoblast_PEG10.high.Chorionic.Villus1. 
+                                                                 9 
+                 Chromaffin.cell_SPOCK3.high.Fetal.Adrenal.Gland2. 
+                                                                 9 
+                        Hepatocyte.like.cell.Fetal.Adrenal.Gland2. 
+                                                                 8 
+                         Sertoli.cell_DLK1.high.Fetal.Male.Gonad1. 
+                                                                 8 
+                                  Proliferating.cell.Fetal.Brain4. 
+                                                                 7 
+                               GABAergic.neuron.Fetal.Brain_Zhong. 
+                                                                 6 
+                        Basal_ACTA2.high.Breast.Epithelium_Nguyen. 
+                                                                 5 
+                                      Neuron.Fetal.Adrenal.Gland2. 
+                                                                 5 
+                                 Ductal.cell.Adult.Pancreas_Baron. 
+                                                                 4 
+                                Stromal.cell_SFRP2.high.Placenta1. 
+                                                                 4 
+                    Proliferating.cell_KIAA0101_high.Fetal.Brain3. 
+                                                                 3 
+                             Erythroid.cell_HBM.high.Fetal.Liver1. 
+                                                                 3 
+             Megakaryocyte.Erythroid.progenitor.cell.Fetal.Liver1. 
+                                                                 3 
+                                 Hepatocyte_FGB.high.Adult.Liver1. 
+                                                                 2 
+                                Schwann.cell.Adult.Pancreas_Baron. 
+                                                                 2 
+                     Activated_stellate.cell.Adult.Pancreas_Baron. 
+                                                                 2 
+                  Endothelial.cell_STC1.high.Fetal.Adrenal.Gland2. 
+                                                                 2 
+                                     Oligodendrocyte.Fetal.Brain4. 
+                                                                 2 
+                                Fibroblast_APOD.high.Fetal.Brain5. 
+                                                                 2 
+                              Fibroblast_COL1A1.high.Fetal.Brain5. 
+                                                                 2 
+                             Fibroblast_TWIST2.high.Fetal.Muscle1. 
+                                                                 2 
+                              Fibroblast_MFAP5.high.Fetal.Muscle1. 
+                                                                 2 
+                                        Epithelial.cell.Placenta1. 
+                                                                 2 
+Megakaryocyte.Erythrocyte.progenitor.cell.Adult.Bone.Marrow.CD34P. 
+                                                                 1 
+                      Epithelial.cell_KRT13.high.Adult.Esophagus2. 
+                                                                 1 
+                                          Hepatocyte.Adult.Liver4. 
+                                                                 1 
+              Pancreatic.stellate.cell.Adult.Pancreas_Segerstolpe. 
+                                                                 1 
+                            Basal.cell_S100A2.high.Adult.Trachea2. 
+                                                                 1 
+                             Smooth.muscle.cell.Chorionic.Villus1. 
+                                                                 1 
+                             Proliferating.cell.Cord.Blood.CD34P2. 
+                                                                 1 
+                                  Megakaryocyte.Cord.Blood.CD34P2. 
+                                                                 1 
+                                Epithelial.cell.ES.to.EB_8Day_Han. 
+                                                                 1 
+                 Conventional.dendritic.cell.Fetal.Adrenal.Gland2. 
+                                                                 1 
+        Vascular.endothelial.cell_FABP5.high.Fetal.Adrenal.Gland2. 
+                                                                 1 
+                                           Astrocyte.Fetal.Brain3. 
+                                                                 1 
+                                         Radial.glia.Fetal.Brain4. 
+                                                                 1 
+                                          Fibroblast.Fetal.Brain4. 
+                                                                 1 
+                                  Proliferating.cell.Fetal.Brain5. 
+                                                                 1 
+                                         Neuron.Fetal.Brain_Zhong. 
+                                                                 1 
+                        Stromal.cell_SULT1E1.high.Fetal.Calvaria1. 
+                                                                 1 
+                                Fibroblast_PENK.high.Fetal.Heart1. 
+                                                                 1 
+                                Fibroblast_PENK.high.Fetal.Heart2. 
+                                                                 1 
+                                       Neutrophil.Fetal.Kidney3..1 
+                                                                 1 
+                                           Fibroblast.Fetal.Lung1. 
+                                                                 1 
+                        Proliferating.cell_UBE2C.high.Fetal.Lung2. 
+                                                                 1 
+                      Epithelial.cell_CD24.high.Fetal.Male.Gonad1. 
+                                                                 1 
+                    Epithelial.cell_CYSTM1.high.Fetal.Male.Gonad1. 
+                                                                 1 
+                                   Cytotrophoblast.Placenta_Tsang. 
+                                                                 1 
+                                         VCT2.Placenta_VentoTormo. 
+                                                                 1 </code></pre>
+<pre class="r"><code>top.types&lt;- rownames(t[1:20])</code></pre>
+<pre class="r"><code>submerged</code></pre>
+<pre><code>An object of class Seurat 
+37556 features across 42488 samples within 2 assays 
+Active assay: SCT (16935 features, 5000 variable features)
+ 1 other assay present: RNA
+ 3 dimensional reductions calculated: pca, harmony, umap</code></pre>
+<pre class="r"><code>#subset the seurat object to only cells from the top ten cell types and visualize
+sub&lt;- subset(submerged, scHCL.type %in% top.types)</code></pre>
+<pre class="r"><code>sub</code></pre>
+<pre><code>An object of class Seurat 
+37556 features across 42317 samples within 2 assays 
+Active assay: SCT (16935 features, 5000 variable features)
+ 1 other assay present: RNA
+ 3 dimensional reductions calculated: pca, harmony, umap</code></pre>
+<pre class="r"><code>DimPlot(sub, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>viewing cell types by low res seurat clustering</p>
+<pre class="r"><code>Idents(submerged)&lt;- &#39;SCT_snn_res.0.1&#39;
+stem&lt;-subset(submerged, ident=&quot;0&quot;)
+endo&lt;-subset(submerged, ident=&quot;4&quot;)
+meso&lt;-subset(submerged, ident=&quot;2&quot;)
+earlyect&lt;-subset(submerged, ident=&quot;1&quot;)
+neur&lt;-subset(submerged, ident=&quot;5&quot;)
+ncrest&lt;-subset(submerged, ident=&quot;3&quot;)
+endothelial&lt;-subset(submerged, ident=&quot;6&quot;)</code></pre>
+<pre class="r"><code>DimPlot(stem, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(stem@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+   ES_TERF1.high.Embryonic.Stem.Cell.   ES_S100A6.high.Embryonic.Stem.Cell. 
+                                17673                                     9 
+          Endoderm.ES.to.EB_8Day_Han.          Stem.cell.ES.to.EB_8Day_Han. 
+                                    5                                     3 
+      Stromal.cell.ES.to.EB_8Day_Han. Erythroid.cell_HBM.high.Fetal.Liver1. 
+                                    2                                     1 </code></pre>
+<pre class="r"><code>DimPlot(endo, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(endo@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+                     Endoderm.ES.to.EB_8Day_Han. 
+                                            2121 
+              ES_TERF1.high.Embryonic.Stem.Cell. 
+                                             100 
+             ES_S100A6.high.Embryonic.Stem.Cell. 
+                                              34 
+                    Stem.cell.ES.to.EB_8Day_Han. 
+                                              22 
+Luminal.cell_AGR2.high.Breast.Epithelium_Nguyen. 
+                                              15 
+                      Cytotrophoblast.Placenta1. 
+                                              12 
+     Contaminated.cell.Breast.Epithelium_Nguyen. 
+                                               9 
+   Cytotrophoblast_PEG10.high.Chorionic.Villus1. 
+                                               9 
+                 Stromal.cell.ES.to.EB_8Day_Han. 
+                                               8 
+      Hepatocyte.like.cell.Fetal.Adrenal.Gland2. 
+                                               8 
+              ES_ANXA1.high.Embryonic.Stem.Cell. 
+                                               7 
+      Basal_ACTA2.high.Breast.Epithelium_Nguyen. 
+                                               5 
+               Ductal.cell.Adult.Pancreas_Baron. 
+                                               4 
+               Hepatocyte_FGB.high.Adult.Liver1. 
+                                               2 
+                       Neuron.ES.to.EB_8Day_Han. 
+                                               2 
+                      Epithelial.cell.Placenta1. 
+                                               2 
+    Epithelial.cell_KRT13.high.Adult.Esophagus2. 
+                                               1 
+                        Hepatocyte.Adult.Liver4. 
+                                               1 
+          Basal.cell_S100A2.high.Adult.Trachea2. 
+                                               1 
+              Epithelial.cell.ES.to.EB_8Day_Han. 
+                                               1 
+                     Neutrophil.Fetal.Kidney3..1 
+                                               1 
+    Epithelial.cell_CD24.high.Fetal.Male.Gonad1. 
+                                               1 
+                 Cytotrophoblast.Placenta_Tsang. 
+                                               1 
+                       VCT2.Placenta_VentoTormo. 
+                                               1 </code></pre>
+<pre class="r"><code>DimPlot(meso, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(meso@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+                         Endoderm.ES.to.EB_8Day_Han. 
+                                                1960 
+                     Stromal.cell.ES.to.EB_8Day_Han. 
+                                                 973 
+                  ES_TERF1.high.Embryonic.Stem.Cell. 
+                                                  37 
+                           Neuron.ES.to.EB_8Day_Han. 
+                                                  27 
+       Fibroblast_COL3A1.high..Fetal.Adrenal.Gland2. 
+                                                  20 
+                        Stem.cell.ES.to.EB_8Day_Han. 
+                                                  18 
+                      Muscle.cell.ES.to.EB_8Day_Han. 
+                                                  12 
+                       Fibroblast.Fetal.Male.Gonad1. 
+                                                  10 
+           Sertoli.cell_DLK1.high.Fetal.Male.Gonad1. 
+                                                   8 
+                  Stromal.cell_SFRP2.high.Placenta1. 
+                                                   4 
+                 ES_S100A6.high.Embryonic.Stem.Cell. 
+                                                   2 
+                  Fibroblast_APOD.high.Fetal.Brain5. 
+                                                   2 
+               Fibroblast_TWIST2.high.Fetal.Muscle1. 
+                                                   2 
+                Fibroblast_MFAP5.high.Fetal.Muscle1. 
+                                                   2 
+       Activated_stellate.cell.Adult.Pancreas_Baron. 
+                                                   1 
+Pancreatic.stellate.cell.Adult.Pancreas_Segerstolpe. 
+                                                   1 
+               Smooth.muscle.cell.Chorionic.Villus1. 
+                                                   1 
+          Stromal.cell_SULT1E1.high.Fetal.Calvaria1. 
+                                                   1 
+                  Fibroblast_PENK.high.Fetal.Heart1. 
+                                                   1 
+                  Fibroblast_PENK.high.Fetal.Heart2. 
+                                                   1 
+                             Fibroblast.Fetal.Lung1. 
+                                                   1 
+          Proliferating.cell_UBE2C.high.Fetal.Lung2. 
+                                                   1 
+      Epithelial.cell_CYSTM1.high.Fetal.Male.Gonad1. 
+                                                   1 </code></pre>
+<pre class="r"><code>DimPlot(earlyect, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(earlyect@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+                 Stem.cell.ES.to.EB_8Day_Han. 
+                                         6615 
+                    Neuron.ES.to.EB_8Day_Han. 
+                                         3522 
+           ES_TERF1.high.Embryonic.Stem.Cell. 
+                                         1475 
+                  Endoderm.ES.to.EB_8Day_Han. 
+                                         1357 
+              Stromal.cell.ES.to.EB_8Day_Han. 
+                                         1190 
+          ES_S100A6.high.Embryonic.Stem.Cell. 
+                                           85 
+          Radial.glia_HES1_high.Fetal.Brain3. 
+                                           40 
+      Proliferating.radial.glia.Fetal.Brain5. 
+                                           40 
+           ES_ANXA1.high.Embryonic.Stem.Cell. 
+                                           27 
+  Proliferating.cell_UBE2C_high.Fetal.Brain3. 
+                                           19 
+                         Neuron.Fetal.Brain5. 
+                                            5 
+                Oligodendrocyte.Fetal.Brain4. 
+                                            2 
+Activated_stellate.cell.Adult.Pancreas_Baron. 
+                                            1 
+                      Astrocyte.Fetal.Brain3. 
+                                            1 
+                         Neuron.Fetal.Brain4. 
+                                            1 
+             Proliferating.cell.Fetal.Brain4. 
+                                            1 
+                    Radial.glia.Fetal.Brain4. 
+                                            1 
+                     Fibroblast.Fetal.Brain4. 
+                                            1 </code></pre>
+<pre class="r"><code>DimPlot(neur, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(neur@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+                             Neuron.Fetal.Brain4. 
+                                              832 
+                        Neuron.ES.to.EB_8Day_Han. 
+                                              380 
+                     Stem.cell.ES.to.EB_8Day_Han. 
+                                              220 
+                             Neuron.Fetal.Brain5. 
+                                              166 
+                Neuron_PPP1R17.high.Fetal.Brain6. 
+                                              145 
+   Chromaffin.cell_VIP.high.Fetal.Adrenal.Gland2. 
+                                               77 
+               ES_TERF1.high.Embryonic.Stem.Cell. 
+                                               46 
+                  Stromal.cell.ES.to.EB_8Day_Han. 
+                                               30 
+                Neuron_NEUROD6.high.Fetal.Brain6. 
+                                               21 
+          Proliferating.radial.glia.Fetal.Brain5. 
+                                               14 
+                Neuron_NEUROD6.high.Fetal.Brain3. 
+                                               11 
+      Proliferating.cell_UBE2C_high.Fetal.Brain3. 
+                                               10 
+Chromaffin.cell_SPOCK3.high.Fetal.Adrenal.Gland2. 
+                                                9 
+                      Endoderm.ES.to.EB_8Day_Han. 
+                                                7 
+                 Proliferating.cell.Fetal.Brain4. 
+                                                6 
+              GABAergic.neuron.Fetal.Brain_Zhong. 
+                                                6 
+              ES_S100A6.high.Embryonic.Stem.Cell. 
+                                                4 
+   Proliferating.cell_KIAA0101_high.Fetal.Brain3. 
+                                                3 
+               ES_ANXA1.high.Embryonic.Stem.Cell. 
+                                                1 
+                 Proliferating.cell.Fetal.Brain5. 
+                                                1 
+                        Neuron.Fetal.Brain_Zhong. 
+                                                1 </code></pre>
+<pre class="r"><code>DimPlot(ncrest, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(ncrest@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+        Stem.cell.ES.to.EB_8Day_Han.      Stromal.cell.ES.to.EB_8Day_Han. 
+                                1146                                  643 
+           Neuron.ES.to.EB_8Day_Han.          Endoderm.ES.to.EB_8Day_Han. 
+                                 610                                  128 
+  ES_TERF1.high.Embryonic.Stem.Cell.  ES_S100A6.high.Embryonic.Stem.Cell. 
+                                 111                                   21 
+  ES_ANXA1.high.Embryonic.Stem.Cell.         Neuron.Fetal.Adrenal.Gland2. 
+                                   5                                    5 
+  Schwann.cell.Adult.Pancreas_Baron. Fibroblast_COL1A1.high.Fetal.Brain5. 
+                                   2                                    2 </code></pre>
+<pre class="r"><code>DimPlot(endothelial, group.by = &quot;scHCL.type&quot;)</code></pre>
+<p><img src="figure/RunscHCL_HarmonyBatchInd.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t&lt;- table(endothelial@meta.data$scHCL.type)
+
+t&lt;- sort(t, decreasing=T)
+
+t&lt;- t[t&gt;0]
+
+t</code></pre>
+<pre><code>
+                               Endothelial.cell.ES.to.EB_8Day_Han. 
+                                                               143 
+       Vascular.endothelial.cell_IGFBP3.high.Fetal.Adrenal.Gland2. 
+                                                                59 
+                                   Stromal.cell.ES.to.EB_8Day_Han. 
+                                                                29 
+                                       Endoderm.ES.to.EB_8Day_Han. 
+                                                                28 
+                            Endothelial.cell.Adult.Pancreas_Baron. 
+                                                                 9 
+                                      Stem.cell.ES.to.EB_8Day_Han. 
+                                                                 8 
+                                ES_TERF1.high.Embryonic.Stem.Cell. 
+                                                                 6 
+             Megakaryocyte.Erythroid.progenitor.cell.Fetal.Liver1. 
+                                                                 3 
+                  Endothelial.cell_STC1.high.Fetal.Adrenal.Gland2. 
+                                                                 2 
+                             Erythroid.cell_HBM.high.Fetal.Liver1. 
+                                                                 2 
+Megakaryocyte.Erythrocyte.progenitor.cell.Adult.Bone.Marrow.CD34P. 
+                                                                 1 
+                             Proliferating.cell.Cord.Blood.CD34P2. 
+                                                                 1 
+                                  Megakaryocyte.Cord.Blood.CD34P2. 
+                                                                 1 
+                                         Neuron.ES.to.EB_8Day_Han. 
+                                                                 1 
+                 Conventional.dendritic.cell.Fetal.Adrenal.Gland2. 
+                                                                 1 
+        Vascular.endothelial.cell_FABP5.high.Fetal.Adrenal.Gland2. 
+                                                                 1 </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+ [1] grid      parallel  stats4    stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] ComplexHeatmap_2.2.0        dplyr_1.0.0                
+ [3] reshape2_1.4.4              scHCL_0.1.1                
+ [5] scran_1.14.6                SingleCellExperiment_1.8.0 
+ [7] SummarizedExperiment_1.16.1 DelayedArray_0.12.3        
+ [9] BiocParallel_1.20.1         matrixStats_0.56.0         
+[11] Biobase_2.46.0              GenomicRanges_1.38.0       
+[13] GenomeInfoDb_1.22.1         IRanges_2.20.2             
+[15] S4Vectors_0.24.4            BiocGenerics_0.32.0        
+[17] Matrix_1.2-18               Seurat_3.2.0               
+[19] workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+  [1] circlize_0.4.10          backports_1.1.8          plyr_1.8.6              
+  [4] igraph_1.2.5             lazyeval_0.2.2           splines_3.6.1           
+  [7] listenv_0.8.0            scater_1.14.6            ggplot2_3.3.2           
+ [10] digest_0.6.25            htmltools_0.5.0          viridis_0.5.1           
+ [13] gdata_2.18.0             magrittr_1.5             tensor_1.5              
+ [16] cluster_2.1.0            ROCR_1.0-7               limma_3.42.2            
+ [19] globals_0.12.5           colorspace_1.4-1         rappdirs_0.3.1          
+ [22] ggrepel_0.8.2            xfun_0.16                crayon_1.3.4            
+ [25] RCurl_1.98-1.2           jsonlite_1.7.0           spatstat_1.64-1         
+ [28] spatstat.data_1.4-3      survival_3.2-3           zoo_1.8-8               
+ [31] ape_5.3                  glue_1.4.1               polyclip_1.10-0         
+ [34] gtable_0.3.0             zlibbioc_1.32.0          XVector_0.26.0          
+ [37] leiden_0.3.3             GetoptLong_1.0.2         BiocSingular_1.2.2      
+ [40] shape_1.4.4              future.apply_1.6.0       abind_1.4-5             
+ [43] scales_1.1.1             pheatmap_1.0.12          edgeR_3.28.1            
+ [46] miniUI_0.1.1.1           Rcpp_1.0.5               viridisLite_0.3.0       
+ [49] xtable_1.8-4             clue_0.3-57              reticulate_1.16         
+ [52] dqrng_0.2.1              rsvd_1.0.3               DT_0.14                 
+ [55] htmlwidgets_1.5.1        httr_1.4.2               gplots_3.0.4            
+ [58] RColorBrewer_1.1-2       ellipsis_0.3.1           ica_1.0-2               
+ [61] farver_2.0.3             pkgconfig_2.0.3          uwot_0.1.8              
+ [64] deldir_0.1-28            here_0.1-11              locfit_1.5-9.4          
+ [67] labeling_0.3             tidyselect_1.1.0         rlang_0.4.7             
+ [70] later_1.1.0.1            munsell_0.5.0            tools_3.6.1             
+ [73] generics_0.0.2           ggridges_0.5.2           evaluate_0.14           
+ [76] stringr_1.4.0            fastmap_1.0.1            yaml_2.2.1              
+ [79] goftest_1.2-2            npsurv_0.4-0             knitr_1.29              
+ [82] fs_1.4.2                 fitdistrplus_1.0-14      caTools_1.18.0          
+ [85] purrr_0.3.4              RANN_2.6.1               pbapply_1.4-2           
+ [88] future_1.18.0            nlme_3.1-140             whisker_0.4             
+ [91] mime_0.9                 shinythemes_1.1.2        compiler_3.6.1          
+ [94] beeswarm_0.2.3           plotly_4.9.2.1           png_0.1-7               
+ [97] lsei_1.2-0               spatstat.utils_1.17-0    statmod_1.4.34          
+[100] tibble_3.0.3             stringi_1.4.6            lattice_0.20-38         
+[103] vctrs_0.3.2              pillar_1.4.6             lifecycle_0.2.0         
+[106] GlobalOptions_0.1.2      lmtest_0.9-37            RcppAnnoy_0.0.16        
+[109] BiocNeighbors_1.4.2      data.table_1.13.0        cowplot_1.0.0           
+[112] bitops_1.0-6             irlba_2.3.3              httpuv_1.5.4            
+[115] patchwork_1.0.1          R6_2.4.1                 promises_1.1.1          
+[118] KernSmooth_2.23-15       gridExtra_2.3            vipor_0.4.5             
+[121] codetools_0.2-16         MASS_7.3-51.4            gtools_3.8.2            
+[124] rjson_0.2.20             rprojroot_1.3-2          sctransform_0.2.1       
+[127] GenomeInfoDbData_1.2.2   mgcv_1.8-28              rpart_4.1-15            
+[130] tidyr_1.1.0              rmarkdown_2.3            DelayedMatrixStats_1.8.0
+[133] Rtsne_0.15               git2r_0.26.1             shiny_1.5.0             
+[136] ggbeeswarm_0.6.0        </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
