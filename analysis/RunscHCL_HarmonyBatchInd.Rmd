@@ -1,0 +1,52 @@
+---
+title: "scHCL run on data integrated with Harmony(Batch, Individual)"
+output: html_document
+---
+
+```{r}
+library(Seurat)
+library(Matrix)
+library(scran)
+library(scHCL)
+```
+
+Load seurat object
+```{r,message=FALSE}
+path<- here::here("output/mergedObjects/")
+merged<- readRDS(paste0(path,'Harmony.Batchindividual.rds'))
+
+```
+
+Convert to DGE (Here, I am not using the Convert_to_DGE script because a) I want to use raw counts rather than normalized and b)I do not want to filter genes by min pct (just keep all genes)).
+
+```{r}
+#save metadata
+samps<- merged@meta.data
+```
+
+```{r}
+sce<- as.SingleCellExperiment(merged, assay="RNA")
+```
+
+
+```{r}
+dge<- convertTo(sce, type= "edgeR")
+```
+
+```{r}
+remove(sce)
+```
+
+
+```{r}
+dge$samples<- cbind(dge$samples, samps)
+```
+
+
+
+```{r}
+run<- knitr::knit_expand(file = here::here("analysis/child/scHCL_child.Rmd"))
+```
+
+`r knitr::knit(text=unlist(run))`
+
