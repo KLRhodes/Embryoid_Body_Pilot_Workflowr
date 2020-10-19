@@ -18,6 +18,7 @@ Single Cell RNA-seq data was collected using the 10x platform.
 #*Preprocessing, QC, and filtering
 ##*Run EmptyDrops, Add Metadata to Seurat object from each 10x lane  
 + to be added soon!
+
 ##*Filtering and Normalizing each 10x lane
 + [Batch1Lane1](SampleFilteringandSCT_Batch1Lane1.html)  
 + [Batch1Lane3](SampleFilteringandSCT_Batch1Lane3.html)  
