@@ -9,19 +9,28 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Welcome! This is a research website detailing analyses analyses performed on scRNA-seq data from human embryoid bodies, aggregates of spontaneously differentiating cells generated from induced pluripotent stem cells. 
 
-This site contains analyses performed on human Embryoid bodies, aggregates of spontaneously differentiating cells generated from induced pluripotent stem cells. 
+The overarching goals of this work are to:
 
-Single Cell RNA-seq data was collected using the 10x platform.
+1) characterize tthe diversity of cell types resulting from this particular differentiation protocol
+2) Understand the contribution of biological and technical variation present in all levels of this this type of data 
+  i)What is the relative contribution of individual and replicate to variation in cell composition?
+  ii) What is the relative contribution of individual and replicate to variation in gene expression?
+  ii) What is the relative contribution of individual and replicate to variation in gene expression dynamics across distinct developmental trajectories?
+3) Evaluate the future prospects of this model system (EBs + single cell) for identification of dynamic QTLs
+
+Study Design:
+
+Embryoid bodies were formed from 3 human iPSCs lines in 3 replicates. Three weeks after formation, EBs were dissociated and scRNA-seq data was collected using the 10x platform. After quality control and filtering, this dataset consists of 42,488 cells.
 
 # Preprocessing, QC, and filtering
 
-  +to be added soon!
++ to be added soon!
   
 # Run EmptyDrops, Add Metadata to Seurat object from each 10x lane 
 
- +to be added soon!
++ to be added soon!
   
 # Filtering and Normalizing each 10x lane
 
