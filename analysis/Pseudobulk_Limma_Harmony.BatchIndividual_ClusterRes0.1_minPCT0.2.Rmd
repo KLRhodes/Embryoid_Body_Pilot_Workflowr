@@ -369,6 +369,9 @@ head(topsInd, n=40)
 topsInd[rownames(topsInd)== "UTF1",]
 ```
 
+```{r}
+topsInd[rownames(topsInd)== "TAC3",]
+```
 
 
 ```{r}
