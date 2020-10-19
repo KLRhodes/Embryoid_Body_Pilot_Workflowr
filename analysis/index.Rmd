@@ -11,39 +11,67 @@ editor_options:
 
 Welcome to my research website.
 
-This site contains analyses performed on human Embryoid bodies, spheroids of spontaneously differentiating cells generated from induced pluripotent stem cells. 
+This site contains analyses performed on human Embryoid bodies, aggregates of spontaneously differentiating cells generated from induced pluripotent stem cells. 
 
 Single Cell RNA-seq data was collected using the 10x platform.
 
-#Preprocessing, QC, and filtering {.tabset}
-##1. Run EmptyDrops, Add Metadata to Seurat object from each 10x lane  
-##2. Filter and run SCTransform on each 10x lane  {.tabset-dropdown}
-      -[Batch1Lane1](SampleFilteringandSCT_Batch1Lane1.html)  
-      -[Batch1Lane3](SampleFilteringandSCT_Batch1Lane3.html)  
-      -[Batch1Lane4](SampleFilteringandSCT_Batch1Lane4.html)  
-      -[Batch1Lane5](SampleFilteringandSCT_Batch1Lane5.html)  
-      -[Batch1Lane6](SampleFilteringandSCT_Batch1Lane6.html)  
-      -[Batch1Lane7](SampleFilteringandSCT_Batch1Lane7.html)  
-      -[Batch1Lane8](SampleFilteringandSCT_Batch1Lane8.html)  
-      -[Batch1Lane9](SampleFilteringandSCT_Batch1Lane9.html)  
-      -[Batch2Lane1](SampleFilteringandSCT_Batch2Lane1.html)  
-      -[Batch2Lane2](SampleFilteringandSCT_Batch2Lane2.html)  
-      -[Batch2Lane3](SampleFilteringandSCT_Batch2Lane3.html)  
-      -[Batch2Lane4](SampleFilteringandSCT_Batch2Lane4.html)  
-      -[Batch3Lane1](SampleFilteringandSCT_Batch3Lane1.html)  
-      -[Batch3Lane2](SampleFilteringandSCT_Batch3Lane2.html)  
-      -[Batch3Lane3](SampleFilteringandSCT_Batch3Lane3.html)  
-      -[Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)  
+#*Preprocessing, QC, and filtering
+##*Run EmptyDrops, Add Metadata to Seurat object from each 10x lane  
++ to be added soon!
+##*Filtering and Normalizing each 10x lane
++ [Batch1Lane1](SampleFilteringandSCT_Batch1Lane1.html)  
++ [Batch1Lane3](SampleFilteringandSCT_Batch1Lane3.html)  
++ [Batch1Lane4](SampleFilteringandSCT_Batch1Lane4.html)  
++ [Batch1Lane5](SampleFilteringandSCT_Batch1Lane5.html)  
++ [Batch1Lane6](SampleFilteringandSCT_Batch1Lane6.html)  
++ [Batch1Lane7](SampleFilteringandSCT_Batch1Lane7.html)  
++ [Batch1Lane8](SampleFilteringandSCT_Batch1Lane8.html)  
++ [Batch1Lane9](SampleFilteringandSCT_Batch1Lane9.html)  
++ [Batch2Lane1](SampleFilteringandSCT_Batch2Lane1.html)  
++ [Batch2Lane2](SampleFilteringandSCT_Batch2Lane2.html)  
++ [Batch2Lane3](SampleFilteringandSCT_Batch2Lane3.html)  
++ [Batch2Lane4](SampleFilteringandSCT_Batch2Lane4.html)  
++ [Batch3Lane1](SampleFilteringandSCT_Batch3Lane1.html)  
++ [Batch3Lane2](SampleFilteringandSCT_Batch3Lane2.html)  
++ [Batch3Lane3](SampleFilteringandSCT_Batch3Lane3.html)  
++ [Batch3Lane4](SampleFilteringandSCT_Batch3Lane4.html)  
       
 
-#Merging and integration {.tabset}{.tabset-dropdown}
+#*Merging and integration, seurat clustering
++ [Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)
++ [Harmony correcting for Batch, Individual](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)  
++ [Harmony correcting for Batch, Individual, and Lane](IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
++ [SCTransform regressing out Batch,individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html)  
++ [SCTransform regressing out Batch,individual then Harmony correcting batch and individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html)  
++ [No Integration, Just Merged](IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html)
 
-[Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)  
-[Harmony correcting for Batch, Individual](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)  
-[Harmony correcting for Batch, Individual, and Lane](IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
-[SCTransform regressing out Batch,individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html)  
-[SCTransform regressing out Batch,individual then Harmony correcting batch and individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html)  
-[No Integration, Just Merged](IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html)
-      
-      
-      
+
+Note: all analyses below use data corrected using Haromy for Batch and Individual 
+
+#*Differential Expression with limma (Pseudobulk)
++ [Using Cluster Resolution 0.1](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd)
++ [Using Cluster Resolution 0.5](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd)
+
+#*Seurat subclustering
++ To be added soon!
+
+#*Cell type identification using scHCL
++ [scHCL analysis](RunscHCL_HarmonyBatchInd.Rmd)
+
+#*Topic Modelling with FastTopics
++ to be added soon!
+  
+#*Hierachical clustering of gene expression
++ [Single Cell Resolution](SingleCell_HierarchicalClustering_NoGeneFilter.Rmd)
++ [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd)
+
+#*Variance Partition (to determine the relative contribution of Cluster, Batch, and Individual to variation in gene expression)
++ [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd)
+
+
