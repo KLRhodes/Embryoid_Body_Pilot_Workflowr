@@ -15,11 +15,11 @@ This site contains analyses performed on human Embryoid bodies, aggregates of sp
 
 Single Cell RNA-seq data was collected using the 10x platform.
 
-# *Preprocessing, QC, and filtering
+# Preprocessing, QC, and filtering
 
   +to be added soon!
   
-# *Run EmptyDrops, Add Metadata to Seurat object from each 10x lane 
+# Run EmptyDrops, Add Metadata to Seurat object from each 10x lane 
 
  +to be added soon!
   
