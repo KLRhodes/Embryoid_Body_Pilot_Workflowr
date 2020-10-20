@@ -65,8 +65,8 @@ Note: all analyses below use data corrected using Haromy for Batch and Individua
 
 # Differential Expression with limma (Pseudobulk)
 
-+ [Using Cluster Resolution 0.1](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd)
-+ [Using Cluster Resolution 0.5](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd)
++ [Using Cluster Resolution 0.1](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.html)
++ [Using Cluster Resolution 0.5](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.html)
 
 # Seurat subclustering
 
@@ -74,7 +74,7 @@ Note: all analyses below use data corrected using Haromy for Batch and Individua
 
 # Cell type identification using scHCL
 
-+ [scHCL analysis](RunscHCL_HarmonyBatchInd.Rmd)
++ [scHCL analysis](RunscHCL_HarmonyBatchInd.html)
 
 # Topic Modelling with FastTopics
 
@@ -82,18 +82,18 @@ Note: all analyses below use data corrected using Haromy for Batch and Individua
   
 #Hierachical clustering of gene expression
 
-+ [Single Cell Resolution](SingleCell_HierarchicalClustering_NoGeneFilter.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd)
++ single cell resolution-- to be added soon!
++ [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.html)
 
 # Variance Partition (to determine the relative contribution of Cluster, Batch, and Individual to variation in gene expression)
 
-+ [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd)
-+ [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd)
++ [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.html)
 
 # Trajectory Inference with Scanpy/PAGA
 
