@@ -540,16 +540,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree63febc086a0e22d722407cf28e9ad942edf26344targetblank63febc0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/63febc086a0e22d722407cf28e9ad942edf26344" target="_blank">63febc0</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreecbdbc9ff7af03cd18d7a07b44031577e12c7b458targetblankcbdbc9fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/cbdbc9ff7af03cd18d7a07b44031577e12c7b458" target="_blank">cbdbc9f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree63febc086a0e22d722407cf28e9ad942edf26344targetblank63febc0a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreecbdbc9ff7af03cd18d7a07b44031577e12c7b458targetblankcbdbc9fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/63febc086a0e22d722407cf28e9ad942edf26344" target="_blank">63febc0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/cbdbc9ff7af03cd18d7a07b44031577e12c7b458" target="_blank">cbdbc9f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -672,6 +672,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/cbdbc9ff7af03cd18d7a07b44031577e12c7b458/analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd" target="_blank">cbdbc9f</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-01-11
+</td>
+<td>
+wflow_publish(&quot;analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd&quot;)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/0e51844e2948ce615b029fddd4bdc412498c6670/docs/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.html" target="_blank">0e51844</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-01-11
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1360,10 +1394,55 @@ DACH1  -5.334254 3.809426 -24.35787 4.604243e-31 6.699173e-28 60.27756
 PHC2   -4.707853 5.434183 -23.98984 9.880943e-31 1.084531e-27 59.71449
 WLS    -4.446207 5.516756 -23.96553 1.039573e-30 1.084531e-27 59.77035
 BTBD17 -5.135767 2.561903 -23.95405 1.064831e-30 1.084531e-27 59.25296</code></pre>
-<pre class="r"><code>volcanoplot(efit, coef=13, highlight=5, names=rownames(dge))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>vol&lt;- topTable(efit, coef=13, n=nrow(fit))
 labsig&lt;- vol[abs(vol$logFC) &gt;=9.5 | vol$adj.P.Val &lt; 1e-29,]
+labsiggenes&lt;- rownames(labsig)
+thresh&lt;- vol$adj.P.Val &lt; 0.05
+vol&lt;-cbind(vol, thresh)
+ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
+  geom_point(aes(colour=thresh), show.legend = FALSE) +
+  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
+  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
+Past versions of unnamed-chunk-21-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/0e51844e2948ce615b029fddd4bdc412498c6670/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-21-1.png" target="_blank">0e51844</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-01-11
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>vol&lt;- topTable(efit, coef=1, n=nrow(fit))
+labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-29) | (vol$logFC&gt; 0 &amp; vol$adj.P.Val &lt; 1e-22) |vol$logFC&gt; 5 |vol$logFC &lt; -7,]
 labsiggenes&lt;- rownames(labsig)
 thresh&lt;- vol$adj.P.Val &lt; 0.05
 vol&lt;-cbind(vol, thresh)
@@ -1396,54 +1475,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-22-1.png" target="_blank">7888de8</a>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/0e51844e2948ce615b029fddd4bdc412498c6670/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-22-1.png" target="_blank">0e51844</a>
 </td>
 <td>
 KLRhodes
 </td>
 <td>
-2020-08-31
+2021-01-11
 </td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=1, n=nrow(fit))
-labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-29) | (vol$logFC&gt; 0 &amp; vol$adj.P.Val &lt; 1e-22) |vol$logFC&gt; 5 |vol$logFC &lt; -7,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
-Past versions of unnamed-chunk-23-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td>
-<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-23-1.png" target="_blank">7888de8</a>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-22-1.png" target="_blank">7888de8</a>
 </td>
 <td>
 KLRhodes
@@ -1569,7 +1612,7 @@ List.0&lt;- list(c0vc1=c0v1,c0vc2=c0v2,c0vc3=c0v3,c0vc4=c0v4,c0vc5=c0v5,c0vc6=c0
 
 #List.0&lt;- list(dt[,1:9])
 upset(fromList(List.0), nsets = 9)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>1 v all contrasts</p>
 <pre class="r"><code>fit&lt;- lmFit(v,design)</code></pre>
 <pre class="r"><code>contrasts&lt;- NULL
@@ -1595,7 +1638,7 @@ for (i in 1:nclust){
 <pre class="r"><code>fit&lt;- contrasts.fit(fit, contrasts= contrasts)</code></pre>
 <pre class="r"><code>efit&lt;- eBayes(fit)</code></pre>
 <pre class="r"><code>plotSA(efit)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>c0vall&lt;- topTable(efit, coef=1, n=nrow(fit))
 
 head(c0vall, n=40)</code></pre>
@@ -1700,7 +1743,7 @@ ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
   geom_point(aes(colour=thresh), show.legend = FALSE) +
   scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
   geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>c1vall&lt;- topTable(efit, coef=2, n=nrow(fit))
 
 head(c1vall, n=40)</code></pre>
@@ -1997,13 +2040,13 @@ write.csv(OnevAll.top10.logFC, &quot;/project2/gilad/katie/Pilot_HumanEBs/Embryo
 <pre class="r"><code>fit&lt;-contrasts.fit(fit, coefficients = (nclust+1):(nclust+4))</code></pre>
 <pre class="r"><code>efit&lt;- eBayes(fit)</code></pre>
 <pre class="r"><code>plotSA(efit)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-53-1">
-Past versions of unnamed-chunk-53-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-52-1">
+Past versions of unnamed-chunk-52-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-53-1" class="collapse">
+<div id="fig-unnamed-chunk-52-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -2022,7 +2065,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-53-1.png" target="_blank">7888de8</a>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/0e51844e2948ce615b029fddd4bdc412498c6670/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-52-1.png" target="_blank">0e51844</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-01-11
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-52-1.png" target="_blank">7888de8</a>
 </td>
 <td>
 KLRhodes
@@ -2219,6 +2273,56 @@ TAC3               1.170806            -0.01437916 3.666656 10.03314
 TAC3 0.000193839 0.0006255214</code></pre>
 <pre class="r"><code>plot(density(topsBatch$adj.P.Val))
 lines(density(topsInd$adj.P.Val), col= &quot;red&quot;)</code></pre>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-58-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-58-1">
+Past versions of unnamed-chunk-58-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-58-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/dd2f60e1b0373e6ba17c3c3bee8dbf0bd1c1da75/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-58-1.png" target="_blank">dd2f60e</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-10-19
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-58-1.png" target="_blank">7888de8</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>boxplot(-log10(topsBatch$adj.P.Val), -log10(topsInd$adj.P.Val), names= c(&quot;Batch&quot;, &quot;Individual&quot;), main=&quot;Distribution of p values from F tests&quot;, ylab=&quot;-log10(adjusted.p.val)&quot;)</code></pre>
 <p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-59-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-59-1">
@@ -2262,45 +2366,6 @@ KLRhodes
 </td>
 <td>
 2020-08-31
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>boxplot(-log10(topsBatch$adj.P.Val), -log10(topsInd$adj.P.Val), names= c(&quot;Batch&quot;, &quot;Individual&quot;), main=&quot;Distribution of p values from F tests&quot;, ylab=&quot;-log10(adjusted.p.val)&quot;)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-60-1">
-Past versions of unnamed-chunk-60-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-60-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/dd2f60e1b0373e6ba17c3c3bee8dbf0bd1c1da75/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd/unnamed-chunk-60-1.png" target="_blank">dd2f60e</a>
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-10-19
 </td>
 </tr>
 </tbody>
