@@ -127,11 +127,6 @@ summary(decideTests(efit))
 ```
 
 
-```{r}
-qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
-abline(0,1)
-```
-
 
 ```{r}
 topTable(efit, coef=1, sort.by= "P")
@@ -237,7 +232,6 @@ contrasts
 ```
 
 ```{r}
-#first, testing all pairwise cluster comparisons. 
 fit<- contrasts.fit(fit, contrasts= contrasts)
 ```
 
@@ -248,10 +242,7 @@ efit<- eBayes(fit)
 ```{r}
 plotSA(efit)
 ```
-```{r}
-qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
-abline(0,1)
-```
+
 
 ```{r}
 c0vall<- topTable(efit, coef=1, n=nrow(fit))
@@ -325,6 +316,43 @@ c6vall<- topTable(efit, coef=7, n=nrow(fit))
 head(c6vall, n=40)
 ```
 
+```{r}
+#output results from each cluster
+TopTable.EachCluster.OnevAll<- list(c0vall, c1vall, c2vall,c3vall,c4vall,c5vall,c6vall)
+
+write.csv(TopTable.EachCluster.OnevAll, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv")
+```
+
+```{r}
+#output table with top 5 upreg DE genes in each cluster by adjusted p
+OnevAll.top10.adjP<- NULL
+for(i in 1:nclust){
+  c<- TopTable.EachCluster.OnevAll[[i]]
+  top10<- c[c$logFC>0,]
+  top10<- top10[order(top10$adj.P.Val),]
+  top10<- rownames(top10)[1:10]
+  OnevAll.top10.adjP<- cbind(OnevAll.top10.adjP, top10)
+}
+colnames(OnevAll.top10.adjP)<- as.character(0:(nclust-1))
+
+write.csv(OnevAll.top10.adjP, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv")
+```
+
+```{r}
+#output table with top 5 upreg DE genes in each cluster by logFC
+OnevAll.top10.logFC<- NULL
+for(i in 1:nclust){
+  c<- TopTable.EachCluster.OnevAll[[i]]
+  top10<- c[order(c$logFC, decreasing = T),]
+  top10<- rownames(top10)[1:10]
+  OnevAll.top10.logFC<- cbind(OnevAll.top10.logFC, top10)
+}
+colnames(OnevAll.top10.logFC)<- as.character(0:(nclust-1))
+
+write.csv(OnevAll.top10.logFC, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv")
+```
+
+
 batch + ind comparisons
 
 ```{r}
@@ -344,10 +372,6 @@ efit<- eBayes(fit)
 plotSA(efit)
 ```
 
-```{r}
-qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
-abline(0,1)
-```
 
 ```{r}
 topsBatch<- topTable(efit, coef=c(1:2),n=nrow(fit))
