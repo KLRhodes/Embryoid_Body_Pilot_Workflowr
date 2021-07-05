@@ -1,0 +1,607 @@
+---
+title: "ReferenceIntegration"
+output: html_document
+---
+```{r}
+library(Seurat)
+library(edgeR)
+library(loomR)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(purrr)
+library(harmony)
+library(ggplot2)
+```
+
+loading data
+
+first, my data
+```{r}
+merged<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds")
+```
+
+
+
+loading in hESC and iPS-to-EB raw dges from scHCL reference set
+
+```{r}
+hESC<- read.table("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/hESC1.rawdge.txt.gz", header=T, row.names = 1)
+
+iPStoEBday20<- read.table("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/iPS-to-EB_20Day_dge.txt.gz", header=T, row.names = 1)
+```
+Note: there is no available metadata for these iPS to EB differentiations (no cell annotations online)
+
+
+
+make seurat objects with all of the data
+```{r}
+hESC.obj<- CreateSeuratObject(hESC)
+EB20.obj<- CreateSeuratObject(iPStoEBday20)
+```
+
+checking quality of cells
+```{r}
+FeatureScatter(hESC.obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+```
+
+```{r}
+#check MT%
+#add %MT to metadata
+hESC.obj[["percent.mt"]]<- PercentageFeatureSet(hESC.obj, pattern= "^MT-")
+```
+
+```{r}
+FeatureScatter(hESC.obj, feature1 = "nCount_RNA", feature2 = "percent.mt")
+```
+
+```{r}
+summary(hESC.obj$percent.mt)
+```
+
+
+```{r, eval=F}
+#normalizing each scHCL dataset
+hESC.obj<- suppressWarnings(SCTransform(hESC.obj, variable.features.n=5000,verbose=F))
+EB20.obj<-suppressWarnings(SCTransform(EB20.obj, variable.features.n=5000,verbose=F))
+```
+
+
+load loom file from Cao et al (fetal tissue scRNA-seq)
+```{r, eval=F}
+Cao<- connect("/project2/gilad/katie/Pilot_HumanEBs/DataFromCaoetal202/GSE156793_S3_gene_count.loom", mode="r+")
+
+Cao
+```
+
+```{r,eval=F}
+Cao[["matrix"]]
+```
+
+
+```{r,eval=F}
+#which genes are protein coding genes
+protein<- which(Cao$row.attrs$gene_type[]=="protein_coding")
+
+#sample genes of all main_cluster_name groups
+#making a data fram of cell names and their cluster identity
+cell.idents<- Cao$get.attribute.df(MARGIN = 2, col.names = "sample", attributes="Main_cluster_name")
+
+cell.idents<- cell.idents %>% rownames_to_column("cellid")
+
+#I'd like to sample ~500 cells from each cluster. Some clusters have fewer than 500 cells, so for those clusters I will take all cells. To do this, I make a dataframe listing the sample size of each cell type.
+s.size<- table(cell.idents$Main_cluster_name)
+s.size[s.size > 500]<- 500
+#reorder
+s.size<- s.size[unique(cell.idents$Main_cluster_name)]
+
+#sample from each cluster
+#make nested df
+nest<- cell.idents %>% group_by(Main_cluster_name) %>% nest() %>% ungroup() %>% mutate(n = s.size)
+ 
+sampled_nest<- nest %>% mutate(samp= map2(data, n, sample_n))
+
+cells.keep<- sampled_nest %>% select(-data) %>% unnest(samp)
+cells.keep<- cells.keep$cellid
+cells<- which(cell.idents$cellid %in% cells.keep)
+```
+
+```{r,eval=F}
+#get metrix for cells and genes of interest
+Cao.matrix<- Cao[["matrix"]][cells,protein]
+```
+
+```{r,eval=F}
+#get metadata
+attrs<- c("Assay", "Batch", "Experiment_batch", "Main_cluster_name", "Fetus_id", "Sex")
+attr.df<-Cao$get.attribute.df(MARGIN = 2, col.names = "sample", attributes=attrs)
+
+#subset the attr.df to just the subset of cells
+attr.df<- attr.df[cells,]
+```
+
+```{r,eval=F}
+#name matrix rows and columns
+rownames(Cao.matrix)<- rownames(attr.df)
+colnames(Cao.matrix)<- Cao[["row_attrs/gene_short_name"]][protein]
+
+#seems like there are some non-unique gene names, which is expected but annoying
+dups<- which(duplicated(colnames(Cao.matrix)))
+
+length(dups)
+```
+
+
+```{r,eval=F}
+#sum the counts for duplicate gene names
+Cao.matrix.test<- (t(Cao.matrix))
+rowname<- rownames(Cao.matrix.test)
+Cao.matrix.test<- cbind(rowname, as.data.frame(Cao.matrix.test))
+
+rownames(Cao.matrix.test)<- NULL
+
+
+Cao.agg.dups<- aggregate(.~rowname, Cao.matrix.test, sum)
+
+anyDuplicated(Cao.agg.dups$rowname)
+```
+
+```{r,eval=F}
+#rename rows
+rownames(Cao.agg.dups)<- Cao.agg.dups$rowname
+
+#remove rowname column
+Cao.agg.dups<- Cao.agg.dups[, 2:ncol(Cao.agg.dups)]
+
+colnames(Cao.agg.dups)<- rownames(attr.df)
+```
+
+Now, Convert to Seurat Object. Major question: is this raw data? or are these counts normalized?
+```{r,eval=F}
+Cao.obj<- CreateSeuratObject(Cao.agg.dups, meta.data= attr.df)
+```
+
+
+Normalize the fetal reference set
+```{r,eval=F}
+#first normalizing with SCTransform
+Cao.obj<- SCTransform(Cao.obj, variable.features.n=5000,verbose=F)
+```
+
+```{r, eval=F}
+saveRDS(Cao.obj,"/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds" )
+```
+
+```{r}
+Cao.obj<-readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds")
+```
+
+```{r}
+
+#check features, QC between batches/individuals
+#Cao data has no MT genes
+FeatureScatter(Cao.obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA", group.by = "Fetus_id")
+```
+```{r}
+FeatureScatter(Cao.obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA", group.by = "Batch")
+```
+
+```{r}
+FeatureScatter(Cao.obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA", group.by = "Experiment_batch")
+```
+```{r}
+summary(Cao.obj@meta.data$nCount_RNA)
+```
+```{r}
+summary(Cao.obj@meta.data$nFeature_RNA)
+```
+
+```{r}
+Cao.obj[["percent.mt"]]<- PercentageFeatureSet(Cao.obj, pattern= "^MT-")
+```
+
+```{r}
+summary(Cao.obj@meta.data$percent.mt)
+```
+
+```{r}
+Cao.obj<- RunPCA(Cao.obj, npcs= 100, verbose = F)
+```
+
+```{r}
+DimPlot(Cao.obj, reduction = "pca")
+DimPlot(Cao.obj, reduction = "pca", group.by = "Fetus_id")
+DimPlot(Cao.obj, reduction = "pca", group.by = "Experiment_batch")
+DimPlot(Cao.obj, reduction = "pca", group.by = "Batch")
+DimPlot(Cao.obj, reduction = "pca", group.by = "Main_cluster_name")
+VizDimLoadings(Cao.obj, dims = 1:2, reduction = "pca")
+VizDimLoadings(Cao.obj, dims = 3:4, reduction = "pca")
+VizDimLoadings(Cao.obj, dims = 5:6, reduction = "pca")
+```
+```{r}
+Cao.obj<- FindNeighbors(Cao.obj, dims = 1:30, verbose = F)
+Cao.obj<- RunUMAP(Cao.obj, dims=1:30, verbose = F)
+
+DimPlot(Cao.obj, group.by = "Main_cluster_name", label = T, label.size = 2) + NoLegend()
+```
+```{r}
+DimPlot(Cao.obj, group.by = "Fetus_id")
+```
+
+```{r}
+DimPlot(Cao.obj, group.by = "Experiment_batch")
+```
+
+```{r}
+#rename Cao metadata so none match with EB object (just need to replace Batch)
+colnames(Cao.obj@meta.data)
+
+colnames(Cao.obj@meta.data)[5]<-"Batch_week"
+```
+
+```{r, eval=F}
+#rename orig.idents
+hESC.obj$orig.ident<- "scHCL.hESC"
+EB20.obj$orig.ident<- "scHCL.EB20"
+merged$orig.ident<- "EB.Pilot"
+Cao.obj$orig.ident<- "Cao.EtAl"
+```
+
+```{r, eval=F}
+#merge objects
+obj.list<- list(Cao.obj, merged, hESC.obj, EB20.obj)
+merge.all<- merge(x=obj.list[[1]], y=c(obj.list[[2]], obj.list[[3]], obj.list[[4]]), merge.data=T)
+```
+
+```{r, eval=F}
+merge.all<- SCTransform(merge.all, variable.features.n = 5000, vars.to.regress = c("orig.ident"), assay= "SCT")
+```
+
+```{r, eval=F}
+all.genes= rownames(merge.all)
+merge.all<-FindVariableFeatures(merge.all,selection.method="vst", nfeatures = 5000)
+merge.all<- ScaleData(merge.all, features = all.genes, assay = "SCT")
+merge.all<-RunPCA(merge.all, npcs = 100, verbose=F, Assay="SCT")
+```
+
+
+```{r, eval=F}
+merge.all<- RunHarmony(merge.all, c("orig.ident", "individual", "Batch"), theta = c(3,1,1), plot_convergence = T, assay.use = "SCT")
+```
+
+```{r, eval=F}
+merge.all<- RunUMAP(merge.all,dims=1:100, reduction="harmony")
+```
+
+```{r, eval=F}
+saveRDS(merge.all,"/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/merge.all.SCTwRegressOrigIdent.Harmony.rds" )
+```
+
+```{r}
+merge.all<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/merge.all.SCTwRegressOrigIdent.Harmony.rds")
+```
+
+```{r}
+V<- DimPlot(merge.all, group.by = "Main_cluster_name", label = T, label.size = 2.5, repel = T)+NoLegend()
+
+V
+```
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_MainClusterID_SCTregress.pdf")
+
+V
+
+dev.off()
+```
+
+Add new metadata to include Main_cluster_name as well as cluster labels from EB Pilot DE results, and orig ident of the HCL data
+```{r}
+merge.all<- AddMetaData(merge.all, col.name = "all.labels", metadata = merge.all@meta.data$Main_cluster_name)
+
+#for cells with NA for main_cluster_name, replace label from SCT_snn_res 0.1
+for (i in (1:nrow(merge.all@meta.data))){
+if (is.na(merge.all@meta.data$all.labels[i]) == T){
+  merge.all@meta.data$all.labels[i]<- merge.all@meta.data$SCT_snn_res.0.1[i]
+}
+}
+
+#and now replace remaining NAs with orig.ident
+for (i in (1:nrow(merge.all@meta.data))){
+if (is.na(merge.all@meta.data$all.labels[i]) == T){
+  merge.all@meta.data$all.labels[i]<- merge.all@meta.data$orig.ident[i]
+}
+}
+```
+
+```{r}
+V<- DimPlot(merge.all, group.by = "all.labels", label = T, label.size = 2.5, repel = T)+NoLegend()
+
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_allLabels_SCTregress.pdf")
+
+V
+
+dev.off()
+```
+
+```{r}
+V<- DimPlot(merge.all, group.by = "orig.ident", label = F, order= c("scHCL.hESC","scHCL.EB20", "EB.Pilot","Cao.EtAl"))
+  
+
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_origident_all_SCTregress.pdf")
+
+V
+
+dev.off()
+```
+
+```{r}
+DimPlot(merge.all, split.by = "orig.ident", label = F, order= c("scHCL.hESC","scHCL.EB20", "EB.Pilot","Cao.EtAl"))
+```
+
+```{r}
+options(ggrepel.max.overlaps = Inf)
+```
+
+```{r}
+#subset object to just my data and Cao reference, plot UMAP
+Idents(merge.all)<- "orig.ident"
+sub<- subset(merge.all, idents= c("Cao.EtAl", "EB.Pilot"))
+V<- DimPlot(sub, group.by = "all.labels", label = T, repel = T, label.size = 2.5)+NoLegend()
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_EBpilotAndCao_SCTregress.pdf")
+
+V
+
+dev.off()
+```
+
+```{r}
+V<- DimPlot(sub, group.by = "Main_cluster_name", label = T, repel = T, label.size = 2.5)+NoLegend()
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_EBpilotAndCao_groupbyMainClusterName_SCTregress.pdf")
+
+V
+
+dev.off()
+```
+
+```{r}
+V<- DimPlot(sub, group.by = "SCT_snn_res.0.1", label = T, repel = T, label.size = 2.5)+NoLegend()
+V
+```
+
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_EBpilotAndCao_groupbySeuratClusterRes0.1_SCTregress.pdf")
+
+V
+
+dev.off()
+```
+
+```{r}
+DimPlot(sub, group.by = "orig.ident")
+```
+
+```{r}
+DimPlot(sub, group.by = "orig.ident", order="Cao.EtAl")
+```
+
+```{r}
+#Subset object to just my data and HCL references, plot UMAP
+sub<- subset(merge.all, idents= c("scHCL.EB20", "EB.Pilot"))
+V<- DimPlot(sub, group.by = "orig.ident", label = F)
+V
+```
+
+
+```{r}
+sub<- subset(merge.all, idents= c("scHCL.EB20", "EB.Pilot", "Cao.EtAl"))
+DimPlot(sub, group.by="orig.ident", pt.size = 0.2, label=F) 
+```
+
+```{r}
+FeaturePlot(merge.all, split.by = "orig.ident", features = c("TERF1", "POU5F1", "DPPA3"), slot = "data", pt.size = 0.1)
+```
+
+```{r}
+DimPlot(merge.all, split.by="orig.ident",group.by = "all.labels", pt.size = 0.2, label=F) +NoLegend()
+```
+
+
+
+Now, will transfer labels for Cao Et Al and hESC onto my data. 
+```{r, eval=F}
+#subset to remove scHCL.EB20
+sub<- subset(merge.all, idents= c("Cao.EtAl", "EB.Pilot", "scHCL.hESC"))
+#compute distance matrix based on harmony embeddings, dims 1:100
+har_embeds<- sub@reductions$harmony@cell.embeddings
+
+har_distmat<- as.matrix(dist(har_embeds, method="euclidean", upper=TRUE))
+```
+
+
+```{r, eval=F}
+#vectors with cell ids from Cao.EtAl, EB.pilot, and scHCL.hESC
+EB.pilot.ids<-rownames(merge.all@meta.data[merge.all@meta.data$orig.ident == "EB.Pilot",])
+
+#subset rows to only cells in EB.pilot
+sub_har_distmat<- har_distmat[rownames(har_distmat) %in% EB.pilot.ids,]
+
+#subset cols to only cells not in EB.pilot
+'%notin%'<- Negate('%in%')
+sub_har_distmat<- sub_har_distmat[,colnames(sub_har_distmat) %notin% EB.pilot.ids]
+
+```
+
+```{r, eval=F}
+nearest.ref.cell.id<- NULL
+nearest.ref.cell.dist<- NULL
+#for loop, loop through each row
+for (i in 1:nrow(sub_har_distmat)){
+  nearest.ref.cell.dist[i]<- min(sub_har_distmat[i,])
+  nearest.ref.cell.id[i]<- names(which.min(sub_har_distmat[i,]))
+}
+
+nearest.ref.table<- cbind(rownames(sub_har_distmat), nearest.ref.cell.id,nearest.ref.cell.dist)
+
+colnames(nearest.ref.table)<- c("EB.cell.id", "nearest.ref.cell.id", "harmony.dist.to.nearest.ref.cell")
+```
+
+```{r, eval=F}
+#add annotation
+ann<- as.data.frame(merge.all@meta.data$all.labels)
+ann<- cbind(rownames(merge.all@meta.data), ann)
+colnames(ann)<- c("nearest.ref.cell.id", "annotation")
+
+nearest.ref.table<- as.data.frame(nearest.ref.table)
+nearest.ann<- left_join(nearest.ref.table, ann, by=c("nearest.ref.cell.id"))
+
+write.csv(nearest.ann, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv")
+```
+
+```{r}
+nearest.ann<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv", header=T, row.names = 1)
+```
+
+
+```{r, eval=F}
+a<- as.data.frame(table(nearest.ann$annotation))
+a<- a[a$Var1 != "scHCL.EB20",]
+a<- a[a$Var1 != "0",]
+a<- a[a$Var1 != "1",]
+a<- a[a$Var1 != "2",]
+a<- a[a$Var1 != "3",]
+a<- a[a$Var1 != "4",]
+a<- a[a$Var1 != "5",]
+a<- a[a$Var1 != "6",]
+a<- a[a$Var1 != "7",]
+colnames(a)<- c("reference.cell.type", "Frequency")
+
+write.csv(a, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv")
+```
+
+```{r}
+a<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv", header=T, row.names = 1)
+```
+
+
+```{r}
+sub<- subset(merge.all, idents= c("EB.Pilot"))
+EB.cell.id<- rownames(sub@meta.data)
+sub@meta.data<- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data<- full_join(sub@meta.data, nearest.ann, by= c("EB.cell.id"))
+rownames(sub@meta.data)<- EB.cell.id
+
+V<- DimPlot(sub, group.by="annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+
+V
+```
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_EBpilot_annotationsFromReference.pdf")
+
+V
+
+dev.off()
+```
+
+Instead of matching to just one nearest cell, we get a more robust annotation if we check a group of nearest neighbors for common annotations
+```{r, eval=F}
+mostcommon.ann<- NULL
+maxann.FIVEnearest<- NULL
+
+#for loop, loop through each row
+for (i in 1:nrow(sub_har_distmat)){
+  cell<- sub_har_distmat[i,]
+  cell<- cell[order(cell)]
+  topfive<- names(cell[1:5])
+  
+  #get the annotations of the nearest 5 reference cells
+  topfiveann<- merge.all@meta.data$all.labels[rownames(merge.all@meta.data) %in% topfive]
+  
+  #if/else at least 3/5 match annotations
+  maxann<- max(table(topfiveann))
+  finalann<- names(which.max(table(topfiveann)))
+  
+  maxann.FIVEnearest[i]<- maxann
+  
+  if(maxann >= 3){
+    mostcommon.ann[i]<- finalann
+  } else {
+    mostcommon.ann[i]<- "uncertain"
+  }
+  
+}
+
+CommonAnnDF<- as.data.frame(cbind(rownames(sub_har_distmat), mostcommon.ann, maxann.FIVEnearest))
+colnames(CommonAnnDF)<- c("EB.cell.id", "Annotation", "NoutofFIVErefneighborsWithSameAnnotation")
+```
+
+```{r, eval=F}
+write.csv(CommonAnnDF, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/MostCommonAnnotation.FiveNearestRefCells.csv")
+```
+
+```{r}
+CommonAnnDF<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/MostCommonAnnotation.FiveNearestRefCells.csv", header=T, row.names = 1)
+```
+
+
+```{r, eval=F}
+b<- table(CommonAnnDF$Annotation)
+
+write.csv(b, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv")
+```
+
+```{r}
+b<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv", header=T, row.names = 1)
+```
+
+
+```{r}
+#print fetal celltypes not present in EB data
+'%notin%'<- Negate('%in%')
+unique(merge.all@meta.data$Main_cluster_name)[unique(merge.all@meta.data$Main_cluster_name) %notin% b$Var1] 
+```
+
+
+```{r}
+sub<- subset(merge.all, idents= c("EB.Pilot"))
+EB.cell.id<- rownames(sub@meta.data)
+sub@meta.data<- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data<- full_join(sub@meta.data, CommonAnnDF, by= c("EB.cell.id"))
+rownames(sub@meta.data)<- EB.cell.id
+
+V<- DimPlot(sub, group.by="Annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/IntegrateReference_UMAP_EBpilot_CommonAnnotationsFromFiveReferenceNeighbors.pdf")
+
+V
+
+dev.off()
+```
+
+ 
+
+```{r}
+sessionInfo()
+```
+
+
