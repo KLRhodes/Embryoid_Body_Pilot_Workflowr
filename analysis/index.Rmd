@@ -71,7 +71,7 @@ See code directory: https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/bl
 
 Here, we integrate our EB data with 1) scRNA-seq data from human fetal tissues (Cao et al. 2020) and with Embryoid body cells and human embryonic stem cells from Human Cell Landscape (Han et al. 2020)
 
-+ [Integrate Reference and Annotate EB cells](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)
++ [Integrate Reference and Annotate EB cells](IntegrateReference_SCTregressCaoPlusScHCL.Rmd)
 
 We then checked that the integration and annotation procedure was robust by subsetting our EB data to only cells for a particular type and re-integrated to check that most cells were annotated the same as in the full integration.
 
@@ -81,7 +81,7 @@ We then checked that the integration and annotation procedure was robust by subs
 + [Integrate Reference w/ just Early Neural Crest EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.html)
 + [Integrate Reference w/ just Early Neural EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.html)
 + [Integrate Reference w/ just Pluripotent/undifferentiated EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.html)
-+ [Check Robustness of Annotations between integrations](RefInt_ComparingFulltoPartialIntegrationAnnotations.htm)
++ [Check Robustness of Annotations between integrations](RefInt_ComparingFulltoPartialIntegrationAnnotations.html)
 + [Check differential expression of annotated cells](ReferenceAnn_DE.html)
 
 # Topic Modelling with FastTopics
@@ -110,7 +110,7 @@ Topic modelling Scripts can be found in the code directory.
 + [Pseudobulk, Using Cluster Resolution 0.1 -- BY CLUSTER](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.html)
 + Single Cell, Cluster Resolution 0.1 -- see: VarPart_SC_res0.1_SCT.Rmd
 + [Single Cell, Cluster Resolution 0.1 -- BY CLUSTER](SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.html)
-+ [Single Cell VariancePartition clean figures](VarPartPlots_res0.1_SCT.Rmd)
++ [Single Cell VariancePartition clean figures](VarPartPlots_res0.1_SCT.html)
 
 #Down Sampling and Power Analysis
 + [Power Analysis](DownSamp_NoiseRatio.html)
