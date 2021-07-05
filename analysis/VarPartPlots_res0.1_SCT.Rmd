@@ -1,0 +1,99 @@
+---
+title: "VarPart.SCres.Plots"
+output: html_document
+---
+```{r}
+library(variancePartition)
+```
+
+```{r}
+varpart<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds")
+```
+
+
+```{r}
+vp<- sortCols(varpart)
+```
+
+
+```{r}
+plotPercentBars(vp[1:10,])
+```
+
+```{r}
+colnames(vp)<- c("Cluster", "Replicate", "Individual", "Residuals")
+G<- plotVarPart(vp)
+G
+```
+
+
+```{r,eval=FALSE}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig4_VarPartSingleCellRes.0.1.png", width=8, height=5, units= "in", res=1080)
+
+G
+  
+dev.off()
+```
+
+```{r}
+#do the genes most effected by individual match what I did in limma?
+vp<- vp[order(vp$individual, decreasing=T),]
+head(vp, 30)
+```
+
+```{r}
+#do the genes most effected by batch match what I did in limma?
+vp<- vp[order(vp$Batch, decreasing=T),]
+head(vp, 30)
+```
+
+```{r}
+summary(vp$individual)
+```
+
+```{r}
+summary(vp$Batch)
+```
+
+```{r}
+#genes for which individual contributes more to variance than batch?
+vp.indgreaterthanbatch<- vp[vp$individual>vp$Batch,]
+
+dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356
+```
+
+```{r}
+head(vp.indgreaterthanbatch, 20)
+```
+
+
+Plots for Variance Partition by cluster (Res 0.1, SCT assay)
+
+```{r}
+varpart.byclust<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/VarPart.ByCluster.Res0.1.rds")
+```
+
+```{r}
+vp.bar.list<- NULL
+
+for (i in 1:length(varpart.byclust)){
+  v<- varpart.byclust[[i]]
+  vp<- sortCols(v)
+  vp.bar.list[[i]]<-plotVarPart(vp, main= paste0("Percent variance explained by batch and individual in cluster", (i-1)))
+}
+  
+vp.bar.list
+```
+
+```{r}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/VarPart.ByCluster.SCres.Plots.pdf")
+
+vp.bar.list
+
+dev.off()
+```
+
+```{r}
+sessionInfo()
+```
+

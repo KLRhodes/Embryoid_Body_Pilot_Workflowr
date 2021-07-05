@@ -1,0 +1,137 @@
+---
+title: "Variance Partition at single cell resolution"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(limma)
+library(edgeR)
+
+library(Seurat)
+library(variancePartition)
+```
+
+
+choose parameters (integration type, clustering res, min pct threshold)
+```{r}
+f<- 'Harmony.Batchindividual'
+pct<-0.2
+res<- 'SCT_snn_res.0.1'
+```
+
+
+```{r}
+path<- here::here("output/mergedObjects/")
+
+merged<- readRDS(paste0(path,f, ".rds"))
+```
+
+
+```{r}
+path<- here::here("output/GeneLists_by_minPCT/")
+genelist<- read.table(file = paste0(path, "genelist.PCTthresh",pct,"_",f,".rds_",res,".txt"), sep=",")
+genelist<- as.vector(genelist$x)
+```
+
+
+```{r}
+#subset merged to only the genes with PCT > min pct threshold in at least 1 cluster
+submerged<- subset(merged, features = genelist )
+```
+
+```{r}
+#loading normalized data
+submerged<- DGEList(counts=submerged@assays$SCT@counts, lib.size=colSums(submerged@assays$SCT@counts), samples=submerged@meta.data)
+```
+
+
+```{r}
+genes.ribo <- grep('^RP',rownames(submerged),value=T)
+genes.no.ribo <- rownames(submerged)[which(!(rownames(submerged) %in% genes.ribo))]
+submerged$counts <- submerged$counts[which(rownames(submerged$counts) %in% genes.no.ribo),] #remove ribosomal genes
+```
+
+
+```{r}
+submerged<- calcNormFactors(submerged, method="TMM")
+
+summary(submerged$samples$norm.factors)
+```
+
+```{r}
+design<- model.matrix(~submerged$samples$SCT_snn_res.0.1+submerged$samples$Batch+submerged$samples$individual)
+```
+
+```{r}
+v<- voom(submerged, design, plot=T)
+v
+```
+
+```{r}
+form<- ~ (1|SCT_snn_res.0.1) + (1|Batch) + (1|individual)
+```
+
+
+
+```{r}
+varpart<- fitExtractVarPartModel(v, form, submerged$samples, useWeights=TRUE, quiet=TRUE, showWarnings = FALSE)
+```
+
+```{r}
+head(varpart)
+```
+    
+```{r}
+saveRDS(varpart, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds")
+```
+
+
+```{r}
+vp<- sortCols(varpart)
+```
+
+
+```{r}
+plotPercentBars(vp[1:10,])
+```
+
+```{r}
+plotVarPart(vp)
+```
+
+```{r}
+#do the genes most effected by individual match what I did in limma?
+vp<- vp[order(vp$individual, decreasing=T),]
+head(vp, 30)
+```
+
+```{r}
+#do the genes most effected by batch match what I did in limma?
+vp<- vp[order(vp$Batch, decreasing=T),]
+head(vp, 30)
+```
+
+```{r}
+summary(vp$individual)
+```
+
+```{r}
+summary(vp$Batch)
+```
+
+```{r}
+#genes for which individual contributes more to variance than batch?
+vp.indgreaterthanbatch<- vp[vp$individual>vp$Batch,]
+
+dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356
+```
+
+```{r}
+head(vp.indgreaterthanbatch, 20)
+```
+
+```{r}
+sessionInfo()
+```
+
