@@ -440,16 +440,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree4123658a15772363aabe7e252b26729c15cd1419targetblank4123658a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/4123658a15772363aabe7e252b26729c15cd1419" target="_blank">4123658</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree8c34ca9fb9703193cee0ec8f207331e837187c7ftargetblank8c34ca9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/8c34ca9fb9703193cee0ec8f207331e837187c7f" target="_blank">8c34ca9</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree4123658a15772363aabe7e252b26729c15cd1419targetblank4123658a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree8c34ca9fb9703193cee0ec8f207331e837187c7ftargetblank8c34ca9a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/4123658a15772363aabe7e252b26729c15cd1419" target="_blank">4123658</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/8c34ca9fb9703193cee0ec8f207331e837187c7f" target="_blank">8c34ca9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -583,6 +583,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/8c34ca9fb9703193cee0ec8f207331e837187c7f/analysis/index.Rmd" target="_blank">8c34ca9</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-07-05
+</td>
+<td>
+wflow_publish(&quot;analysis/index.Rmd&quot;)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/ba90a384f7031c7f1c603b0f52f12138e100b199/docs/index.html" target="_blank">ba90a38</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-07-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1332,8 +1366,21 @@ Start workflowr project.
 </div>
 <div id="reference-integration" class="section level1">
 <h1>Reference Integration</h1>
-<p>Here, we integrate our EB data with 1) scRNA-seq data from human fetal tissues (Cao et al. 2020) and with Embryoid body cells and human embryonic stem cells from Human Cell Landscape (Han et al. 2020) + <a href="IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html">Integrate Reference and Annotate EB cells</a></p>
-<p>We then checked that the integration and annotation procedure was robust by subsetting our EB data to only cells for a particular type and re-integrated to check that most cells were annotated the same as in the full integration. + <a href="IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.html">Integrate Reference w/ just Early Ectoderm EB cells</a> + <a href="IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.html">Integrate Reference w/ just Endoderm EB cells</a> + <a href="IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.html">Integrate Reference w/ just Mesoderm EB cells</a> + <a href="IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.html">Integrate Reference w/ just Early Neural Crest EB cells</a> + <a href="IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.html">Integrate Reference w/ just Early Neural EB cells</a> + <a href="IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.html">Integrate Reference w/ just Pluripotent/undifferentiated EB cells</a> + <a href="RefInt_ComparingFulltoPartialIntegrationAnnotations.htm">Check Robustness of Annotations between integrations</a> + <a href="ReferenceAnn_DE.html">Check differential expression of annotated cells</a></p>
+<p>Here, we integrate our EB data with 1) scRNA-seq data from human fetal tissues (Cao et al. 2020) and with Embryoid body cells and human embryonic stem cells from Human Cell Landscape (Han et al. 2020)</p>
+<ul>
+<li><a href="IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html">Integrate Reference and Annotate EB cells</a></li>
+</ul>
+<p>We then checked that the integration and annotation procedure was robust by subsetting our EB data to only cells for a particular type and re-integrated to check that most cells were annotated the same as in the full integration.</p>
+<ul>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.html">Integrate Reference w/ just Early Ectoderm EB cells</a></li>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.html">Integrate Reference w/ just Endoderm EB cells</a></li>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.html">Integrate Reference w/ just Mesoderm EB cells</a></li>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.html">Integrate Reference w/ just Early Neural Crest EB cells</a></li>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.html">Integrate Reference w/ just Early Neural EB cells</a></li>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.html">Integrate Reference w/ just Pluripotent/undifferentiated EB cells</a></li>
+<li><a href="RefInt_ComparingFulltoPartialIntegrationAnnotations.htm">Check Robustness of Annotations between integrations</a></li>
+<li><a href="ReferenceAnn_DE.html">Check differential expression of annotated cells</a></li>
+</ul>
 </div>
 <div id="topic-modelling-with-fasttopics" class="section level1">
 <h1>Topic Modelling with FastTopics</h1>
