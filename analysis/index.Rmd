@@ -120,8 +120,8 @@ Topic modelling Scripts can be found in the code directory.
 See Josh Popp's GitHub: https://github.com/jmp448/ebpilot
 
 #Scripts for generating clean paper figures
-+ [Fig. 1](Fig1.Rmd)
-+ [Fig. 2](Fig2.Rmd)
++ [Fig. 1](Fig1.html)
++ [Fig. 2](Fig2.html)
 
 
 #Additional Processing and Analyses that were tested but ultimately not included in the paper:
