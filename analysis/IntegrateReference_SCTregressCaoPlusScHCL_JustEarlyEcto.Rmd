@@ -1,0 +1,363 @@
+---
+title: "ReferenceIntegration"
+output: html_document
+---
+```{r}
+library(Seurat)
+library(edgeR)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(purrr)
+library(harmony)
+library(ggplot2)
+```
+
+loading data
+
+first, my data
+```{r}
+merged<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds")
+```
+
+subset to only early ectoderm cells (cluster 1, res 0.1)
+```{r}
+merged<- subset(merged, idents = 1)
+```
+
+```{r}
+DimPlot(merged)
+```
+
+
+loading in hESC and iPS-to-EB raw dges from scHCL reference set
+
+```{r}
+hESC<- read.table("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/hESC1.rawdge.txt.gz", header=T, row.names = 1)
+
+iPStoEBday20<- read.table("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/iPS-to-EB_20Day_dge.txt.gz", header=T, row.names = 1)
+```
+Note: there is no available metadata for these iPS to EB differentiations (no cell annotations online)
+
+
+
+make a seurat objects with all of the data
+```{r}
+hESC.obj<- CreateSeuratObject(hESC)
+EB20.obj<- CreateSeuratObject(iPStoEBday20)
+```
+
+
+```{r}
+#normalizing each dataset
+hESC.obj<- suppressWarnings(SCTransform(hESC.obj, variable.features.n=5000,verbose=F))
+
+EB20.obj<-suppressWarnings(SCTransform(EB20.obj, variable.features.n=5000,verbose=F))
+```
+
+
+
+```{r}
+Cao.obj<-readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds")
+```
+
+
+
+```{r}
+Cao.obj<- RunPCA(Cao.obj, npcs= 100, verbose = F)
+Cao.obj<- FindNeighbors(Cao.obj, dims = 1:30, verbose = F)
+Cao.obj<- RunUMAP(Cao.obj, dims=1:30, verbose = F)
+```
+
+
+
+```{r}
+#rename Cao metadata so none match with EB (just need to replace Batch)
+colnames(Cao.obj@meta.data)
+
+colnames(Cao.obj@meta.data)[5]<-"Batch_week"
+```
+
+```{r}
+#rename orig.idents
+hESC.obj$orig.ident<- "scHCL.hESC"
+EB20.obj$orig.ident<- "scHCL.EB20"
+merged$orig.ident<- "EB.Pilot"
+Cao.obj$orig.ident<- "Cao.EtAl"
+#merge objects
+obj.list<- list(Cao.obj, merged, hESC.obj, EB20.obj)
+merge.all<- merge(x=obj.list[[1]], y=c(obj.list[[2]], obj.list[[3]], obj.list[[4]]), merge.data=T)
+```
+
+
+```{r, message=F}
+merge.all<- SCTransform(merge.all, variable.features.n = 5000, vars.to.regress = c("orig.ident"), assay= "SCT")
+```
+
+```{r}
+all.genes= rownames(merge.all)
+merge.all<-FindVariableFeatures(merge.all,selection.method="vst", nfeatures = 5000)
+merge.all<- ScaleData(merge.all, features = all.genes, assay = "SCT")
+merge.all<-RunPCA(merge.all, npcs = 100, verbose=F, Assay="SCT")
+```
+
+```{r}
+DimPlot(merge.all, reduction = "pca", group.by = "orig.ident")
+```
+
+```{r}
+merge.all<- RunHarmony(merge.all, c("orig.ident", "individual", "Batch"), theta = c(3,1,1), plot_convergence = T, assay.use = "SCT")
+```
+
+```{r}
+DimPlot(merge.all, group.by= "orig.ident", reduction= "harmony")
+```
+
+```{r}
+merge.all<- RunUMAP(merge.all,dims=1:100, reduction="harmony")
+```
+
+
+```{r}
+V<- DimPlot(merge.all, group.by = "Main_cluster_name", label = T, label.size = 2.5, repel = T)+NoLegend()
+
+V
+```
+
+
+Add new metadata to include Main_cluster_name as well as cluster labels from EB Pilot DE results, and orig ident of the HCL data
+```{r}
+merge.all<- AddMetaData(merge.all, col.name = "all.labels", metadata = merge.all@meta.data$Main_cluster_name)
+
+#for cells with NA for main_cluster_name, replace label from SCT_snn_res 0.1
+for (i in (1:nrow(merge.all@meta.data))){
+if (is.na(merge.all@meta.data$all.labels[i]) == T){
+  merge.all@meta.data$all.labels[i]<- merge.all@meta.data$SCT_snn_res.0.1[i]
+}
+}
+
+#and now replace remaining NAs with orig.ident
+for (i in (1:nrow(merge.all@meta.data))){
+if (is.na(merge.all@meta.data$all.labels[i]) == T){
+  merge.all@meta.data$all.labels[i]<- merge.all@meta.data$orig.ident[i]
+}
+}
+```
+
+```{r}
+V<- DimPlot(merge.all, group.by = "all.labels", label = T, label.size = 2.5, repel = T)+NoLegend()
+
+V
+```
+
+
+```{r}
+V<- DimPlot(merge.all, group.by = "orig.ident", label = F, order= c("scHCL.hESC","scHCL.EB20", "EB.Pilot","Cao.EtAl"))
+
+V
+```
+
+```{r}
+DimPlot(merge.all, split.by = "orig.ident", label = F, order= c("scHCL.hESC","scHCL.EB20", "EB.Pilot","Cao.EtAl"))
+```
+
+```{r}
+options(ggrepel.max.overlaps = Inf)
+```
+
+```{r}
+#subset object to just my data and Cao reference, plot UMAP
+Idents(merge.all)<- "orig.ident"
+sub<- subset(merge.all, idents= c("Cao.EtAl", "EB.Pilot"))
+V<- DimPlot(sub, group.by = "all.labels", label = T, repel = T, label.size = 2.5)+NoLegend()
+V
+```
+
+
+```{r}
+V<- DimPlot(sub, group.by = "Main_cluster_name", label = T, repel = T, label.size = 2.5)+NoLegend()
+V
+```
+
+
+```{r}
+V<- DimPlot(sub, group.by = "SCT_snn_res.0.1", label = T, repel = T, label.size = 2.5)+NoLegend()
+V
+```
+
+
+
+```{r}
+DimPlot(sub, group.by = "orig.ident")
+```
+```{r}
+DimPlot(sub, group.by = "orig.ident", order="Cao.EtAl")
+```
+
+```{r}
+#Subset object to just my data and HCL references, plot UMAP
+sub<- subset(merge.all, idents= c("scHCL.EB20", "EB.Pilot"))
+V<- DimPlot(sub, group.by = "orig.ident", label = F)
+V
+```
+
+
+```{r}
+sub<- subset(merge.all, idents= c("scHCL.EB20", "EB.Pilot", "Cao.EtAl"))
+DimPlot(sub, group.by="orig.ident", pt.size = 0.2, label=F) 
+```
+
+
+
+```{r}
+DimPlot(merge.all, split.by="orig.ident",group.by = "all.labels", pt.size = 0.2, label=F) +NoLegend()
+```
+
+
+
+Now, will transfer labels for Cao Et Al and hESC onto my data. 
+```{r}
+#subset to remove scHCL.EB20
+sub<- subset(merge.all, idents= c("Cao.EtAl", "EB.Pilot", "scHCL.hESC"))
+#compute distance matrix based on harmony embeddings, dims 1:100
+har_embeds<- sub@reductions$harmony@cell.embeddings
+
+har_distmat<- as.matrix(dist(har_embeds, method="euclidean", upper=TRUE))
+```
+
+
+```{r}
+#vectors with cell ids from Cao.EtAl, EB.pilot, and scHCL.hESC
+EB.pilot.ids<-rownames(merge.all@meta.data[merge.all@meta.data$orig.ident == "EB.Pilot",])
+
+#subset rows to only cells in EB.pilot
+sub_har_distmat<- har_distmat[rownames(har_distmat) %in% EB.pilot.ids,]
+
+#subset cols to only cells not in EB.pilot
+'%notin%'<- Negate('%in%')
+sub_har_distmat<- sub_har_distmat[,colnames(sub_har_distmat) %notin% EB.pilot.ids]
+
+```
+
+```{r}
+nearest.ref.cell.id<- NULL
+nearest.ref.cell.dist<- NULL
+#for loop, loop through each row
+for (i in 1:nrow(sub_har_distmat)){
+  nearest.ref.cell.dist[i]<- min(sub_har_distmat[i,])
+  nearest.ref.cell.id[i]<- names(which.min(sub_har_distmat[i,]))
+}
+
+nearest.ref.table<- cbind(rownames(sub_har_distmat), nearest.ref.cell.id,nearest.ref.cell.dist)
+
+colnames(nearest.ref.table)<- c("EB.cell.id", "nearest.ref.cell.id", "harmony.dist.to.nearest.ref.cell")
+```
+
+```{r}
+#add annotation
+ann<- as.data.frame(merge.all@meta.data$all.labels)
+ann<- cbind(rownames(merge.all@meta.data), ann)
+colnames(ann)<- c("nearest.ref.cell.id", "annotation")
+
+nearest.ref.table<- as.data.frame(nearest.ref.table)
+nearest.ann<- left_join(nearest.ref.table, ann, by=c("nearest.ref.cell.id"))
+
+
+```
+
+```{r}
+a<- as.data.frame(table(nearest.ann$annotation))
+a<- a[a$Var1 != "scHCL.EB20",]
+a<- a[a$Var1 != "0",]
+a<- a[a$Var1 != "1",]
+a<- a[a$Var1 != "2",]
+a<- a[a$Var1 != "3",]
+a<- a[a$Var1 != "4",]
+a<- a[a$Var1 != "5",]
+a<- a[a$Var1 != "6",]
+a<- a[a$Var1 != "7",]
+colnames(a)<- c("reference.cell.type", "Frequency")
+
+a
+```
+
+```{r}
+sub<- subset(merge.all, idents= c("EB.Pilot"))
+EB.cell.id<- rownames(sub@meta.data)
+sub@meta.data<- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data<- full_join(sub@meta.data, nearest.ann, by= c("EB.cell.id"))
+rownames(sub@meta.data)<- EB.cell.id
+
+V<- DimPlot(sub, group.by="annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+
+V
+```
+
+
+Instead of matching to just one nearest cell, we will get a more robust annotation if we check a group of nearest neighbors for common annotations
+```{r}
+mostcommon.ann<- NULL
+maxann.FIVEnearest<- NULL
+
+#for loop, loop through each row
+for (i in 1:nrow(sub_har_distmat)){
+  cell<- sub_har_distmat[i,]
+  cell<- cell[order(cell)]
+  topfive<- names(cell[1:5])
+  
+  #get the annotations of the nearest 5 reference cells
+  topfiveann<- merge.all@meta.data$all.labels[rownames(merge.all@meta.data) %in% topfive]
+  
+  #if/else at least 3/5 match annotations
+  maxann<- max(table(topfiveann))
+  finalann<- names(which.max(table(topfiveann)))
+  
+  maxann.FIVEnearest[i]<- maxann
+  
+  if(maxann >= 3){
+    mostcommon.ann[i]<- finalann
+  } else {
+    mostcommon.ann[i]<- "uncertain"
+  }
+  
+}
+
+CommonAnnDF<- as.data.frame(cbind(rownames(sub_har_distmat), mostcommon.ann, maxann.FIVEnearest))
+colnames(CommonAnnDF)<- c("EB.cell.id", "Annotation", "NoutofFIVErefneighborsWithSameAnnotation")
+
+```
+
+```{r, eval=F}
+write.csv(CommonAnnDF,"/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv")
+```
+
+```{r}
+b<- table(CommonAnnDF$Annotation)
+
+b
+```
+
+```{r}
+#print fetal celltypes not present in EB data
+unique(merge.all@meta.data$Main_cluster_name)[unique(merge.all@meta.data$Main_cluster_name) %notin% names(b)] 
+```
+
+
+```{r}
+sub<- subset(merge.all, idents= c("EB.Pilot"))
+EB.cell.id<- rownames(sub@meta.data)
+sub@meta.data<- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data<- full_join(sub@meta.data, CommonAnnDF, by= c("EB.cell.id"))
+rownames(sub@meta.data)<- EB.cell.id
+
+V<- DimPlot(sub, group.by="Annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+
+V
+```
+
+```{r}
+sessionInfo()
+```
+
+
+
