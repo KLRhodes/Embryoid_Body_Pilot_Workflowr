@@ -1,0 +1,4329 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>ReferenceIntegration</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Embryoid_Body_Pilot_Workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">ReferenceIntegration</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-07-04
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you'll want to first commit it to the Git repo. If you're still working on the analysis, you can ignore this warning. When you're finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it's best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200804code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200804)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200804code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200804)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds
+</td>
+<td style="text-align:left;">
+../output/mergedObjects/Harmony.Batchindividual.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/hESC1.rawdge.txt.gz
+</td>
+<td style="text-align:left;">
+../data/dge/hESC1.rawdge.txt.gz
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/iPS-to-EB_20Day_dge.txt.gz
+</td>
+<td style="text-align:left;">
+../data/dge/iPS-to-EB_20Day_dge.txt.gz
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+</td>
+<td style="text-align:left;">
+../output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+</td>
+<td style="text-align:left;">
+../output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree56c37c9be4d83a46f6af97176ac5285dcb6c56c7targetblank56c37c9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/56c37c9be4d83a46f6af97176ac5285dcb6c56c7" target="_blank">56c37c9</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree56c37c9be4d83a46f6af97176ac5285dcb6c56c7targetblank56c37c9a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/56c37c9be4d83a46f6af97176ac5285dcb6c56c7" target="_blank">56c37c9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    output/.Rhistory
+
+Untracked files:
+    Untracked:  GSE122380_raw_counts.txt.gz
+    Untracked:  UTF1_plots.Rmd
+    Untracked:  analysis/CompiledFits_BatchvInd.Rmd
+    Untracked:  analysis/DownSamp_NoiseRatio.Rmd
+    Untracked:  analysis/Fig1.Rmd
+    Untracked:  analysis/Fig2.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.Rmd
+    Untracked:  analysis/OLD/
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.8_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.Rmd
+    Untracked:  analysis/RefInt_ComparingFulltoPartialIntegrationAnnotations.Rmd
+    Untracked:  analysis/ReferenceAnn_DE.Rmd
+    Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/VarPartPlots_res0.1_SCT.Rmd
+    Untracked:  analysis/VarPart_SC_res0.1_SCT.Rmd
+    Untracked:  analysis/child/
+    Untracked:  analysis/k10topics_Explore.Rmd
+    Untracked:  analysis/k6topics_Explore.Rmd
+    Untracked:  build_refint_scale.R
+    Untracked:  build_refint_sct.R
+    Untracked:  build_stuff.R
+    Untracked:  build_varpart_sc.R
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/CellRangerPreprocess.Rmd
+    Untracked:  code/ConvertToDGE.Rmd
+    Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/ConvertToDGE_SingleCellRes_minPCT0.2.Rmd
+    Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/GEO_processed_data.Rmd
+    Untracked:  code/PowerAnalysis_NoiseRatio.ipynb
+    Untracked:  code/Untitled.ipynb
+    Untracked:  code/Untitled1.ipynb
+    Untracked:  code/compile_fits.Rmd
+    Untracked:  code/fit_all_models.sh
+    Untracked:  code/fit_poisson_nmf.R
+    Untracked:  code/fit_poisson_nmf.sbatch
+    Untracked:  code/functions_for_fit_comparison.Rmd
+    Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  code/prefit_poisson_nmf.R
+    Untracked:  code/prefit_poisson_nmf.sbatch
+    Untracked:  code/prepare_data_for_fastTopics.Rmd
+    Untracked:  data/HCL_Fig1_adata.h5ad
+    Untracked:  data/HCL_Fig1_adata.h5seurat
+    Untracked:  data/dge/
+    Untracked:  data/dge_raw_data.tar.gz
+    Untracked:  data/ref.expr.rda
+    Untracked:  figure/
+    Untracked:  output/CR_sampleQCrds/
+    Untracked:  output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+    Untracked:  output/CaoEtAl.Obj.rds
+    Untracked:  output/ClusterInfo_res0.1.csv
+    Untracked:  output/DGELists/
+    Untracked:  output/DownSampleVarPart.rds
+    Untracked:  output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/GEOsubmissionProcessedFiles/
+    Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv
+    Untracked:  output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/ResidualVariances_fromDownSampAnalysis.csv
+    Untracked:  output/SingleCell_VariancePartition_RNA_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+    Untracked:  output/TopicModelling_k10_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top15drivergenes.byZ.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustMeso.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv
+    Untracked:  output/VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/azimuth/
+    Untracked:  output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_scres.rds
+    Untracked:  output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/fasttopics/
+    Untracked:  output/figs/
+    Untracked:  output/merge.Cao.SCTwRegressOrigIdent.rds
+    Untracked:  output/merge.all.SCTwRegressOrigIdent.Harmony.rds
+    Untracked:  output/merged.SCT.counts.matrix.rds
+    Untracked:  output/merged.raw.counts.matrix.rds
+    Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
+    Untracked:  output/sampleQCrds/
+    Untracked:  output/splitgpm_gsea_results/
+    Untracked:  slurm-12005914.out
+    Untracked:  slurm-12005923.out
+
+Unstaged changes:
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatch.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.Rmd
+    Modified:   analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Deleted:    analysis/RunscHCL_HarmonyBatchInd.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(Seurat)
+library(edgeR)</code></pre>
+<pre><code>Loading required package: limma</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(tidyr)
+library(tibble)
+library(purrr)
+library(harmony)</code></pre>
+<pre><code>Loading required package: Rcpp</code></pre>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<p>loading data</p>
+<p>first, my data</p>
+<pre class="r"><code>merged&lt;- readRDS(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds&quot;)</code></pre>
+<p>subset to only neurons (cluster 5, res 0.1)</p>
+<pre class="r"><code>merged&lt;- subset(merged, idents = 5)</code></pre>
+<pre class="r"><code>DimPlot(merged)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>loading in hESC and iPS-to-EB raw dges from scHCL reference set</p>
+<pre class="r"><code>hESC&lt;- read.table(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/hESC1.rawdge.txt.gz&quot;, header=T, row.names = 1)
+
+iPStoEBday20&lt;- read.table(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/data/dge/iPS-to-EB_20Day_dge.txt.gz&quot;, header=T, row.names = 1)</code></pre>
+<p>Note: there is no available metadata for these iPS to EB differentiations (no cell annotations online)</p>
+<p>make a seurat objects with all of the data</p>
+<pre class="r"><code>hESC.obj&lt;- CreateSeuratObject(hESC)</code></pre>
+<pre><code>Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes
+(&#39;-&#39;)</code></pre>
+<pre class="r"><code>EB20.obj&lt;- CreateSeuratObject(iPStoEBday20)</code></pre>
+<pre><code>Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes
+(&#39;-&#39;)</code></pre>
+<pre class="r"><code>#normalizing each dataset
+hESC.obj&lt;- suppressWarnings(SCTransform(hESC.obj, variable.features.n=5000,verbose=F))
+
+EB20.obj&lt;-suppressWarnings(SCTransform(EB20.obj, variable.features.n=5000,verbose=F))</code></pre>
+<pre class="r"><code>Cao.obj&lt;-readRDS(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds&quot;)</code></pre>
+<pre class="r"><code>Cao.obj&lt;- RunPCA(Cao.obj, npcs= 100, verbose = F)
+
+Cao.obj&lt;- FindNeighbors(Cao.obj, dims = 1:30, verbose = F)
+Cao.obj&lt;- RunUMAP(Cao.obj, dims=1:30, verbose = F)</code></pre>
+<pre><code>Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
+This message will be shown once per session</code></pre>
+<pre class="r"><code>#rename Cao metadata so none match with EB (just need to replace Batch)
+colnames(Cao.obj@meta.data)</code></pre>
+<pre><code> [1] &quot;orig.ident&quot;        &quot;nCount_RNA&quot;        &quot;nFeature_RNA&quot;     
+ [4] &quot;Assay&quot;             &quot;Batch&quot;             &quot;Experiment_batch&quot; 
+ [7] &quot;Main_cluster_name&quot; &quot;Fetus_id&quot;          &quot;Sex&quot;              
+[10] &quot;nCount_SCT&quot;        &quot;nFeature_SCT&quot;     </code></pre>
+<pre class="r"><code>colnames(Cao.obj@meta.data)[5]&lt;-&quot;Batch_week&quot;</code></pre>
+<pre class="r"><code>#rename orig.idents
+hESC.obj$orig.ident&lt;- &quot;scHCL.hESC&quot;
+EB20.obj$orig.ident&lt;- &quot;scHCL.EB20&quot;
+merged$orig.ident&lt;- &quot;EB.Pilot&quot;
+Cao.obj$orig.ident&lt;- &quot;Cao.EtAl&quot;
+#merge objects
+obj.list&lt;- list(Cao.obj, merged, hESC.obj, EB20.obj)
+merge.all&lt;- merge(x=obj.list[[1]], y=c(obj.list[[2]], obj.list[[3]], obj.list[[4]]), merge.data=T)</code></pre>
+<pre class="r"><code>FeatureScatter(merge.all, feature1 = &quot;nCount_SCT&quot;, feature2 = &quot;nFeature_SCT&quot;, group.by = &quot;orig.ident&quot;)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>FeatureScatter(merge.all, feature1 = &quot;nCount_RNA&quot;, feature2 = &quot;nFeature_RNA&quot;, group.by = &quot;orig.ident&quot;)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>merge.all&lt;- SCTransform(merge.all, variable.features.n = 5000, vars.to.regress = c(&quot;orig.ident&quot;), assay= &quot;SCT&quot;)</code></pre>
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |=========                                                             |  12%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |==================                                                    |  25%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |==========================                                            |  38%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |===================================                                   |  50%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |============================================                          |  62%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |====================================================                  |  75%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |=============================================================         |  88%</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>Warning in sqrt(1/i): NaNs produced</code></pre>
+<pre><code>Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached
+
+Warning in theta.ml(y = y, mu = fit$fitted): iteration limit reached</code></pre>
+<pre><code>
+  |                                                                            
+  |======================================================================| 100%
+
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |==============                                                        |  19%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |=====================                                                 |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |=========================                                             |  35%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |================================                                      |  45%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |=================================                                     |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |====================================                                  |  51%
+  |                                                                            
+  |=====================================                                 |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |======================================                                |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |=============================================                         |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |=================================================                     |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |===================================================================   |  95%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================| 100%
+
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |==============                                                        |  19%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |=====================                                                 |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |=========================                                             |  35%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |================================                                      |  45%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |=================================                                     |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |====================================                                  |  51%
+  |                                                                            
+  |=====================================                                 |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |======================================                                |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |=============================================                         |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |=================================================                     |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |===================================================================   |  95%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+<pre class="r"><code>all.genes= rownames(merge.all)
+merge.all&lt;-FindVariableFeatures(merge.all,selection.method=&quot;vst&quot;, nfeatures = 5000)
+merge.all&lt;- ScaleData(merge.all, features = all.genes, assay = &quot;SCT&quot;)</code></pre>
+<pre><code>Centering and scaling data matrix</code></pre>
+<pre class="r"><code>merge.all&lt;-RunPCA(merge.all, npcs = 100, verbose=F, Assay=&quot;SCT&quot;)</code></pre>
+<pre class="r"><code>DimPlot(merge.all, reduction = &quot;pca&quot;, group.by = &quot;orig.ident&quot;)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>merge.all&lt;- RunHarmony(merge.all, c(&quot;orig.ident&quot;, &quot;individual&quot;, &quot;Batch&quot;), theta = c(3,1,1), plot_convergence = T, assay.use = &quot;SCT&quot;)</code></pre>
+<pre><code>Harmony 1/10</code></pre>
+<pre><code>Harmony 2/10</code></pre>
+<pre><code>Harmony 3/10</code></pre>
+<pre><code>Harmony 4/10</code></pre>
+<pre><code>Harmony 5/10</code></pre>
+<pre><code>Harmony converged after 5 iterations</code></pre>
+<pre><code>Warning: Invalid name supplied, making object name syntactically valid. New
+object name is Seurat..ProjectDim.SCT.harmony; see ?make.names for more details
+on syntax validity</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merge.all, group.by= &quot;orig.ident&quot;, reduction= &quot;harmony&quot;)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>merge.all&lt;- RunUMAP(merge.all,dims=1:100, reduction=&quot;harmony&quot;)</code></pre>
+<pre><code>18:44:35 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>18:44:35 Read 48238 rows and found 100 numeric columns</code></pre>
+<pre><code>18:44:35 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>18:44:35 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
+<pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
+<pre><code>**************************************************|
+18:44:54 Writing NN index file to temp file /tmp/jobs/12028895/RtmpPmdqZA/file3f2e12e4e68df
+18:44:54 Searching Annoy index using 1 thread, search_k = 3000
+18:45:22 Annoy recall = 97.24%
+18:45:22 Commencing smooth kNN distance calibration using 1 thread
+18:45:25 Initializing from normalized Laplacian + noise
+18:45:33 Commencing optimization for 200 epochs, with 2209836 positive edges
+18:46:36 Optimization finished</code></pre>
+<pre class="r"><code>V&lt;- DimPlot(merge.all, group.by = &quot;Main_cluster_name&quot;, label = T, label.size = 2.5, repel = T)+NoLegend()</code></pre>
+<pre><code>Warning: Using `as.character()` on a quosure is deprecated as of rlang 0.3.0.
+Please use `as_label()` or `as_name()` instead.
+This warning is displayed once per session.</code></pre>
+<pre class="r"><code>V</code></pre>
+<pre><code>Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Add new metadata to include Main_cluster_name as well as cluster labels from EB Pilot DE results, and orig ident of the HCL data</p>
+<pre class="r"><code>merge.all&lt;- AddMetaData(merge.all, col.name = &quot;all.labels&quot;, metadata = merge.all@meta.data$Main_cluster_name)
+
+#for cells with NA for main_cluster_name, replace label from SCT_snn_res 0.1
+for (i in (1:nrow(merge.all@meta.data))){
+if (is.na(merge.all@meta.data$all.labels[i]) == T){
+  merge.all@meta.data$all.labels[i]&lt;- merge.all@meta.data$SCT_snn_res.0.1[i]
+}
+}
+
+#and now replace remaining NAs with orig.ident
+for (i in (1:nrow(merge.all@meta.data))){
+if (is.na(merge.all@meta.data$all.labels[i]) == T){
+  merge.all@meta.data$all.labels[i]&lt;- merge.all@meta.data$orig.ident[i]
+}
+}</code></pre>
+<pre class="r"><code>V&lt;- DimPlot(merge.all, group.by = &quot;all.labels&quot;, label = T, label.size = 2.5, repel = T)+NoLegend()
+
+V</code></pre>
+<pre><code>Warning: ggrepel: 10 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>V&lt;- DimPlot(merge.all, group.by = &quot;orig.ident&quot;, label = F, order= c(&quot;scHCL.hESC&quot;,&quot;scHCL.EB20&quot;, &quot;EB.Pilot&quot;,&quot;Cao.EtAl&quot;))
+
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merge.all, split.by = &quot;orig.ident&quot;, label = F, order= c(&quot;scHCL.hESC&quot;,&quot;scHCL.EB20&quot;, &quot;EB.Pilot&quot;,&quot;Cao.EtAl&quot;))</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>options(ggrepel.max.overlaps = Inf)</code></pre>
+<pre class="r"><code>#subset object to just my data and Cao reference, plot UMAP
+Idents(merge.all)&lt;- &quot;orig.ident&quot;
+sub&lt;- subset(merge.all, idents= c(&quot;Cao.EtAl&quot;, &quot;EB.Pilot&quot;))
+V&lt;- DimPlot(sub, group.by = &quot;all.labels&quot;, label = T, repel = T, label.size = 2.5)+NoLegend()
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>V&lt;- DimPlot(sub, group.by = &quot;Main_cluster_name&quot;, label = T, repel = T, label.size = 2.5)+NoLegend()
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>V&lt;- DimPlot(sub, group.by = &quot;SCT_snn_res.0.1&quot;, label = T, repel = T, label.size = 2.5)+NoLegend()
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(sub, group.by = &quot;orig.ident&quot;)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(sub, group.by = &quot;orig.ident&quot;, order=&quot;Cao.EtAl&quot;)</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#Subset object to just my data and HCL references, plot UMAP
+sub&lt;- subset(merge.all, idents= c(&quot;scHCL.EB20&quot;, &quot;EB.Pilot&quot;))
+V&lt;- DimPlot(sub, group.by = &quot;orig.ident&quot;, label = F)
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sub&lt;- subset(merge.all, idents= c(&quot;scHCL.EB20&quot;, &quot;EB.Pilot&quot;, &quot;Cao.EtAl&quot;))
+DimPlot(sub, group.by=&quot;orig.ident&quot;, pt.size = 0.2, label=F) </code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merge.all, split.by=&quot;orig.ident&quot;,group.by = &quot;all.labels&quot;, pt.size = 0.2, label=F) +NoLegend()</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Now, will transfer labels for Cao Et Al and hESC onto my data.</p>
+<pre class="r"><code>#subset to remove scHCL.EB20
+sub&lt;- subset(merge.all, idents= c(&quot;Cao.EtAl&quot;, &quot;EB.Pilot&quot;, &quot;scHCL.hESC&quot;))
+#compute distance matrix based on harmony embeddings, dims 1:100
+har_embeds&lt;- sub@reductions$harmony@cell.embeddings
+
+har_distmat&lt;- as.matrix(dist(har_embeds, method=&quot;euclidean&quot;, upper=TRUE))</code></pre>
+<pre class="r"><code>#vectors with cell ids from Cao.EtAl, EB.pilot, and scHCL.hESC
+EB.pilot.ids&lt;-rownames(merge.all@meta.data[merge.all@meta.data$orig.ident == &quot;EB.Pilot&quot;,])
+
+#subset rows to only cells in EB.pilot
+sub_har_distmat&lt;- har_distmat[rownames(har_distmat) %in% EB.pilot.ids,]
+
+#subset cols to only cells not in EB.pilot
+&#39;%notin%&#39;&lt;- Negate(&#39;%in%&#39;)
+sub_har_distmat&lt;- sub_har_distmat[,colnames(sub_har_distmat) %notin% EB.pilot.ids]</code></pre>
+<pre class="r"><code>nearest.ref.cell.id&lt;- NULL
+nearest.ref.cell.dist&lt;- NULL
+#for loop, loop through each row
+for (i in 1:nrow(sub_har_distmat)){
+  nearest.ref.cell.dist[i]&lt;- min(sub_har_distmat[i,])
+  nearest.ref.cell.id[i]&lt;- names(which.min(sub_har_distmat[i,]))
+}
+
+nearest.ref.table&lt;- cbind(rownames(sub_har_distmat), nearest.ref.cell.id,nearest.ref.cell.dist)
+
+colnames(nearest.ref.table)&lt;- c(&quot;EB.cell.id&quot;, &quot;nearest.ref.cell.id&quot;, &quot;harmony.dist.to.nearest.ref.cell&quot;)</code></pre>
+<pre class="r"><code>#add annotation
+ann&lt;- as.data.frame(merge.all@meta.data$all.labels)
+ann&lt;- cbind(rownames(merge.all@meta.data), ann)
+colnames(ann)&lt;- c(&quot;nearest.ref.cell.id&quot;, &quot;annotation&quot;)
+
+nearest.ref.table&lt;- as.data.frame(nearest.ref.table)
+nearest.ann&lt;- left_join(nearest.ref.table, ann, by=c(&quot;nearest.ref.cell.id&quot;))</code></pre>
+<pre class="r"><code>a&lt;- as.data.frame(table(nearest.ann$annotation))
+a&lt;- a[a$Var1 != &quot;scHCL.EB20&quot;,]
+a&lt;- a[a$Var1 != &quot;0&quot;,]
+a&lt;- a[a$Var1 != &quot;1&quot;,]
+a&lt;- a[a$Var1 != &quot;2&quot;,]
+a&lt;- a[a$Var1 != &quot;3&quot;,]
+a&lt;- a[a$Var1 != &quot;4&quot;,]
+a&lt;- a[a$Var1 != &quot;5&quot;,]
+a&lt;- a[a$Var1 != &quot;6&quot;,]
+a&lt;- a[a$Var1 != &quot;7&quot;,]
+colnames(a)&lt;- c(&quot;reference.cell.type&quot;, &quot;Frequency&quot;)
+
+a</code></pre>
+<pre><code>                                 reference.cell.type Frequency
+2                             AFP_ALB positive cells         1
+3                                       Acinar cells         0
+4                               Adrenocortical cells         0
+5                                     Amacrine cells         0
+6                           Antigen presenting cells         0
+7                                         Astrocytes         5
+8                                      Bipolar cells        66
+9          Bronchiolar and alveolar epithelial cells         0
+10                        CCL19_CCL21 positive cells         0
+11                          CLC_IL5RA positive cells         0
+12                          CSH1_CSH2 positive cells         0
+13                                    Cardiomyocytes         0
+14                                  Chromaffin cells         0
+15                         Ciliated epithelial cells       135
+16         Corneal and conjunctival epithelial cells         0
+17                                      Ductal cells         0
+18                         ELF3_AGBL2 positive cells         1
+19                                          ENS glia        42
+20                                       ENS neurons         0
+21                                 Endocardial cells         0
+22                              Epicardial fat cells         0
+23                                     Erythroblasts         0
+24                                Excitatory neurons         0
+25                         Extravillous trophoblasts        19
+26                                    Ganglion cells        13
+27                                      Goblet cells         0
+28                                   Granule neurons         0
+29                          Hematopoietic stem cells         0
+30                                      Hepatoblasts       177
+31                                  Horizontal cells         0
+32                        IGFBP1_DKK1 positive cells       111
+33                           Inhibitory interneurons         6
+34                                Inhibitory neurons        51
+35                       Intestinal epithelial cells         5
+36                             Islet endocrine cells         3
+37                                  Lens fibre cells         1
+38                             Limbic system neurons        65
+39                       Lymphatic endothelial cells         0
+40                                    Lymphoid cells         0
+41                        MUC13_DMBT1 positive cells         0
+42                                    Megakaryocytes         1
+43                                   Mesangial cells         0
+44                                 Mesothelial cells         0
+45                                 Metanephric cells         5
+46                                         Microglia         1
+47                                     Myeloid cells         0
+48                              Neuroendocrine cells         7
+49                                  Oligodendrocytes       197
+50                         PAEP_MECOM positive cells         0
+51                     PDE11A_FAM19A2 positive cells        39
+52                        PDE1C_ACSM3 positive cells         0
+53                          Parietal and chief cells         0
+54                               Photoreceptor cells         0
+55                                  Purkinje neurons       102
+56                             Retinal pigment cells         0
+57               Retinal progenitors and Muller glia         0
+58                        SATB2_LRRC7 positive cells         7
+59                        SKOR2_NPSR1 positive cells        30
+60                      SLC24A4_PEX5L positive cells        12
+61                       SLC26A4_PAEP positive cells         0
+62                          STC2_TLX1 positive cells         0
+63                                   Satellite cells         0
+64                                     Schwann cells         8
+65                             Skeletal muscle cells        32
+66                               Smooth muscle cells         0
+67                         Squamous epithelial cells         0
+68                                    Stellate cells         0
+69                                     Stromal cells         0
+70                                    Sympathoblasts         0
+71 Syncytiotrophoblasts and villous cytotrophoblasts         0
+72                           Thymic epithelial cells         0
+73                                        Thymocytes         0
+74                           Trophoblast giant cells        96
+75                              Unipolar brush cells         0
+76                                Ureteric bud cells         0
+77                        Vascular endothelial cells         0
+78                                  Visceral neurons         2
+80                                        scHCL.hESC       750</code></pre>
+<pre class="r"><code>sub&lt;- subset(merge.all, idents= c(&quot;EB.Pilot&quot;))
+EB.cell.id&lt;- rownames(sub@meta.data)
+sub@meta.data&lt;- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data&lt;- full_join(sub@meta.data, nearest.ann, by= c(&quot;EB.cell.id&quot;))
+rownames(sub@meta.data)&lt;- EB.cell.id
+
+V&lt;- DimPlot(sub, group.by=&quot;annotation&quot;, pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mostcommon.ann&lt;- NULL
+maxann.FIVEnearest&lt;- NULL
+
+#for loop, loop through each row
+for (i in 1:nrow(sub_har_distmat)){
+  cell&lt;- sub_har_distmat[i,]
+  cell&lt;- cell[order(cell)]
+  topfive&lt;- names(cell[1:5])
+  
+  #get the annotations of the nearest 5 reference cells
+  topfiveann&lt;- merge.all@meta.data$all.labels[rownames(merge.all@meta.data) %in% topfive]
+  
+  #if/else at least 3/5 match annotations
+  maxann&lt;- max(table(topfiveann))
+  finalann&lt;- names(which.max(table(topfiveann)))
+  
+  maxann.FIVEnearest[i]&lt;- maxann
+  
+  if(maxann &gt;= 3){
+    mostcommon.ann[i]&lt;- finalann
+  } else {
+    mostcommon.ann[i]&lt;- &quot;uncertain&quot;
+  }
+  
+}
+
+CommonAnnDF&lt;- as.data.frame(cbind(rownames(sub_har_distmat), mostcommon.ann, maxann.FIVEnearest))
+colnames(CommonAnnDF)&lt;- c(&quot;EB.cell.id&quot;, &quot;Annotation&quot;, &quot;NoutofFIVErefneighborsWithSameAnnotation&quot;)</code></pre>
+<pre class="r"><code>write.csv(CommonAnnDF,&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustNeuron.csv&quot;)</code></pre>
+<pre class="r"><code>b&lt;- table(CommonAnnDF$Annotation)
+
+b</code></pre>
+<pre><code>
+       AFP_ALB positive cells     Ciliated epithelial cells 
+                            1                           134 
+                     ENS glia     Extravillous trophoblasts 
+                           28                             8 
+               Ganglion cells                  Hepatoblasts 
+                            2                           198 
+   IGFBP1_DKK1 positive cells            Inhibitory neurons 
+                          105                            34 
+        Limbic system neurons             Metanephric cells 
+                            1                             1 
+             Oligodendrocytes PDE11A_FAM19A2 positive cells 
+                          197                            13 
+             Purkinje neurons         Retinal pigment cells 
+                           65                             1 
+   SKOR2_NPSR1 positive cells               Satellite cells 
+                            3                             8 
+                Schwann cells         Skeletal muscle cells 
+                            1                            29 
+      Trophoblast giant cells              Visceral neurons 
+                           20                             1 
+                   scHCL.hESC                     uncertain 
+                          650                           490 </code></pre>
+<pre class="r"><code>#print fetal celltypes not present in EB data
+unique(merge.all@meta.data$Main_cluster_name)[unique(merge.all@meta.data$Main_cluster_name) %notin% names(b)] </code></pre>
+<pre><code> [1] &quot;Retinal progenitors and Muller glia&quot;              
+ [2] &quot;Horizontal cells&quot;                                 
+ [3] &quot;Photoreceptor cells&quot;                              
+ [4] &quot;Lens fibre cells&quot;                                 
+ [5] &quot;Amacrine cells&quot;                                   
+ [6] &quot;Corneal and conjunctival epithelial cells&quot;        
+ [7] &quot;Bipolar cells&quot;                                    
+ [8] &quot;Stromal cells&quot;                                    
+ [9] &quot;Microglia&quot;                                        
+[10] &quot;Vascular endothelial cells&quot;                       
+[11] &quot;Smooth muscle cells&quot;                              
+[12] &quot;Adrenocortical cells&quot;                             
+[13] &quot;Chromaffin cells&quot;                                 
+[14] &quot;Myeloid cells&quot;                                    
+[15] &quot;Megakaryocytes&quot;                                   
+[16] &quot;Lymphoid cells&quot;                                   
+[17] &quot;Sympathoblasts&quot;                                   
+[18] &quot;Erythroblasts&quot;                                    
+[19] &quot;SLC26A4_PAEP positive cells&quot;                      
+[20] &quot;CSH1_CSH2 positive cells&quot;                         
+[21] &quot;Inhibitory interneurons&quot;                          
+[22] &quot;SLC24A4_PEX5L positive cells&quot;                     
+[23] &quot;Astrocytes&quot;                                       
+[24] &quot;Granule neurons&quot;                                  
+[25] &quot;Unipolar brush cells&quot;                             
+[26] &quot;Excitatory neurons&quot;                               
+[27] &quot;CLC_IL5RA positive cells&quot;                         
+[28] &quot;SATB2_LRRC7 positive cells&quot;                       
+[29] &quot;Epicardial fat cells&quot;                             
+[30] &quot;Cardiomyocytes&quot;                                   
+[31] &quot;ELF3_AGBL2 positive cells&quot;                        
+[32] &quot;Endocardial cells&quot;                                
+[33] &quot;Lymphatic endothelial cells&quot;                      
+[34] &quot;Mesothelial cells&quot;                                
+[35] &quot;ENS neurons&quot;                                      
+[36] &quot;Intestinal epithelial cells&quot;                      
+[37] &quot;Mesangial cells&quot;                                  
+[38] &quot;Ureteric bud cells&quot;                               
+[39] &quot;Stellate cells&quot;                                   
+[40] &quot;Hematopoietic stem cells&quot;                         
+[41] &quot;Neuroendocrine cells&quot;                             
+[42] &quot;Bronchiolar and alveolar epithelial cells&quot;        
+[43] &quot;Squamous epithelial cells&quot;                        
+[44] &quot;CCL19_CCL21 positive cells&quot;                       
+[45] &quot;Ductal cells&quot;                                     
+[46] &quot;Islet endocrine cells&quot;                            
+[47] &quot;Acinar cells&quot;                                     
+[48] &quot;PAEP_MECOM positive cells&quot;                        
+[49] &quot;Syncytiotrophoblasts and villous cytotrophoblasts&quot;
+[50] &quot;STC2_TLX1 positive cells&quot;                         
+[51] &quot;PDE1C_ACSM3 positive cells&quot;                       
+[52] &quot;MUC13_DMBT1 positive cells&quot;                       
+[53] &quot;Parietal and chief cells&quot;                         
+[54] &quot;Goblet cells&quot;                                     
+[55] &quot;Antigen presenting cells&quot;                         
+[56] &quot;Thymic epithelial cells&quot;                          
+[57] &quot;Thymocytes&quot;                                       
+[58] NA                                                 </code></pre>
+<pre class="r"><code>sub&lt;- subset(merge.all, idents= c(&quot;EB.Pilot&quot;))
+EB.cell.id&lt;- rownames(sub@meta.data)
+sub@meta.data&lt;- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data&lt;- full_join(sub@meta.data, CommonAnnDF, by= c(&quot;EB.cell.id&quot;))
+rownames(sub@meta.data)&lt;- EB.cell.id
+
+V&lt;- DimPlot(sub, group.by=&quot;Annotation&quot;, pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+
+V</code></pre>
+<p><img src="figure/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggplot2_3.3.3   harmony_1.0     Rcpp_1.0.6      purrr_0.3.4    
+ [5] tibble_3.0.4    tidyr_1.1.0     dplyr_1.0.2     edgeR_3.28.1   
+ [9] limma_3.42.2    Seurat_3.2.0    workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
+ [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
+ [13] ggrepel_0.9.0         RSpectra_0.16-0       codetools_0.2-16     
+ [16] splines_3.6.1         lsei_1.2-0            knitr_1.29           
+ [19] polyclip_1.10-0       jsonlite_1.7.2        ica_1.0-2            
+ [22] cluster_2.1.0         png_0.1-7             uwot_0.1.10          
+ [25] shiny_1.5.0           sctransform_0.2.1     compiler_3.6.1       
+ [28] httr_1.4.2            Matrix_1.2-18         fastmap_1.0.1        
+ [31] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [34] tools_3.6.1           rsvd_1.0.3            igraph_1.2.6         
+ [37] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
+ [40] reshape2_1.4.4        rappdirs_0.3.3        spatstat_1.64-1      
+ [43] vctrs_0.3.6           gdata_2.18.0          ape_5.4-1            
+ [46] nlme_3.1-140          lmtest_0.9-37         xfun_0.16            
+ [49] stringr_1.4.0         globals_0.12.5        mime_0.9             
+ [52] miniUI_0.1.1.1        lifecycle_0.2.0       irlba_2.3.3          
+ [55] gtools_3.8.2          goftest_1.2-2         future_1.18.0        
+ [58] MASS_7.3-51.4         zoo_1.8-8             scales_1.1.1         
+ [61] promises_1.1.1        spatstat.utils_1.17-0 parallel_3.6.1       
+ [64] RColorBrewer_1.1-2    yaml_2.2.1            reticulate_1.20      
+ [67] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
+ [70] stringi_1.5.3         highr_0.8             caTools_1.18.0       
+ [73] rlang_0.4.10          pkgconfig_2.0.3       bitops_1.0-6         
+ [76] evaluate_0.14         lattice_0.20-38       ROCR_1.0-7           
+ [79] tensor_1.5            labeling_0.4.2        patchwork_1.1.1      
+ [82] htmlwidgets_1.5.1     cowplot_1.1.1         tidyselect_1.1.0     
+ [85] RcppAnnoy_0.0.18      plyr_1.8.6            magrittr_2.0.1       
+ [88] R6_2.5.0              gplots_3.0.4          generics_0.1.0       
+ [91] withr_2.4.2           pillar_1.4.7          mgcv_1.8-28          
+ [94] fitdistrplus_1.0-14   survival_3.2-3        abind_1.4-5          
+ [97] future.apply_1.6.0    crayon_1.3.4          KernSmooth_2.23-15   
+[100] plotly_4.9.2.1        rmarkdown_2.3         locfit_1.5-9.4       
+[103] grid_3.6.1            data.table_1.13.4     git2r_0.26.1         
+[106] digest_0.6.27         xtable_1.8-4          httpuv_1.5.4         
+[109] munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggplot2_3.3.3   harmony_1.0     Rcpp_1.0.6      purrr_0.3.4    
+ [5] tibble_3.0.4    tidyr_1.1.0     dplyr_1.0.2     edgeR_3.28.1   
+ [9] limma_3.42.2    Seurat_3.2.0    workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
+ [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
+ [13] ggrepel_0.9.0         RSpectra_0.16-0       codetools_0.2-16     
+ [16] splines_3.6.1         lsei_1.2-0            knitr_1.29           
+ [19] polyclip_1.10-0       jsonlite_1.7.2        ica_1.0-2            
+ [22] cluster_2.1.0         png_0.1-7             uwot_0.1.10          
+ [25] shiny_1.5.0           sctransform_0.2.1     compiler_3.6.1       
+ [28] httr_1.4.2            Matrix_1.2-18         fastmap_1.0.1        
+ [31] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [34] tools_3.6.1           rsvd_1.0.3            igraph_1.2.6         
+ [37] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
+ [40] reshape2_1.4.4        rappdirs_0.3.3        spatstat_1.64-1      
+ [43] vctrs_0.3.6           gdata_2.18.0          ape_5.4-1            
+ [46] nlme_3.1-140          lmtest_0.9-37         xfun_0.16            
+ [49] stringr_1.4.0         globals_0.12.5        mime_0.9             
+ [52] miniUI_0.1.1.1        lifecycle_0.2.0       irlba_2.3.3          
+ [55] gtools_3.8.2          goftest_1.2-2         future_1.18.0        
+ [58] MASS_7.3-51.4         zoo_1.8-8             scales_1.1.1         
+ [61] promises_1.1.1        spatstat.utils_1.17-0 parallel_3.6.1       
+ [64] RColorBrewer_1.1-2    yaml_2.2.1            reticulate_1.20      
+ [67] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
+ [70] stringi_1.5.3         highr_0.8             caTools_1.18.0       
+ [73] rlang_0.4.10          pkgconfig_2.0.3       bitops_1.0-6         
+ [76] evaluate_0.14         lattice_0.20-38       ROCR_1.0-7           
+ [79] tensor_1.5            labeling_0.4.2        patchwork_1.1.1      
+ [82] htmlwidgets_1.5.1     cowplot_1.1.1         tidyselect_1.1.0     
+ [85] RcppAnnoy_0.0.18      plyr_1.8.6            magrittr_2.0.1       
+ [88] R6_2.5.0              gplots_3.0.4          generics_0.1.0       
+ [91] withr_2.4.2           pillar_1.4.7          mgcv_1.8-28          
+ [94] fitdistrplus_1.0-14   survival_3.2-3        abind_1.4-5          
+ [97] future.apply_1.6.0    crayon_1.3.4          KernSmooth_2.23-15   
+[100] plotly_4.9.2.1        rmarkdown_2.3         locfit_1.5-9.4       
+[103] grid_3.6.1            data.table_1.13.4     git2r_0.26.1         
+[106] digest_0.6.27         xtable_1.8-4          httpuv_1.5.4         
+[109] munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
