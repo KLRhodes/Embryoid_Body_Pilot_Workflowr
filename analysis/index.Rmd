@@ -9,7 +9,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome! This is a research website detailing analyses analyses performed on scRNA-seq data from human embryoid bodies, aggregates of spontaneously differentiating cells generated from induced pluripotent stem cells. 
+Welcome! This is a research website detailing analyses analyses performed on scRNA-seq data from human embryoid bodies, aggregates of spontaneously differentiating cells generated from induced pluripotent stem cells.
+
+Preprint is now available on BioRxiv: https://www.biorxiv.org/content/10.1101/2021.06.16.448714v1
 
 The overarching goals of this work are to:
 
