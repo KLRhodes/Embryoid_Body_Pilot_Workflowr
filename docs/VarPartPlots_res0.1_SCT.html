@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>VarPart.SCres.Plots</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Embryoid_Body_Pilot_Workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">VarPart.SCres.Plots</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-07-05
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it's best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200804code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200804)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200804code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200804)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+</td>
+<td style="text-align:left;">
+../output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig4_VarPartSingleCellRes.0.1.png
+</td>
+<td style="text-align:left;">
+../output/figs/Fig4_VarPartSingleCellRes.0.1.png
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/VarPart.ByCluster.Res0.1.rds
+</td>
+<td style="text-align:left;">
+../output/VarPart.ByCluster.Res0.1.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/VarPart.ByCluster.SCres.Plots.pdf
+</td>
+<td style="text-align:left;">
+../output/pdfs/VarPart.ByCluster.SCres.Plots.pdf
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreeee6558512de8f6f74005261b5ca190864d611348targetblankee65585a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/ee6558512de8f6f74005261b5ca190864d611348" target="_blank">ee65585</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreeee6558512de8f6f74005261b5ca190864d611348targetblankee65585a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/ee6558512de8f6f74005261b5ca190864d611348" target="_blank">ee65585</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    analysis/figure/
+    Ignored:    output/.Rhistory
+
+Untracked files:
+    Untracked:  GSE122380_raw_counts.txt.gz
+    Untracked:  UTF1_plots.Rmd
+    Untracked:  analysis/OLD/
+    Untracked:  analysis/child/
+    Untracked:  build_refint_scale.R
+    Untracked:  build_refint_sct.R
+    Untracked:  build_stuff.R
+    Untracked:  build_varpart_sc.R
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/CellRangerPreprocess.Rmd
+    Untracked:  code/GEO_processed_data.Rmd
+    Untracked:  code/PowerAnalysis_NoiseRatio.ipynb
+    Untracked:  code/Untitled.ipynb
+    Untracked:  code/Untitled1.ipynb
+    Untracked:  data/HCL_Fig1_adata.h5ad
+    Untracked:  data/HCL_Fig1_adata.h5seurat
+    Untracked:  data/dge/
+    Untracked:  data/dge_raw_data.tar.gz
+    Untracked:  data/ref.expr.rda
+    Untracked:  figure/
+    Untracked:  output/CR_sampleQCrds/
+    Untracked:  output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+    Untracked:  output/CaoEtAl.Obj.rds
+    Untracked:  output/ClusterInfo_res0.1.csv
+    Untracked:  output/DGELists/
+    Untracked:  output/DownSampleVarPart.rds
+    Untracked:  output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/GEOsubmissionProcessedFiles/
+    Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv
+    Untracked:  output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/ResidualVariances_fromDownSampAnalysis.csv
+    Untracked:  output/SingleCell_VariancePartition_RNA_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+    Untracked:  output/TopicModelling_k10_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top15drivergenes.byZ.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustMeso.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv
+    Untracked:  output/VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/azimuth/
+    Untracked:  output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_scres.rds
+    Untracked:  output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/fasttopics/
+    Untracked:  output/figs/
+    Untracked:  output/merge.Cao.SCTwRegressOrigIdent.rds
+    Untracked:  output/merge.all.SCTwRegressOrigIdent.Harmony.rds
+    Untracked:  output/merged.SCT.counts.matrix.rds
+    Untracked:  output/merged.raw.counts.matrix.rds
+    Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
+    Untracked:  output/sampleQCrds/
+    Untracked:  output/splitgpm_gsea_results/
+    Untracked:  slurm-12005914.out
+    Untracked:  slurm-12005923.out
+
+Unstaged changes:
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatch.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd
+    Deleted:    analysis/RunscHCL_HarmonyBatchInd.Rmd
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/VarPartPlots_res0.1_SCT.Rmd</code>) and HTML (<code>docs/VarPartPlots_res0.1_SCT.html</code>) files. If you've configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/ee6558512de8f6f74005261b5ca190864d611348/analysis/VarPartPlots_res0.1_SCT.Rmd" target="_blank">ee65585</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-07-05
+</td>
+<td>
+wflow_publish(&quot;analysis/VarPartPlots_res0.1_SCT.Rmd&quot;)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/285dd16d9da5ff6cde986a5fe91fa840341579b2/analysis/VarPartPlots_res0.1_SCT.Rmd" target="_blank">285dd16</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-07-05
+</td>
+<td>
+wflow_git_commit(c(&quot;analysis/SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd&quot;,
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(variancePartition)</code></pre>
+<pre><code>Loading required package: ggplot2</code></pre>
+<pre><code>Loading required package: limma</code></pre>
+<pre><code>Loading required package: foreach</code></pre>
+<pre><code>Loading required package: scales</code></pre>
+<pre><code>Loading required package: Biobase</code></pre>
+<pre><code>Loading required package: BiocGenerics</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code>
+Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>The following object is masked from &#39;package:limma&#39;:
+
+    plotMA</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+    as.data.frame, basename, cbind, colnames, dirname, do.call,
+    duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,
+    lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+    pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,
+    tapply, union, unique, unsplit, which, which.max, which.min</code></pre>
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>
+Attaching package: &#39;variancePartition&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:limma&#39;:
+
+    classifyTestsF</code></pre>
+<pre class="r"><code>varpart&lt;- readRDS(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds&quot;)</code></pre>
+<pre class="r"><code>vp&lt;- sortCols(varpart)</code></pre>
+<pre class="r"><code>plotPercentBars(vp[1:10,])</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>colnames(vp)&lt;- c(&quot;Cluster&quot;, &quot;Replicate&quot;, &quot;Individual&quot;, &quot;Residuals&quot;)
+G&lt;- plotVarPart(vp)
+G</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>png(file= &quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig4_VarPartSingleCellRes.0.1.png&quot;, width=8, height=5, units= &quot;in&quot;, res=1080)
+
+G
+  
+dev.off()</code></pre>
+<pre class="r"><code>#do the genes most effected by individual match what I did in limma?
+vp&lt;- vp[order(vp$Individual, decreasing=T),]
+head(vp, 30)</code></pre>
+<pre><code>             Cluster    Replicate Individual Residuals
+EIF1AY   0.017179074 0.0201635369  0.7400354 0.2226220
+DDX3Y    0.015241230 0.0394909986  0.5534403 0.3918274
+USP9Y    0.030763674 0.0461448311  0.5046933 0.4183982
+TYW3     0.026875179 0.0024270382  0.4348307 0.5358671
+BEX3     0.075978797 0.0076296320  0.4105769 0.5058146
+NDUFB11  0.021293031 0.0113526582  0.4034176 0.5639367
+HIST1H1A 0.079550441 0.0476246651  0.3221543 0.5506706
+HESX1    0.131045825 0.0282384687  0.3046679 0.5360478
+PMEL     0.111753841 0.0117396317  0.2926008 0.5839057
+IAH1     0.023797091 0.0041248269  0.2745594 0.6975187
+TCEAL4   0.027975274 0.0114853312  0.2524410 0.7080984
+MT1F     0.340521072 0.0291377620  0.2506635 0.3796776
+TIMM17B  0.014399707 0.0169316047  0.2435549 0.7251138
+CHCHD2   0.007111615 0.0024823218  0.2375171 0.7528890
+MT-CO1   0.074241583 0.0695424993  0.2328243 0.6233916
+GPR143   0.106052993 0.0281560616  0.2278210 0.6379699
+PDHA1    0.074651885 0.0116003840  0.2270857 0.6866620
+TCEAL5   0.024222672 0.0099600090  0.2234590 0.7423583
+USP9X    0.093029122 0.1021567471  0.2158343 0.5889798
+UXT      0.019959766 0.0241737193  0.2136661 0.7422004
+TCEAL7   0.078318652 0.0002146677  0.2135347 0.7079320
+BEX2     0.131248052 0.0093431646  0.2079642 0.6514446
+TCEAL8   0.020584809 0.0575414556  0.2064651 0.7154087
+EDNRB    0.129067801 0.0211735023  0.2057443 0.6440144
+TCEAL9   0.161864688 0.0246674622  0.2003147 0.6131531
+TIMP1    0.312132488 0.0027570009  0.1993260 0.4857845
+AASS     0.194906768 0.0549847318  0.1990449 0.5510636
+MAGEH1   0.075076508 0.0274232980  0.1973866 0.7001136
+SMS      0.153756403 0.0748190831  0.1953155 0.5761090
+FZD5     0.176126765 0.0089992715  0.1930138 0.6218601</code></pre>
+<pre class="r"><code>#do the genes most effected by batch match what I did in limma?
+vp&lt;- vp[order(vp$Replicate, decreasing=T),]
+head(vp, 30)</code></pre>
+<pre><code>             Cluster Replicate   Individual Residuals
+GIMAP8   0.360376220 0.4218973 0.0021894809 0.2155370
+EEF1A1   0.043836198 0.3606096 0.0112124487 0.5843417
+GIMAP1   0.489351939 0.3408792 0.0015224285 0.1682465
+PPP1CB   0.020738221 0.2805619 0.0059202063 0.6927796
+EIF3E    0.049771632 0.2801152 0.0383999920 0.6317132
+KLHL6    0.483873526 0.2740501 0.0014882706 0.2405881
+MT-ND1   0.066763486 0.2528231 0.1728168463 0.5075966
+MYZAP    0.373913854 0.2495968 0.0015462969 0.3749430
+OIT3     0.596744814 0.2471812 0.0012308036 0.1548432
+MORF4L1  0.032661957 0.2457469 0.0020551649 0.7195360
+MRPL42   0.056118836 0.2440401 0.0012990993 0.6985420
+ADGRF5   0.650996569 0.2335237 0.0010136889 0.1144660
+SCRT2    0.403213098 0.2256859 0.0007248324 0.3703762
+ST18     0.421479228 0.2202838 0.0004949852 0.3577420
+CAPZA1   0.008856970 0.2159039 0.0040780361 0.7711611
+PSMA4    0.012767658 0.2144311 0.0098085331 0.7629928
+TMED2    0.031739799 0.2124085 0.0020349108 0.7538168
+RSL24D1  0.032166490 0.2112529 0.0004608102 0.7561198
+SKIL     0.196438818 0.2099147 0.0036798866 0.5899666
+CD163L1  0.395100043 0.2091684 0.0047735006 0.3909581
+CHRNA1   0.521622484 0.2084190 0.0031347986 0.2668237
+STARD8   0.328068949 0.2082135 0.0037620819 0.4599554
+ITGA10   0.603951784 0.2025822 0.0009514104 0.1925146
+NSG2     0.439203154 0.2017754 0.0003053412 0.3587162
+MORF4L2  0.023526618 0.2000242 0.1814664754 0.5949827
+SRP9     0.070302898 0.1987936 0.0825299589 0.6483735
+TLR4     0.440699416 0.1939968 0.0023843038 0.3629195
+TMEM167A 0.034668240 0.1902355 0.0153045963 0.7597916
+PPP1CC   0.064483524 0.1902061 0.0026784432 0.7426319
+ATP5MG   0.009518363 0.1892405 0.0032775246 0.7979636</code></pre>
+<pre class="r"><code>summary(vp$Individual)</code></pre>
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.001460 0.003936 0.010267 0.009719 0.740035 </code></pre>
+<pre class="r"><code>summary(vp$Replicate)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.00000 0.00381 0.01053 0.02102 0.02552 0.42190 </code></pre>
+<pre class="r"><code>#genes for which individual contributes more to variance than batch?
+vp.indgreaterthanbatch&lt;- vp[vp$Individual&gt;vp$Replicate,]
+
+dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356</code></pre>
+<pre><code>[1] 3098    4</code></pre>
+<pre class="r"><code>head(vp.indgreaterthanbatch, 20)</code></pre>
+<pre><code>             Cluster  Replicate Individual Residuals
+ATP6AP2  0.004918418 0.11830660 0.18082884 0.6959461
+PRKY     0.078775919 0.11153476 0.12191813 0.6877712
+TNFAIP6  0.051354787 0.10320712 0.14028757 0.7051505
+USP9X    0.093029122 0.10215675 0.21583431 0.5889798
+USP44    0.365469207 0.09761112 0.11848474 0.4184349
+LIN28A   0.198065758 0.08656516 0.10239114 0.6129779
+SMC1A    0.047301943 0.08433810 0.09059742 0.7777625
+MT1M     0.105977798 0.08024246 0.10238324 0.7113965
+SLC38A2  0.024121018 0.07941953 0.08424119 0.8122183
+CD70     0.039476345 0.07872565 0.08749644 0.7943016
+TOMM20   0.064513971 0.07556030 0.11936872 0.7405570
+NR6A1    0.043893033 0.07510756 0.16180868 0.7191907
+SMS      0.153756403 0.07481908 0.19531552 0.5761090
+CCK      0.034740304 0.07411645 0.08105861 0.8100846
+TMEM132C 0.067781901 0.07309619 0.09534396 0.7637779
+ARHGAP8  0.072135472 0.07219112 0.08150912 0.7741643
+TSTD1    0.270485439 0.07188931 0.07694232 0.5806829
+MT-CYB   0.047934904 0.07176506 0.08498571 0.7953143
+TSPAN6   0.075833396 0.07154123 0.10542160 0.7472038
+RAB4A    0.029308323 0.07104102 0.10424411 0.7954065</code></pre>
+<p>Plots for Variance Partition by cluster (Res 0.1, SCT assay)</p>
+<pre class="r"><code>varpart.byclust&lt;- readRDS(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/VarPart.ByCluster.Res0.1.rds&quot;)</code></pre>
+<pre class="r"><code>vp.bar.list&lt;- NULL
+
+for (i in 1:length(varpart.byclust)){
+  v&lt;- varpart.byclust[[i]]
+  vp&lt;- sortCols(v)
+  vp.bar.list[[i]]&lt;-plotVarPart(vp, main= paste0(&quot;Percent variance explained by batch and individual in cluster&quot;, (i-1)))
+}
+  
+vp.bar.list</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[7]]</code></pre>
+<p><img src="figure/VarPartPlots_res0.1_SCT.Rmd/unnamed-chunk-14-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>pdf(file = &quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/VarPart.ByCluster.SCres.Plots.pdf&quot;)
+
+vp.bar.list</code></pre>
+<pre><code>[[1]]</code></pre>
+<pre><code>
+[[2]]</code></pre>
+<pre><code>
+[[3]]</code></pre>
+<pre><code>
+[[4]]</code></pre>
+<pre><code>
+[[5]]</code></pre>
+<pre><code>
+[[6]]</code></pre>
+<pre><code>
+[[7]]</code></pre>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+[1] variancePartition_1.16.1 Biobase_2.46.0           BiocGenerics_0.32.0     
+[4] scales_1.1.1             foreach_1.5.0            limma_3.42.2            
+[7] ggplot2_3.3.3            workflowr_1.6.2         
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.6          lattice_0.20-38     prettyunits_1.1.1  
+ [4] gtools_3.8.2        rprojroot_2.0.2     digest_0.6.27      
+ [7] plyr_1.8.6          R6_2.5.0            evaluate_0.14      
+[10] highr_0.8           pillar_1.4.7        gplots_3.0.4       
+[13] rlang_0.4.10        progress_1.2.2      minqa_1.2.4        
+[16] gdata_2.18.0        whisker_0.4         nloptr_1.2.2.2     
+[19] Matrix_1.2-18       rmarkdown_2.3       labeling_0.4.2     
+[22] splines_3.6.1       BiocParallel_1.20.1 lme4_1.1-23        
+[25] statmod_1.4.34      stringr_1.4.0       munsell_0.5.0      
+[28] compiler_3.6.1      httpuv_1.5.4        xfun_0.16          
+[31] pkgconfig_2.0.3     htmltools_0.5.0     tidyselect_1.1.0   
+[34] tibble_3.0.4        codetools_0.2-16    crayon_1.3.4       
+[37] dplyr_1.0.2         withr_2.4.2         later_1.1.0.1      
+[40] MASS_7.3-51.4       bitops_1.0-6        grid_3.6.1         
+[43] nlme_3.1-140        gtable_0.3.0        lifecycle_0.2.0    
+[46] git2r_0.26.1        magrittr_2.0.1      KernSmooth_2.23-15 
+[49] stringi_1.5.3       farver_2.0.3        reshape2_1.4.4     
+[52] fs_1.4.2            promises_1.1.1      doParallel_1.0.15  
+[55] colorRamps_2.3      ellipsis_0.3.1      generics_0.1.0     
+[58] vctrs_0.3.6         boot_1.3-23         iterators_1.0.12   
+[61] tools_3.6.1         glue_1.4.2          purrr_0.3.4        
+[64] hms_0.5.3           pbkrtest_0.4-8.6    yaml_2.2.1         
+[67] colorspace_2.0-0    caTools_1.18.0      knitr_1.29         </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+[1] variancePartition_1.16.1 Biobase_2.46.0           BiocGenerics_0.32.0     
+[4] scales_1.1.1             foreach_1.5.0            limma_3.42.2            
+[7] ggplot2_3.3.3            workflowr_1.6.2         
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.6          lattice_0.20-38     prettyunits_1.1.1  
+ [4] gtools_3.8.2        rprojroot_2.0.2     digest_0.6.27      
+ [7] plyr_1.8.6          R6_2.5.0            evaluate_0.14      
+[10] highr_0.8           pillar_1.4.7        gplots_3.0.4       
+[13] rlang_0.4.10        progress_1.2.2      minqa_1.2.4        
+[16] gdata_2.18.0        whisker_0.4         nloptr_1.2.2.2     
+[19] Matrix_1.2-18       rmarkdown_2.3       labeling_0.4.2     
+[22] splines_3.6.1       BiocParallel_1.20.1 lme4_1.1-23        
+[25] statmod_1.4.34      stringr_1.4.0       munsell_0.5.0      
+[28] compiler_3.6.1      httpuv_1.5.4        xfun_0.16          
+[31] pkgconfig_2.0.3     htmltools_0.5.0     tidyselect_1.1.0   
+[34] tibble_3.0.4        codetools_0.2-16    crayon_1.3.4       
+[37] dplyr_1.0.2         withr_2.4.2         later_1.1.0.1      
+[40] MASS_7.3-51.4       bitops_1.0-6        grid_3.6.1         
+[43] nlme_3.1-140        gtable_0.3.0        lifecycle_0.2.0    
+[46] git2r_0.26.1        magrittr_2.0.1      KernSmooth_2.23-15 
+[49] stringi_1.5.3       farver_2.0.3        reshape2_1.4.4     
+[52] fs_1.4.2            promises_1.1.1      doParallel_1.0.15  
+[55] colorRamps_2.3      ellipsis_0.3.1      generics_0.1.0     
+[58] vctrs_0.3.6         boot_1.3-23         iterators_1.0.12   
+[61] tools_3.6.1         glue_1.4.2          purrr_0.3.4        
+[64] hms_0.5.3           pbkrtest_0.4-8.6    yaml_2.2.1         
+[67] colorspace_2.0-0    caTools_1.18.0      knitr_1.29         </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
