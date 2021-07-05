@@ -24,13 +24,13 @@ Study Design:
 
 Embryoid bodies were formed from 3 human iPSCs lines in 3 replicates. Three weeks after formation, EBs were dissociated and scRNA-seq data was collected using the 10x platform. After quality control and filtering, this dataset consists of 42,488 cells.
 
-# Preprocessing, QC, and filtering
+# Alignment and Preprocessing
 
-+ to be added soon!
+See full alignment and preprocessing pipeline here: https://github.com/kennethabarr/HumanChimp
   
 # Run EmptyDrops, Add Metadata to Seurat object from each 10x lane 
 
-+ to be added soon!
+See code directory: https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/master/code/EB.getHumanMetadata.Rmd
   
 # Filtering and Normalizing each 10x lane
 
@@ -53,40 +53,49 @@ Embryoid bodies were formed from 3 human iPSCs lines in 3 replicates. Three week
 
 # Merging and integration, seurat clustering
 
-+ [Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)
+
 + [Harmony correcting for Batch, Individual](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)  
-+ [Harmony correcting for Batch, Individual, and Lane](IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
-+ [SCTransform regressing out Batch,individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.html)  
-+ [SCTransform regressing out Batch,individual then Harmony correcting batch and individual](IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.html)  
-+ [No Integration, Just Merged](IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html)
 
-
-Note: all analyses below use data corrected using Haromy for Batch and Individual 
 
 # Differential Expression with limma (Pseudobulk)
 
 + [Using Cluster Resolution 0.1](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.html)
 + [Using Cluster Resolution 0.5](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.html)
++ [Using Cluster Resolution 0.8](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.8_minPCT0.2.html)
++ [Using Cluster Resolution 1](Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes1_minPCT0.2.html)
 
-# Seurat subclustering
 
-+ To be added soon!
+#Reference Integration
 
-# Cell type identification using scHCL
+Here, we integrate our EB data with 1) scRNA-seq data from human fetal tissues (Cao et al. 2020) and with Embryoid body cells and human embryonic stem cells from Human Cell Landscape (Han et al. 2020)
++ [Integrate Reference and Annotate EB cells](IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html)
 
-+ [scHCL analysis](RunscHCL_HarmonyBatchInd.html)
+We then checked that the integration and annotation procedure was robust by subsetting our EB data to only cells for a particular type and re-integrated to check that most cells were annotated the same as in the full integration.
++ [Integrate Reference w/ just Early Ectoderm EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.html)
++ [Integrate Reference w/ just Endoderm EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.html)
++ [Integrate Reference w/ just Mesoderm EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.html)
++ [Integrate Reference w/ just Early Neural Crest EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.html)
++ [Integrate Reference w/ just Early Neural EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.html)
++ [Integrate Reference w/ just Pluripotent/undifferentiated EB cells](IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.html)
++ [Check Robustness of Annotations between integrations](RefInt_ComparingFulltoPartialIntegrationAnnotations.htm)
++ [Check differential expression of annotated cells](ReferenceAnn_DE.html)
 
 # Topic Modelling with FastTopics
+Topic modelling Scripts can be found in the code directory. 
 
-+ to be added soon!
++ [k=6 Topics: Figures](k6topics_Explore.html)
++ [k=10 Topics: Figures](k10topics_Explore.html)
++ [Topics: Replicate vs. Individual comparison](CompiledFits_BatchvInd.html)
+
   
 #Hierachical clustering of gene expression
 
-+ single cell resolution-- to be added soon!
 + [Pseudobulk, Using Cluster Resolution 0.1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.html)
 + [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.html)
 + [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.html)
 + [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.html)
++ [Single Cell, Using Cluster Resolution 0.1 and no gene filter](SingleCell_HierarchicalClustering_NoGeneFilter.html)
+
 
 # Variance Partition (to determine the relative contribution of Cluster, Batch, and Individual to variation in gene expression)
 
@@ -94,13 +103,31 @@ Note: all analyses below use data corrected using Haromy for Batch and Individua
 + [Pseudobulk, Using Cluster Resolution 0.5](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.html)
 + [Pseudobulk, Using Cluster Resolution 0.8](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.html)
 + [Pseudobulk, Using Cluster Resolution 1](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.html)
++ [Pseudobulk, Using Cluster Resolution 0.1 -- BY CLUSTER](Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.html)
++ Single Cell, Cluster Resolution 0.1 -- see: VarPart_SC_res0.1_SCT.Rmd
++ [Single Cell, Cluster Resolution 0.1 -- BY CLUSTER](SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.html)
++ [Single Cell VariancePartition clean figures](VarPartPlots_res0.1_SCT.Rmd)
 
-# Trajectory Inference with Scanpy/PAGA
+#Down Sampling and Power Analysis
++ [Power Analysis](DownSamp_NoiseRatio.html)
 
-+ to be added soon!
+# Trajectory Inference with Scanpy/PAGA and Identification/Exploration of Dynamic Gene Module with Split-GPM
 
-# Identification/Exploration of Dynamic Gene Module with Split-GPM
+See Josh Popp's GitHub: https://github.com/jmp448/ebpilot
 
-+ Link to Josh Popp's github to be added soon
+#Scripts for generating clean paper figures
++ [Fig. 1](Fig1.Rmd)
++ [Fig. 2](Fig2.Rmd)
 
 
+#Additional Processing and Analyses that were tested but ultimately not included in the paper:
+
+Other integrations w/ and w/out harmony:
+
++ [Harmony correcting for Batch](IntegrateAnalysis.afterFilter.HarmonyBatch.html)
++ [Harmony correcting for Batch, Individual, and Lane](IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.html)  
++ [No Integration, Just Merged](IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.html)
+
+Cell type identification using scHCL
+
++ [scHCL analysis](RunscHCL_HarmonyBatchInd.html)
