@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>k10_Explore</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Embryoid_Body_Pilot_Workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">k10_Explore</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-07-05
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you'll want to first commit it to the Git repo. If you're still working on the analysis, you can ignore this warning. When you're finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it's best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200804code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200804)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200804code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200804)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds
+</td>
+<td style="text-align:left;">
+../output/mergedObjects/Harmony.Batchindividual.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/fasttopics/k10.4v7.pluripotentsubset.diff_count.Rdata
+</td>
+<td style="text-align:left;">
+../output/fasttopics/k10.4v7.pluripotentsubset.diff_count.Rdata
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TopicModelling_k10_top10drivergenes.byBeta.csv
+</td>
+<td style="text-align:left;">
+../output/TopicModelling_k10_top10drivergenes.byBeta.csv
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreec8767ac248037859be1a0be3d135ab0a71c7591btargetblankc8767aca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/c8767ac248037859be1a0be3d135ab0a71c7591b" target="_blank">c8767ac</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreec8767ac248037859be1a0be3d135ab0a71c7591btargetblankc8767aca" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/c8767ac248037859be1a0be3d135ab0a71c7591b" target="_blank">c8767ac</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    output/.Rhistory
+
+Untracked files:
+    Untracked:  GSE122380_raw_counts.txt.gz
+    Untracked:  UTF1_plots.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.Rmd
+    Untracked:  analysis/OLD/
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.8_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.Rmd
+    Untracked:  analysis/RefInt_ComparingFulltoPartialIntegrationAnnotations.Rmd
+    Untracked:  analysis/ReferenceAnn_DE.Rmd
+    Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/VarPartPlots_res0.1_SCT.Rmd
+    Untracked:  analysis/VarPart_SC_res0.1_SCT.Rmd
+    Untracked:  analysis/child/
+    Untracked:  analysis/k10topics_Explore.Rmd
+    Untracked:  analysis/k6topics_Explore.Rmd
+    Untracked:  build_refint_scale.R
+    Untracked:  build_refint_sct.R
+    Untracked:  build_stuff.R
+    Untracked:  build_varpart_sc.R
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/CellRangerPreprocess.Rmd
+    Untracked:  code/ConvertToDGE.Rmd
+    Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/ConvertToDGE_SingleCellRes_minPCT0.2.Rmd
+    Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/GEO_processed_data.Rmd
+    Untracked:  code/PowerAnalysis_NoiseRatio.ipynb
+    Untracked:  code/Untitled.ipynb
+    Untracked:  code/Untitled1.ipynb
+    Untracked:  code/compile_fits.Rmd
+    Untracked:  code/fit_all_models.sh
+    Untracked:  code/fit_poisson_nmf.R
+    Untracked:  code/fit_poisson_nmf.sbatch
+    Untracked:  code/functions_for_fit_comparison.Rmd
+    Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  code/prefit_poisson_nmf.R
+    Untracked:  code/prefit_poisson_nmf.sbatch
+    Untracked:  code/prepare_data_for_fastTopics.Rmd
+    Untracked:  data/HCL_Fig1_adata.h5ad
+    Untracked:  data/HCL_Fig1_adata.h5seurat
+    Untracked:  data/dge/
+    Untracked:  data/dge_raw_data.tar.gz
+    Untracked:  data/ref.expr.rda
+    Untracked:  figure/
+    Untracked:  output/CR_sampleQCrds/
+    Untracked:  output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+    Untracked:  output/CaoEtAl.Obj.rds
+    Untracked:  output/ClusterInfo_res0.1.csv
+    Untracked:  output/DGELists/
+    Untracked:  output/DownSampleVarPart.rds
+    Untracked:  output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/GEOsubmissionProcessedFiles/
+    Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv
+    Untracked:  output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/ResidualVariances_fromDownSampAnalysis.csv
+    Untracked:  output/SingleCell_VariancePartition_RNA_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+    Untracked:  output/TopicModelling_k10_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top15drivergenes.byZ.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustMeso.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv
+    Untracked:  output/VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/azimuth/
+    Untracked:  output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_scres.rds
+    Untracked:  output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/fasttopics/
+    Untracked:  output/figs/
+    Untracked:  output/merge.Cao.SCTwRegressOrigIdent.rds
+    Untracked:  output/merge.all.SCTwRegressOrigIdent.Harmony.rds
+    Untracked:  output/merged.SCT.counts.matrix.rds
+    Untracked:  output/merged.raw.counts.matrix.rds
+    Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
+    Untracked:  output/sampleQCrds/
+    Untracked:  output/splitgpm_gsea_results/
+    Untracked:  slurm-12005914.out
+    Untracked:  slurm-12005923.out
+
+Unstaged changes:
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatch.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.Rmd
+    Modified:   analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Deleted:    analysis/RunscHCL_HarmonyBatchInd.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(fastTopics)
+library(Matrix)
+library(ggplot2)
+library(Seurat)
+library(cowplot)
+library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(tibble)</code></pre>
+<p>load data</p>
+<pre class="r"><code>load(&quot;/project2/gilad/katie/Pilot_HumanEBs/fastTopics/prepared_data_YorubaOnly_genesExpressedInMoreThan10Cells.RData&quot;)</code></pre>
+<pre class="r"><code>merged&lt;-readRDS(&quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds&quot;)</code></pre>
+<pre class="r"><code>#Ran this in Enrichments.Rmd
+timing&lt;- system.time(diff_count_res &lt;- diff_count_analysis(fit, counts))</code></pre>
+<pre class="r"><code>load(&quot;/project2/gilad/katie/Pilot_HumanEBs/fastTopics/pathways/diff_count_res_scd-ex-k=10.RData&quot;)</code></pre>
+<pre class="r"><code>fit&lt;- readRDS(&quot;/project2/gilad/katie/Pilot_HumanEBs/fastTopics/fit-scd-ex-k=10.rds&quot;)$fit</code></pre>
+<pre class="r"><code>summary(fit)</code></pre>
+<pre><code>Model overview:
+  Number of data rows, n: 42488
+  Number of data cols, m: 17623
+  Rank/Number of topics, k: 10
+Evaluation of fit (1500 updates performed):
+  Log-likelihood: -5.091346217553e+08
+  Deviance: +5.020738080295e+08
+  Max KKT residual: +2.054378e-03
+Size factors:
+      Min        1Q    Median        3Q       Max 
+  3455.00   9001.00  16712.00  34599.25 162277.00 
+Topic proportions:
+     &lt;0.1 0.1-0.5 0.5-0.9 &gt;0.9
+k1  39705    2678     105    0
+k2  41876     495     100   17
+k3  19723   22759       6    0
+k4  23968   17616     904    0
+k5  26557   15926       5    0
+k6  24081   17049    1358    0
+k7  27458   15022       8    0
+k8  38882    2447    1159    0
+k9  11749   30682      57    0
+k10 21237   20973     278    0
+Topic representatives:
+                                 k1    k2    k3    k4    k5    k6    k7    k8
+Batch1_Lane1_GTGTTAGCAAGACCGA 0.784 0.000 0.078 0.000 0.000 0.025 0.031 0.031
+Batch2_Lane3_GTTACAGGTTTGATCG 0.000 0.998 0.000 0.000 0.001 0.000 0.001 0.000
+Batch1_Lane6_AGGTGTTCAATGAGCG 0.002 0.000 0.521 0.120 0.000 0.003 0.177 0.000
+Batch1_Lane8_AGCGTCGCAGAACATA 0.013 0.000 0.115 0.650 0.000 0.000 0.000 0.005
+Batch1_Lane3_GTGTGGCGTGATGTAA 0.000 0.000 0.000 0.000 0.560 0.281 0.101 0.000
+Batch3_Lane3_TCATGCCGTTCAATCG 0.000 0.000 0.009 0.010 0.000 0.873 0.087 0.000
+Batch2_Lane1_CCTGTTGAGGATATAC 0.008 0.001 0.215 0.055 0.057 0.021 0.632 0.012
+Batch3_Lane3_ACATGCACAACCGACC 0.000 0.000 0.000 0.000 0.000 0.002 0.016 0.820
+Batch3_Lane4_GATCATGTCAGGTAAA 0.000 0.000 0.060 0.250 0.000 0.001 0.110 0.000
+Batch1_Lane9_ACTGATGGTAACGTTC 0.009 0.000 0.055 0.005 0.014 0.152 0.025 0.040
+                                 k9   k10
+Batch1_Lane1_GTGTTAGCAAGACCGA 0.000 0.051
+Batch2_Lane3_GTTACAGGTTTGATCG 0.000 0.000
+Batch1_Lane6_AGGTGTTCAATGAGCG 0.024 0.150
+Batch1_Lane8_AGCGTCGCAGAACATA 0.085 0.132
+Batch1_Lane3_GTGTGGCGTGATGTAA 0.057 0.000
+Batch3_Lane3_TCATGCCGTTCAATCG 0.021 0.000
+Batch2_Lane1_CCTGTTGAGGATATAC 0.000 0.000
+Batch3_Lane3_ACATGCACAACCGACC 0.156 0.006
+Batch3_Lane4_GATCATGTCAGGTAAA 0.571 0.008
+Batch1_Lane9_ACTGATGGTAACGTTC 0.002 0.698</code></pre>
+<pre class="r"><code>#structure plot
+clrs2&lt;- c(&quot;#8dd3c7&quot;, &quot;#ffffb3&quot;, &quot;#bebada&quot;, &quot;#fb8072&quot;, &quot;#80b1d3&quot;, &quot;#fdb462&quot;, &quot;#b3de69&quot;, &quot;#fccde5&quot;, &quot;#d9d9d9&quot;, &quot;#bc80bd&quot;, &quot;#ccebc5&quot;, &quot;#ffed6f&quot;, &quot;#a6cee3&quot;, &quot;#1f78b4&quot;, &quot;midnightblue&quot;, &quot;#33a02c&quot;, &quot;#fb9a99&quot;, &quot;#e31a1c&quot;, &quot;#fdbf6f&quot;, &quot;#ff7f00&quot;, &quot;#cab2d6&quot;, &quot;#6a3d9a&quot;, &quot;#ffff99&quot;, &quot;#b15928&quot;, &quot;darkseagreen4&quot;, &quot;darkorange3&quot;, &quot;darkorchid4&quot;, &quot;palevioletred2&quot;, &quot;khaki3&quot;, &quot;cornsilk3&quot;)
+structure_plot(fit,topics=c(&quot;k3&quot;,&quot;k2&quot;,&quot;k1&quot;,&quot;k6&quot;,&quot;k4&quot;,&quot;k5&quot;, &quot;k7&quot;, &quot;k8&quot;, &quot;k9&quot;,&quot;k10&quot;), n=5000,num_threads=5, perplexity = 1000, colors = clrs2, verbose=F)</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#grouped according to the 1-d t-SNE embedding
+#</code></pre>
+<pre class="r"><code>#structure plot divided by seurat clusters at various resolutions
+
+structure_plot(fit,
+               grouping=factor(merged@meta.data$SCT_snn_res.0.1, c(&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)),
+               topics =c(&quot;k3&quot;,&quot;k2&quot;,&quot;k1&quot;,&quot;k6&quot;,&quot;k4&quot;,&quot;k5&quot;, &quot;k7&quot;, &quot;k8&quot;, &quot;k9&quot;,&quot;k10&quot;),
+               gap=100, 
+               perplexity=20,
+               num_threads = 4, 
+               n=10000, 
+               verbose = F)</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#In t-SNE, perplexity balances local and global aspects of the data. It can be interpreted as the number of close neighbors associated with each point. The suggested range for perplexity is 5 to 50. Since t-SNE is probabilistic and also has the perplexity parameter, it is a very flexible method. However, this may make one a bit suspicious about the results. Note that t-SNE is not suitable for settings such as supervised learning because the resulting dimensions lack interpretability.</code></pre>
+<pre class="r"><code>structure_plot(fit,
+               grouping=factor(merged@meta.data$SCT_snn_res.0.5),
+               topics = c(&quot;k3&quot;,&quot;k2&quot;,&quot;k1&quot;,&quot;k6&quot;,&quot;k4&quot;,&quot;k5&quot;, &quot;k7&quot;, &quot;k8&quot;, &quot;k9&quot;,&quot;k10&quot;),
+               gap=100, 
+               perplexity=20,
+               num_threads = 4, 
+               n=10000, 
+               verbose = F)</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>names&lt;- paste0(&quot;k10.&quot;,colnames(fit$L))
+merged&lt;- AddMetaData(merged, poisson2multinom(fit)$L, col.name = names)</code></pre>
+<pre class="r"><code>feat&lt;- list()
+for(i in 1:ncol(fit$F)){
+  feat[[i]]&lt;- FeaturePlot(merged, features = paste0(&quot;k10.k&quot;,i))
+}
+feat</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[7]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[8]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[9]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[10]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-12-10.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>clust&lt;- c(&quot;SCT_snn_res.0.1&quot;, &quot;SCT_snn_res.0.5&quot;, &quot;SCT_snn_res.0.8&quot;, &quot;SCT_snn_res.1&quot;)
+cres&lt;- list()
+for(i in 1:length(clust)){
+  cres[[i]]&lt;- DimPlot(merged, group.by = clust[i])
+}
+cres</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-13-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>lps&lt;- NULL
+for ( i in 1:length(clust)){
+lps[[i]]&lt;- loadings_plot(poisson2multinom(fit), as.factor(merged@meta.data[,clust[i]]))
+}
+lps</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>volcano plots for genes DE in each topic</p>
+<pre class="r"><code>plot.list&lt;- list()
+for (i in 1:ncol(fit$L)){
+p&lt;-volcano_plot(diff_count_res, k=i, labels=genes, label_above_quantile = 0.999)
+plot.list[[i]]&lt;-p
+}
+
+plot.list</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[7]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[8]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[9]]</code></pre>
+<pre><code>Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[10]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-15-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Test just topic 4 vs. 7</p>
+<pre class="r"><code>sub&lt;- subset(merged, idents = &quot;0&quot;)
+fit_subset&lt;- select(poisson2multinom(fit), loadings=colnames(sub))</code></pre>
+<pre class="r"><code>ans&lt;- diff_count_analysis(fit_subset, counts[colnames(sub),])</code></pre>
+<pre class="r"><code>save(ans,file=&#39;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/fasttopics/k10.4v7.pluripotentsubset.diff_count.Rdata&#39;)</code></pre>
+<pre class="r"><code>load(&#39;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/fasttopics/k10.4v7.pluripotentsubset.diff_count.Rdata&#39;)</code></pre>
+<pre class="r"><code>plot.list&lt;- list()
+for (i in 1:ncol(fit_subset$L)){
+p&lt;-volcano_plot(ans, k=i, labels=genes, label_above_quantile = 0.999)
+plot.list[[i]]&lt;-p
+}
+
+plot.list</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<pre><code>Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<pre><code>Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[4]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[5]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[6]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[7]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[8]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[9]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[10]]</code></pre>
+<p><img src="figure/k10topics_Explore.Rmd/unnamed-chunk-20-10.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>top10.byBeta&lt;- NULL
+for (i in 1:ncol(diff_count_res$beta)){
+  topic&lt;- diff_count_res$beta[,i]
+  topic&lt;- topic[order(topic, decreasing=T)]
+  top10&lt;- names(topic)[1:10]
+  top10.byBeta&lt;- cbind(top10.byBeta,top10)
+}
+
+colnames(top10.byBeta)&lt;- colnames(diff_count_res$beta)</code></pre>
+<pre class="r"><code>write.csv(top10.byBeta, &quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TopicModelling_k10_top10drivergenes.byBeta.csv&quot;)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] tibble_3.0.4       dplyr_1.0.2        cowplot_1.1.1      Seurat_3.2.0      
+[5] ggplot2_3.3.3      Matrix_1.2-18      fastTopics_0.3-145 workflowr_1.6.2   
+
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
+ [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
+ [13] MatrixModels_0.4-1    ggrepel_0.9.0         codetools_0.2-16     
+ [16] splines_3.6.1         lsei_1.2-0            knitr_1.29           
+ [19] polyclip_1.10-0       jsonlite_1.7.2        mcmc_0.9-7           
+ [22] ica_1.0-2             cluster_2.1.0         png_0.1-7            
+ [25] uwot_0.1.10           sctransform_0.2.1     shiny_1.5.0          
+ [28] compiler_3.6.1        httr_1.4.2            fastmap_1.0.1        
+ [31] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [34] quantreg_5.61         prettyunits_1.1.1     tools_3.6.1          
+ [37] rsvd_1.0.3            igraph_1.2.6          coda_0.19-3          
+ [40] gtable_0.3.0          glue_1.4.2            reshape2_1.4.4       
+ [43] RANN_2.6.1            rappdirs_0.3.3        spatstat_1.64-1      
+ [46] Rcpp_1.0.6            vctrs_0.3.6           gdata_2.18.0         
+ [49] ape_5.4-1             nlme_3.1-140          conquer_1.0.1        
+ [52] lmtest_0.9-37         xfun_0.16             stringr_1.4.0        
+ [55] globals_0.12.5        mime_0.9              miniUI_0.1.1.1       
+ [58] lifecycle_0.2.0       irlba_2.3.3           gtools_3.8.2         
+ [61] goftest_1.2-2         future_1.18.0         MASS_7.3-51.4        
+ [64] zoo_1.8-8             scales_1.1.1          spatstat.utils_1.17-0
+ [67] hms_0.5.3             promises_1.1.1        parallel_3.6.1       
+ [70] SparseM_1.78          RColorBrewer_1.1-2    yaml_2.2.1           
+ [73] gridExtra_2.3         reticulate_1.20       pbapply_1.4-2        
+ [76] rpart_4.1-15          stringi_1.5.3         highr_0.8            
+ [79] caTools_1.18.0        rlang_0.4.10          pkgconfig_2.0.3      
+ [82] matrixStats_0.57.0    bitops_1.0-6          evaluate_0.14        
+ [85] lattice_0.20-38       tensor_1.5            ROCR_1.0-7           
+ [88] purrr_0.3.4           labeling_0.4.2        patchwork_1.1.1      
+ [91] htmlwidgets_1.5.1     tidyselect_1.1.0      RcppAnnoy_0.0.18     
+ [94] plyr_1.8.6            magrittr_2.0.1        R6_2.5.0             
+ [97] gplots_3.0.4          generics_0.1.0        mgcv_1.8-28          
+[100] pillar_1.4.7          withr_2.4.2           fitdistrplus_1.0-14  
+[103] abind_1.4-5           survival_3.2-3        future.apply_1.6.0   
+[106] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
+[109] rmarkdown_2.3         progress_1.2.2        grid_3.6.1           
+[112] data.table_1.13.4     git2r_0.26.1          digest_0.6.27        
+[115] xtable_1.8-4          tidyr_1.1.0           httpuv_1.5.4         
+[118] MCMCpack_1.4-8        RcppParallel_5.0.2    munsell_0.5.0        
+[121] viridisLite_0.3.0     quadprog_1.5-8       </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

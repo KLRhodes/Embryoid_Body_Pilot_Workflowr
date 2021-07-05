@@ -391,7 +391,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -400,7 +400,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -409,10 +409,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-08-31
+<strong>Last updated:</strong> 2021-07-05
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
 </p>
 <p>
 <strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -428,12 +428,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you'll want to first commit it to the Git repo. If you're still working on the analysis, you can ignore this warning. When you're finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -488,28 +488,52 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+</td>
+<td style="text-align:left;">
+../output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree162da729e1a0670ec86b109ceeb0849d916d3049targetblank162da72a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/162da729e1a0670ec86b109ceeb0849d916d3049" target="_blank">162da72</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreec8767ac248037859be1a0be3d135ab0a71c7591btargetblankc8767aca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/c8767ac248037859be1a0be3d135ab0a71c7591b" target="_blank">c8767ac</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree162da729e1a0670ec86b109ceeb0849d916d3049targetblank162da72a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreec8767ac248037859be1a0be3d135ab0a71c7591btargetblankc8767aca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/162da729e1a0670ec86b109ceeb0849d916d3049" target="_blank">162da72</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/c8767ac248037859be1a0be3d135ab0a71c7591b" target="_blank">c8767ac</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -520,25 +544,132 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
     Ignored:    output/.Rhistory
-    Ignored:    output/pdfs/
 
 Untracked files:
-    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
-    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
-    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
-    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
-    Untracked:  analysis/RunscHCL_HarmonyBatchInd.Rmd
+    Untracked:  GSE122380_raw_counts.txt.gz
+    Untracked:  UTF1_plots.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.Rmd
+    Untracked:  analysis/OLD/
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.8_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.Rmd
+    Untracked:  analysis/RefInt_ComparingFulltoPartialIntegrationAnnotations.Rmd
+    Untracked:  analysis/ReferenceAnn_DE.Rmd
     Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/VarPartPlots_res0.1_SCT.Rmd
+    Untracked:  analysis/VarPart_SC_res0.1_SCT.Rmd
     Untracked:  analysis/child/
+    Untracked:  analysis/k10topics_Explore.Rmd
+    Untracked:  analysis/k6topics_Explore.Rmd
+    Untracked:  build_refint_scale.R
+    Untracked:  build_refint_sct.R
+    Untracked:  build_stuff.R
+    Untracked:  build_varpart_sc.R
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/CellRangerPreprocess.Rmd
     Untracked:  code/ConvertToDGE.Rmd
     Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/ConvertToDGE_SingleCellRes_minPCT0.2.Rmd
     Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/GEO_processed_data.Rmd
+    Untracked:  code/PowerAnalysis_NoiseRatio.ipynb
+    Untracked:  code/Untitled.ipynb
+    Untracked:  code/Untitled1.ipynb
+    Untracked:  code/compile_fits.Rmd
+    Untracked:  code/fit_all_models.sh
+    Untracked:  code/fit_poisson_nmf.R
+    Untracked:  code/fit_poisson_nmf.sbatch
+    Untracked:  code/functions_for_fit_comparison.Rmd
     Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  code/prefit_poisson_nmf.R
+    Untracked:  code/prefit_poisson_nmf.sbatch
+    Untracked:  code/prepare_data_for_fastTopics.Rmd
+    Untracked:  data/HCL_Fig1_adata.h5ad
+    Untracked:  data/HCL_Fig1_adata.h5seurat
+    Untracked:  data/dge/
+    Untracked:  data/dge_raw_data.tar.gz
+    Untracked:  data/ref.expr.rda
     Untracked:  figure/
+    Untracked:  output/CR_sampleQCrds/
+    Untracked:  output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+    Untracked:  output/CaoEtAl.Obj.rds
+    Untracked:  output/ClusterInfo_res0.1.csv
     Untracked:  output/DGELists/
+    Untracked:  output/DownSampleVarPart.rds
+    Untracked:  output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/GEOsubmissionProcessedFiles/
     Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv
+    Untracked:  output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/ResidualVariances_fromDownSampAnalysis.csv
+    Untracked:  output/SingleCell_VariancePartition_RNA_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+    Untracked:  output/TopicModelling_k10_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top15drivergenes.byZ.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustMeso.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv
+    Untracked:  output/VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/azimuth/
+    Untracked:  output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_scres.rds
+    Untracked:  output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/fasttopics/
+    Untracked:  output/figs/
+    Untracked:  output/merge.Cao.SCTwRegressOrigIdent.rds
+    Untracked:  output/merge.all.SCTwRegressOrigIdent.Harmony.rds
+    Untracked:  output/merged.SCT.counts.matrix.rds
+    Untracked:  output/merged.raw.counts.matrix.rds
     Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
     Untracked:  output/sampleQCrds/
+    Untracked:  output/splitgpm_gsea_results/
+    Untracked:  slurm-12005914.out
+    Untracked:  slurm-12005923.out
+
+Unstaged changes:
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatch.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.Rmd
+    Modified:   analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Deleted:    analysis/RunscHCL_HarmonyBatchInd.Rmd
 
 </code></pre>
 <p>
@@ -577,6 +708,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/7888de801f9100d8587673260d5773bd374f9741/docs/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.html" target="_blank">7888de8</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -619,6 +767,43 @@ dge&lt;- readRDS(paste0(path,&quot;Pseudobulk_dge_&quot;,f, &quot;_&quot;, res,&
 lcpm&lt;- cpmByGroup(dge, group=dge$samples$cluster, log=TRUE)</code></pre>
 <pre class="r"><code>hist(lcpm)</code></pre>
 <p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-5-1.png" target="_blank">7888de8</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>L&lt;- mean(dge$samples$lib.size) *1e-6
 M&lt;- median(dge$samples$lib.size) *1e-6</code></pre>
 <pre class="r"><code>genes.ribo &lt;- grep(&#39;^RP&#39;,rownames(dge),value=T)
@@ -632,6 +817,43 @@ summary(dge$samples$norm.factors)</code></pre>
 <pre class="r"><code>design&lt;- model.matrix(~0+ dge$samples$cluster + dge$samples$batch + dge$samples$ind)</code></pre>
 <pre class="r"><code>v&lt;- voom(dge, design, plot=TRUE)</code></pre>
 <p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/7888de801f9100d8587673260d5773bd374f9741/docs/figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-10-1.png" target="_blank">7888de8</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>v</code></pre>
 <pre><code>An object of class &quot;EList&quot;
 $targets
@@ -1161,967 +1383,10 @@ $design
 4                      0
 5                      0
 153 more rows ...</code></pre>
-<pre class="r"><code>fit&lt;- lmFit(v,design)</code></pre>
-<pre class="r"><code>dim(fit)</code></pre>
-<pre><code>[1] 10915    22</code></pre>
-<pre class="r"><code>head(fit)</code></pre>
-<pre><code>An object of class &quot;MArrayLM&quot;
-$coefficients
-        dge$samples$cluster0 dge$samples$cluster1 dge$samples$cluster10
-SAMD11              2.039547             2.903009            1.68361012
-NOC2L               6.601111             6.317593            6.59850892
-PLEKHN1             1.366940            -2.569173            0.09687398
-HES4                6.091080             9.327304            6.55930710
-ISG15               5.516810             5.692514            5.35451655
-AGRN                4.638427             5.196508            4.91542082
-        dge$samples$cluster11 dge$samples$cluster12 dge$samples$cluster13
-SAMD11              3.4308878             5.3386018             2.4901493
-NOC2L               6.0467517             6.3992387             6.2339779
-PLEKHN1            -0.1325727            -0.7095955            -0.3166955
-HES4                9.4357719             8.0883432             9.1886717
-ISG15               6.1381676             5.0606985             5.6324846
-AGRN                4.8435596             5.5984149             4.9787540
-        dge$samples$cluster14 dge$samples$cluster15 dge$samples$cluster16
-SAMD11               4.092883             4.7559097              4.077276
-NOC2L                6.568888             6.1465359              5.817145
-PLEKHN1              2.350744            -0.2790673              4.743175
-HES4                 6.201964             8.3902760              7.503147
-ISG15                5.605723             5.1086110              6.361162
-AGRN                 4.550076             5.0486762              5.581236
-        dge$samples$cluster17 dge$samples$cluster2 dge$samples$cluster3
-SAMD11              0.8967904             2.648612            3.0724273
-NOC2L               5.9924455             6.391168            6.2698416
-PLEKHN1             0.3427823            -1.419643           -0.1581311
-HES4                7.3922018             8.973141            5.7856626
-ISG15               8.1802810             5.959436            6.4758084
-AGRN                6.0862275             5.173724            4.3579876
-        dge$samples$cluster4 dge$samples$cluster5 dge$samples$cluster6
-SAMD11              3.578533            2.9893043             4.415488
-NOC2L               6.406420            6.2026735             6.135993
-PLEKHN1            -0.851034            0.8743783             1.466009
-HES4                6.879054            6.6115354             7.441633
-ISG15               4.987376            5.6848112             6.937661
-AGRN                5.489668            4.9059639             5.768351
-        dge$samples$cluster7 dge$samples$cluster8 dge$samples$cluster9
-SAMD11              2.317608             2.722964            3.1401664
-NOC2L               6.305509             5.986355            6.4242972
-PLEKHN1             1.076852            -1.943810            0.2048845
-HES4                6.510843             9.029302            6.8856946
-ISG15               5.393732             5.183517            2.8572391
-AGRN                4.843317             5.201753            5.2229414
-        dge$samples$batchBatch2 dge$samples$batchBatch3 dge$samples$indNA18858
-SAMD11               -0.2548973             -0.05847588             -0.6346015
-NOC2L                -0.2757671             -0.23017741             -0.1502711
-PLEKHN1              -0.1105059             -0.30372459              0.5629640
-HES4                 -0.3748454             -0.88895687             -0.9404706
-ISG15                -0.1651807             -0.00497113              0.1605749
-AGRN                 -0.2307388             -0.40896790             -0.0967634
-        dge$samples$indNA19160
-SAMD11             0.285904750
-NOC2L             -0.043523959
-PLEKHN1           -0.183604175
-HES4              -0.402249461
-ISG15             -0.003643458
-AGRN              -0.104599642
-
-$stdev.unscaled
-        dge$samples$cluster0 dge$samples$cluster1 dge$samples$cluster10
-SAMD11             0.2322535           0.18898937             0.3636159
-NOC2L              0.1267344           0.12357008             0.1692158
-PLEKHN1            0.2960554           0.59421904             0.4358723
-HES4               0.1355938           0.09652449             0.1913966
-ISG15              0.1366195           0.13099722             0.1908121
-AGRN               0.1608399           0.14384702             0.2255630
-        dge$samples$cluster11 dge$samples$cluster12 dge$samples$cluster13
-SAMD11              0.2930570             0.2159402             0.3548537
-NOC2L               0.1916652             0.1641372             0.2017703
-PLEKHN1             0.5841662             0.6751429             0.6330931
-HES4                0.1314009             0.1437320             0.1543271
-ISG15               0.1844721             0.1952834             0.2314222
-AGRN                0.2317738             0.1915827             0.2472419
-        dge$samples$cluster14 dge$samples$cluster15 dge$samples$cluster16
-SAMD11              0.2796605             0.3144652             0.2759645
-NOC2L               0.2082347             0.2114792             0.2017567
-PLEKHN1             0.4071854             0.4917892             0.2965377
-HES4                0.2279887             0.1574974             0.1694633
-ISG15               0.2260604             0.2455725             0.1840256
-AGRN                0.2735778             0.2467756             0.2191045
-        dge$samples$cluster17 dge$samples$cluster2 dge$samples$cluster3
-SAMD11              0.6404207            0.2122587            0.2074759
-NOC2L               0.2265150            0.1277402            0.1372941
-PLEKHN1             0.7871239            0.5331781            0.4075145
-HES4                0.1949124            0.1037864            0.1489913
-ISG15               0.1664771            0.1331899            0.1340033
-AGRN                0.2348244            0.1507746            0.1814178
-        dge$samples$cluster4 dge$samples$cluster5 dge$samples$cluster6
-SAMD11             0.2245118            0.2140278            0.2025002
-NOC2L              0.1492784            0.1361666            0.1494785
-PLEKHN1            0.5196002            0.3607772            0.3325962
-HES4               0.1478987            0.1335288            0.1311130
-ISG15              0.1755689            0.1428023            0.1371503
-AGRN               0.1774187            0.1640277            0.1632010
-        dge$samples$cluster7 dge$samples$cluster8 dge$samples$cluster9
-SAMD11             0.2965805            0.2475024            0.2787242
-NOC2L              0.1584611            0.1498020            0.1749093
-PLEKHN1            0.3700782            0.6878972            0.5619642
-HES4               0.1686929            0.1136341            0.1726474
-ISG15              0.1717216            0.1650105            0.2620069
-AGRN               0.1990146            0.1712245            0.2091758
-        dge$samples$batchBatch2 dge$samples$batchBatch3 dge$samples$indNA18858
-SAMD11               0.13040195              0.13064964             0.16958673
-NOC2L                0.08250074              0.08151828             0.09260831
-PLEKHN1              0.20401977              0.20754047             0.23890155
-HES4                 0.07241979              0.07474088             0.08333524
-ISG15                0.08686597              0.08491277             0.09687370
-AGRN                 0.09747244              0.09904809             0.11437090
-        dge$samples$indNA19160
-SAMD11              0.12139635
-NOC2L               0.07889245
-PLEKHN1             0.23507541
-HES4                0.06974736
-ISG15               0.08316557
-AGRN                0.09455957
-
-$sigma
-[1] 1.2252715 0.5038468 0.9030387 1.4842538 1.2917626 0.7213480
-
-$df.residual
-[1] 136 136 136 136 136 136
-
-$cov.coefficients
-                      dge$samples$cluster0 dge$samples$cluster1
-dge$samples$cluster0            0.13640916           0.02529804
-dge$samples$cluster1            0.02529804           0.13640916
-dge$samples$cluster10           0.02529804           0.02529804
-dge$samples$cluster11           0.02529804           0.02529804
-dge$samples$cluster12           0.02529804           0.02529804
-                      dge$samples$cluster10 dge$samples$cluster11
-dge$samples$cluster0             0.02529804            0.02529804
-dge$samples$cluster1             0.02529804            0.02529804
-dge$samples$cluster10            0.13640916            0.02529804
-dge$samples$cluster11            0.02529804            0.13640916
-dge$samples$cluster12            0.02529804            0.02529804
-                      dge$samples$cluster12 dge$samples$cluster13
-dge$samples$cluster0             0.02529804            0.02440965
-dge$samples$cluster1             0.02529804            0.02440965
-dge$samples$cluster10            0.02529804            0.02440965
-dge$samples$cluster11            0.02529804            0.02440965
-dge$samples$cluster12            0.13640916            0.02440965
-                      dge$samples$cluster14 dge$samples$cluster15
-dge$samples$cluster0             0.02529804            0.02529804
-dge$samples$cluster1             0.02529804            0.02529804
-dge$samples$cluster10            0.02529804            0.02529804
-dge$samples$cluster11            0.02529804            0.02529804
-dge$samples$cluster12            0.02529804            0.02529804
-                      dge$samples$cluster16 dge$samples$cluster17
-dge$samples$cluster0             0.02529804            0.02163229
-dge$samples$cluster1             0.02529804            0.02163229
-dge$samples$cluster10            0.02529804            0.02163229
-dge$samples$cluster11            0.02529804            0.02163229
-dge$samples$cluster12            0.02529804            0.02163229
-                      dge$samples$cluster2 dge$samples$cluster3
-dge$samples$cluster0            0.02529804           0.02529804
-dge$samples$cluster1            0.02529804           0.02529804
-dge$samples$cluster10           0.02529804           0.02529804
-dge$samples$cluster11           0.02529804           0.02529804
-dge$samples$cluster12           0.02529804           0.02529804
-                      dge$samples$cluster4 dge$samples$cluster5
-dge$samples$cluster0            0.02529804           0.02529804
-dge$samples$cluster1            0.02529804           0.02529804
-dge$samples$cluster10           0.02529804           0.02529804
-dge$samples$cluster11           0.02529804           0.02529804
-dge$samples$cluster12           0.02529804           0.02529804
-                      dge$samples$cluster6 dge$samples$cluster7
-dge$samples$cluster0            0.02529804           0.02529804
-dge$samples$cluster1            0.02529804           0.02529804
-dge$samples$cluster10           0.02529804           0.02529804
-dge$samples$cluster11           0.02529804           0.02529804
-dge$samples$cluster12           0.02529804           0.02529804
-                      dge$samples$cluster8 dge$samples$cluster9
-dge$samples$cluster0            0.02529804           0.02529804
-dge$samples$cluster1            0.02529804           0.02529804
-dge$samples$cluster10           0.02529804           0.02529804
-dge$samples$cluster11           0.02529804           0.02529804
-dge$samples$cluster12           0.02529804           0.02529804
-                      dge$samples$batchBatch2 dge$samples$batchBatch3
-dge$samples$cluster0               -0.0188226             -0.01897346
-dge$samples$cluster1               -0.0188226             -0.01897346
-dge$samples$cluster10              -0.0188226             -0.01897346
-dge$samples$cluster11              -0.0188226             -0.01897346
-dge$samples$cluster12              -0.0188226             -0.01897346
-                      dge$samples$indNA18858 dge$samples$indNA19160
-dge$samples$cluster0             -0.01923015            -0.01886792
-dge$samples$cluster1             -0.01923015            -0.01886792
-dge$samples$cluster10            -0.01923015            -0.01886792
-dge$samples$cluster11            -0.01923015            -0.01886792
-dge$samples$cluster12            -0.01923015            -0.01886792
-17 more rows ...
-
-$pivot
-[1] 1 2 3 4 5
-17 more elements ...
-
-$rank
-[1] 22
-
-$Amean
-   SAMD11     NOC2L   PLEKHN1      HES4     ISG15      AGRN 
-3.1654089 5.9847813 0.6963754 6.5936954 5.6389559 4.8249547 
-
-$method
-[1] &quot;ls&quot;
-
-$design
-  dge$samples$cluster0 dge$samples$cluster1 dge$samples$cluster10
-1                    1                    0                     0
-2                    1                    0                     0
-3                    1                    0                     0
-4                    1                    0                     0
-5                    1                    0                     0
-  dge$samples$cluster11 dge$samples$cluster12 dge$samples$cluster13
-1                     0                     0                     0
-2                     0                     0                     0
-3                     0                     0                     0
-4                     0                     0                     0
-5                     0                     0                     0
-  dge$samples$cluster14 dge$samples$cluster15 dge$samples$cluster16
-1                     0                     0                     0
-2                     0                     0                     0
-3                     0                     0                     0
-4                     0                     0                     0
-5                     0                     0                     0
-  dge$samples$cluster17 dge$samples$cluster2 dge$samples$cluster3
-1                     0                    0                    0
-2                     0                    0                    0
-3                     0                    0                    0
-4                     0                    0                    0
-5                     0                    0                    0
-  dge$samples$cluster4 dge$samples$cluster5 dge$samples$cluster6
-1                    0                    0                    0
-2                    0                    0                    0
-3                    0                    0                    0
-4                    0                    0                    0
-5                    0                    0                    0
-  dge$samples$cluster7 dge$samples$cluster8 dge$samples$cluster9
-1                    0                    0                    0
-2                    0                    0                    0
-3                    0                    0                    0
-4                    0                    0                    0
-5                    0                    0                    0
-  dge$samples$batchBatch2 dge$samples$batchBatch3 dge$samples$indNA18858
-1                       0                       0                      0
-2                       0                       0                      1
-3                       0                       0                      0
-4                       1                       0                      0
-5                       1                       0                      1
-  dge$samples$indNA19160
-1                      0
-2                      0
-3                      1
-4                      0
-5                      0
-153 more rows ...</code></pre>
-<pre class="r"><code>#all pairwise cluster comparisons
-nclust&lt;- length(unique(dge$samples$cluster))
-nterms&lt;- ncol(fit)
-contrasts&lt;- NULL
-for (b in 1:nclust){
-for (i in 1:nclust){
-    c&lt;- rep(0,nterms)
-    c[b]&lt;- 1
-    c[i]&lt;- -1
-    contrasts&lt;- cbind(contrasts, c)
-}
-}
-
-selfcols&lt;- c()
-el&lt;- 1
-while (length(selfcols) &lt;= nclust){
-  selfcols&lt;- c(selfcols, el)
-  el&lt;- el + nclust + 1
-}
-
-contrasts&lt;- contrasts[,-selfcols]</code></pre>
-<pre class="r"><code>contrasts</code></pre>
-<pre><code>       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 -1  0  0  0  0  0  0
- [2,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1  1  1  1  1  1
- [3,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
- [4,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
- [5,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
- [6,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
- [7,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
- [8,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
- [9,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[10,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[13,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
-[15,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[16,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[17,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
- [2,]  1  1  1  1  1  1  1  1  1  1  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0  0  0  0  0  0  0  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1
- [4,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
- [6,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
- [9,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[10,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[11,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[12,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[13,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[14,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[15,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
-[16,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[17,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
- [2,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
- [3,]  1  1  1  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
- [4,]  0  0  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  0  0  0 -1
- [5,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1  1  1
- [6,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [9,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[10,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[13,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[15,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[16,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[17,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[18,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
- [2,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
- [5,]  1  1  1  1  1  1  1  1  1  1  1  1  1  0  0  0  0 -1  0  0  0  0  0  0
- [6,] -1  0  0  0  0  0  0  0  0  0  0  0  0  1  1  1  1  1  1  1  1  1  1  1
- [7,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
- [8,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
- [9,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[10,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[11,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[12,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
-[13,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[15,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[16,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[17,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
- [2,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
- [6,]  1  1  1  1  1  1  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  0
- [8,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  1
- [9,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[10,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[13,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[14,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[15,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[16,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[17,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[18,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
- [2,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
- [3,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
- [4,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
- [5,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
- [6,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
- [7,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
- [8,]  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  0  0  0  0  0  0  0 -1
- [9,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  1  1  1  1  1  1  1  1
-[10,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[13,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[15,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
-[16,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[17,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [2,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
- [6,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
- [9,]  1  1  1  1  1  1  1  1  1  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[10,] -1  0  0  0  0  0  0  0  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1
-[11,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[12,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[13,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[14,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[15,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[16,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
-[17,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
- [2,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
- [3,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
- [4,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
- [5,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
- [6,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [9,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[10,]  1  1  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[11,]  0  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  1  1  1  1  1
-[13,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[15,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[16,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[17,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[18,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
- [2,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
- [6,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
- [7,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
- [8,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
- [9,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[10,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[11,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[12,]  1  1  1  1  1  1  1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0 -1
-[13,]  0  0  0  0  0  0 -1  0  0  0  0  0  1  1  1  1  1  1  1  1  1  1  1  1
-[14,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[15,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[16,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[17,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
- [2,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
- [3,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [6,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
- [9,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[10,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[13,]  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[14,] -1  0  0  0  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  0  0
-[15,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  1  1
-[16,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[17,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[18,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
- [2,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
- [3,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
- [4,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
- [5,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
- [6,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
- [7,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
- [8,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
- [9,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
-[10,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[13,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
-[15,]  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  0  0  0  0  0  0  0  0  0
-[16,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  1  1  1  1  1  1  1  1  1
-[17,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
-[18,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [2,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
- [6,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
- [9,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[10,] -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[11,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[12,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[13,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[14,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[15,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[16,]  1  1  1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
-[17,]  0  0  0  0  0  0 -1  0  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1
-[18,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-       c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c  c
- [1,]  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [2,]  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [3,]  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
- [4,]  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0  0
- [5,]  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0  0
- [6,]  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0  0
- [7,]  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0  0
- [8,]  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0  0
- [9,]  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0  0
-[10,]  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0  0
-[11,]  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0  0
-[12,]  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0  0
-[13,]  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0  0
-[14,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0  0
-[15,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0  0
-[16,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1  0
-[17,]  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 -1
-[18,] -1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1
-[19,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[20,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[21,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-[22,]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0</code></pre>
-<pre class="r"><code>#first, testing all pairwise cluster comparisons. 
-fit&lt;- contrasts.fit(fit, contrasts= contrasts)</code></pre>
-<pre class="r"><code>efit&lt;- eBayes(fit)</code></pre>
-<pre class="r"><code>plotSA(efit)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>summary(decideTests(efit))</code></pre>
-<pre><code>           c     c     c     c     c     c     c     c     c     c     c     c
-Down    3765  1749  3385  3599  3353   735  3218  3395  3287  3722  3782  3513
-NotSig  2792  7433  3500  2777  3632  9477  3883  4245  4351  2734  3210  3356
-Up      4358  1733  4030  4539  3930   703  3814  3275  3277  4459  3923  4046
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2503  3610   976  3723  3518  4358  3375  1519  2940   192  4158  1005
-NotSig  5923  3828  9088  3020  3380  2792  4252  7609  4448 10429  3251  8745
-Up      2489  3477   851  4172  4017  3765  3288  1787  3527   294  3506  1165
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    3697  3202  1171  3496  1808  3498  3734  4072   880  2678  1733  3288
-NotSig  3822  4679  8465  4161  6996  4390  3743  3314  8721  5299  7433  4252
-Up      3396  3034  1279  3258  2111  3027  3438  3529  1314  2938  1749  3375
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2809  3155  2855  2505  2715  3352  3008  3182  3464  2957  2429  3466
-NotSig  4969  3750  5080  6307  5226  4503  4996  4341  4197  4858  6460  4420
-Up      3137  4010  2980  2103  2974  3060  2911  3392  3254  3100  2026  3029
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2002  3346  3055  4030  1787  3137  2303   892  3860   598  2789  2529
-NotSig  7160  4170  4529  3500  7609  4969  5809  9244  3947  9710  5542  6165
-Up      1753  3399  3331  3385  1519  2809  2803   779  3108   607  2584  2221
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down     992  2599  1543  3075  3033  3825  1640  2181  4539  3527  4010  2803
-NotSig  8903  6199  7803  5396  5357  4014  7637  6578  2777  4448  3750  5809
-Up      1020  2117  1569  2444  2525  3076  1638  2156  3599  2940  3155  2303
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2886  4305  2748  3768  3463  3295  3946  3331  4148  4116  4361  3291
-NotSig  5737  3261  5794  4061  4719  5266  4039  4940  3621  3645  3166  4809
-Up      2292  3349  2373  3086  2733  2354  2930  2644  3146  3154  3388  2815
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2265  3930   294  2980   779  2292  3787   493  3023  2775   446  2786
-NotSig  6853  3632 10429  5080  9244  5737  3930  9841  5012  5547  9951  5566
-Up      1797  3353   192  2855   892  2886  3198   581  2880  2593   518  2563
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    1289  2883  3162  3696   758  2069   703  3506  2103  3108  3349  3198
-NotSig  8194  5578  4982  4116  9418  6654  9477  3251  6307  3947  3261  3930
-Up      1432  2454  2771  3103   739  2192   735  4158  2505  3860  4305  3787
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2966  2888  3016  3501  3337  3265  2281  3128  1316  3420  3295  3814
-NotSig  4287  4980  4794  3140  4014  3815  6311  4581  8391  3523  3803  3883
-Up      3662  3047  3105  4274  3564  3835  2323  3206  1208  3972  3817  3218
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    1165  2974   607  2373   581  3662  2591  2385  1096  2252  1106  2615
-NotSig  8745  5226  9710  5794  9841  4287  5976  6512  8861  6872  8512  6277
-Up      1005  2715   598  2748   493  2966  2348  2018   958  1791  1297  2023
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2612  3530  1112  1877  3275  3396  3060  2584  3086  2880  3047  2348
-NotSig  6123  4540  8680  7144  4245  3822  4503  5542  4061  5012  4980  5976
-Up      2180  2845  1123  1894  3395  3697  3352  2789  3768  3023  2888  2591
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2084  3273  2507  2912  2950  1926  3161  3176  2997  3277  3034  2911
-NotSig  6971  4037  6172  5053  5155  7179  4649  4328  4898  4351  4679  4996
-Up      1860  3605  2236  2950  2810  1810  3105  3411  3020  3287  3202  3008
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2221  2733  2593  3105  2018  1860  2973  1706  2335  2806  2211  3030
-NotSig  6165  4719  5547  4794  6512  6971  4727  7370  6035  5458  6503  4893
-Up      2529  3463  2775  3016  2385  2084  3215  1839  2545  2651  2201  2992
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2821  2381  4459  1279  3392  1020  2354   518  4274   958  3605  3215
-NotSig  5063  5948  2734  8465  4341  8903  5266  9951  3140  8861  4037  4727
-Up      3031  2586  3722  1171  3182   992  3295   446  3501  1096  3273  2973
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    3508  1940  3781  3835  4244  1399  2519  3923  3258  3254  2117  2930
-NotSig  4233  6918  3987  3783  3210  7702  5708  3210  4161  4197  6199  4039
-Up      3174  2057  3147  3297  3461  1814  2688  3782  3496  3464  2599  3946
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2563  3564  1791  2236  1839  3174  2325  3272  2381  3588  2893  2606
-NotSig  5566  4014  6872  6172  7370  4233  6058  4709  6213  3909  4809  5405
-Up      2786  3337  2252  2507  1706  3508  2532  2934  2321  3418  3213  2904
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    4046  2111  3100  1569  2644  1432  3835  1297  2950  2545  2057  2532
-NotSig  3356  6996  4858  7803  4940  8194  3815  8512  5053  6035  6918  6058
-Up      3513  1808  2957  1543  3331  1289  3265  1106  2912  2335  1940  2325
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    3064  3187  3751  2087  1747  2489  3027  2026  2444  3146  2454  2323
-NotSig  5311  4795  3940  6821  7221  5923  4390  6460  5396  3621  5578  6311
-Up      2540  2933  3224  2007  1947  2503  3498  2429  3075  4148  2883  2281
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2023  2810  2651  3147  2934  2540  2830  1961  2720  2763  3477  3438
-NotSig  6277  5155  5458  3987  4709  5311  5148  7082  5065  4770  3828  3743
-Up      2615  2950  2806  3781  3272  3064  2937  1872  3130  3382  3610  3734
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    3029  2525  3154  2771  3206  2180  1810  2201  3297  2321  2933  2937
-NotSig  4420  5357  3645  4982  4581  6123  7179  6503  3783  6213  4795  5148
-Up      3466  3033  4116  3162  3128  2612  1926  2211  3835  2381  3187  2830
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    3174  3096  2905   851  3529  1753  3076  3388  3103  1208  2845  3105
-NotSig  4529  4293  4792  9088  3314  7160  4014  3166  4116  8391  4540  4649
-Up      3212  3526  3218   976  4072  2002  3825  4361  3696  1316  3530  3161
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2992  3461  3418  3224  1872  3212  3397  3275  4172  1314  3399  1638
-NotSig  4893  3210  3909  3940  7082  4529  3633  3861  3020  8721  4170  7637
-Up      3030  4244  3588  3751  1961  3174  3885  3779  3723   880  3346  1640
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2815   739  3972  1123  3411  3031  1814  3213  2007  3130  3526  3885
-NotSig  4809  9418  3523  8680  4328  5063  7702  4809  6821  5065  4293  3633
-Up      3291   758  3420  1112  3176  2821  1399  2893  2087  2720  3096  3397
-           c     c     c     c     c     c     c     c     c     c     c     c
-Down    2592  4017  2938  3331  2156  1797  2192  3817  1894  3020  2586  2688
-NotSig  5639  3380  5299  4529  6578  6853  6654  3803  7144  4898  5948  5708
-Up      2684  3518  2678  3055  2181  2265  2069  3295  1877  2997  2381  2519
-           c     c     c     c     c     c
-Down    2904  1947  3382  3218  3779  2684
-NotSig  5405  7221  4770  4792  3861  5639
-Up      2606  1747  2763  2905  3275  2592</code></pre>
-<pre class="r"><code>qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
-abline(0,1)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>topTable(efit, coef=1, sort.by= &quot;P&quot;)</code></pre>
-<pre><code>           logFC  AveExpr         t      P.Value    adj.P.Val        B
-FZD3   -3.404693 6.513489 -24.70435 1.299931e-53 1.300176e-49 111.6844
-TTC3   -5.057673 6.918583 -24.57621 2.382366e-53 1.300176e-49 111.0577
-PHC2   -5.154735 5.269648 -23.34270 8.981254e-51 3.267680e-47 104.9972
-PRXL2A -3.136003 7.314321 -23.11730 2.709053e-50 6.845237e-47 104.0708
-MAP2   -5.692043 4.260302 -23.05504 3.679043e-50 6.845237e-47 103.5493
-PALLD  -4.300937 5.169170 -23.02776 4.207686e-50 6.845237e-47 103.5634
-ZBTB16 -5.987047 3.883852 -23.01914 4.389983e-50 6.845237e-47 103.3315
-ZNF428 -3.465697 7.012878 -22.81956 1.175760e-49 1.604177e-46 102.6136
-GLI3   -4.484837 5.195618 -22.67594 2.396374e-49 2.906270e-46 101.8227
-SDK2   -4.455940 3.877262 -22.53306 4.878435e-49 5.324812e-46 100.9614</code></pre>
-<p>Comparing the subclusters of the pluripotent blob</p>
-<p>clust0 v clust14</p>
-<pre class="r"><code>topTable(efit, coef=14, sort.by= &quot;P&quot;, n=20)</code></pre>
-<pre><code>            logFC  AveExpr         t      P.Value    adj.P.Val         B
-TTC3    -5.352604 6.918583 -25.07959 2.230402e-54 2.434483e-50 113.36131
-PTGR1   -3.599433 6.780217 -24.83916 6.887584e-54 3.758899e-50 112.31318
-CST3    -4.939164 7.495076 -22.43631 7.906047e-49 2.876484e-45 100.71467
-FLRT3   -7.712076 4.311649 -22.28859 1.656019e-48 4.518863e-45  99.55888
-CDH2    -5.448870 6.197210 -22.05197 5.443866e-48 1.188396e-44  98.72946
-RHOBTB3 -5.878735 5.392051 -20.29636 4.636106e-44 8.433849e-41  89.65605
-COL2A1  -5.611429 5.435774 -19.44717 4.244770e-42 6.618810e-39  85.21978
-PHC2    -4.439581 5.269648 -19.03671 3.891777e-41 5.309844e-38  82.99682
-MPC2    -2.143289 7.228280 -18.65724 3.075490e-40 3.640250e-37  80.97868
-COL18A1 -3.730244 5.704533 -18.63466 3.480021e-40 3.640250e-37  80.90336
-BCL7C   -2.461359 5.929437 -18.62502 3.668598e-40 3.640250e-37  80.85449
-HK1      2.935070 5.689100  18.41009 1.193350e-39 1.021752e-36  79.66775
-PCBD1   -2.740295 6.446632 -18.40654 1.216929e-39 1.021752e-36  79.63198
-PRXL2A  -2.688058 7.314321 -18.38587 1.363497e-39 1.032295e-36  79.52085
-FBN2    -5.060464 4.224214 -18.37867 1.418638e-39 1.032295e-36  79.42775
-DPPA4    3.361593 7.359877  18.33871 1.767914e-39 1.206049e-36  79.26890
-TERF1    3.552635 7.872473  18.30851 2.088087e-39 1.340675e-36  79.07947
-ADD3    -2.339852 5.815396 -18.08948 7.006485e-39 4.248654e-36  77.91191
-DERA    -3.014595 5.220743 -18.06398 8.070064e-39 4.636040e-36  77.77857
-ADD2     3.546186 4.466847  18.00880 1.095976e-38 5.981290e-36  77.34588</code></pre>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=14, n=nrow(fit))
-labsig&lt;- vol[(vol$logFC) &gt;=3 &amp; vol$adj.P.Val &lt; 5e-30 | vol$logFC &lt;=-5 &amp; vol$adj.P.Val &lt; 1e-35,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>some&lt;-topTable(efit, coef=14, sort.by= &quot;P&quot;, n=60)
-up&lt;- some[some$logFC&gt;0,]
-down&lt;-some[some$logFC&lt;0,]</code></pre>
-<pre class="r"><code>head(up,10)</code></pre>
-<pre><code>          logFC  AveExpr        t      P.Value    adj.P.Val        B
-HK1    2.935070 5.689100 18.41009 1.193350e-39 1.021752e-36 79.66775
-DPPA4  3.361593 7.359877 18.33871 1.767914e-39 1.206049e-36 79.26890
-TERF1  3.552635 7.872473 18.30851 2.088087e-39 1.340675e-36 79.07947
-ADD2   3.546186 4.466847 18.00880 1.095976e-38 5.981290e-36 77.34588
-THY1   4.302143 6.547327 17.57590 1.225013e-37 5.571259e-35 75.07868
-SEPHS1 2.591606 7.554782 17.28595 6.247399e-37 2.351392e-34 73.39475
-DNMT3B 3.907227 6.674119 16.46802 6.519906e-35 1.779119e-32 68.81935
-JARID2 2.057235 6.738158 16.13605 4.392113e-34 8.877762e-32 66.89643
-MYC    5.228513 3.732291 16.04987 7.220768e-34 1.382714e-31 66.33822
-POLR3G 4.707196 4.260883 16.03340 7.940930e-34 1.438252e-31 66.33874</code></pre>
-<pre class="r"><code>head(down,10)</code></pre>
-<pre><code>            logFC  AveExpr         t      P.Value    adj.P.Val         B
-TTC3    -5.352604 6.918583 -25.07959 2.230402e-54 2.434483e-50 113.36131
-PTGR1   -3.599433 6.780217 -24.83916 6.887584e-54 3.758899e-50 112.31318
-CST3    -4.939164 7.495076 -22.43631 7.906047e-49 2.876484e-45 100.71467
-FLRT3   -7.712076 4.311649 -22.28859 1.656019e-48 4.518863e-45  99.55888
-CDH2    -5.448870 6.197210 -22.05197 5.443866e-48 1.188396e-44  98.72946
-RHOBTB3 -5.878735 5.392051 -20.29636 4.636106e-44 8.433849e-41  89.65605
-COL2A1  -5.611429 5.435774 -19.44717 4.244770e-42 6.618810e-39  85.21978
-PHC2    -4.439581 5.269648 -19.03671 3.891777e-41 5.309844e-38  82.99682
-MPC2    -2.143289 7.228280 -18.65724 3.075490e-40 3.640250e-37  80.97868
-COL18A1 -3.730244 5.704533 -18.63466 3.480021e-40 3.640250e-37  80.90336</code></pre>
-<p>clust0 v clust10</p>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=10, n=nrow(fit))
-labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-45) | (vol$logFC&gt; 0 &amp; vol$adj.P.Val &lt; 1e-30) |vol$logFC&gt; 7 |vol$logFC &lt; -7,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>some&lt;-topTable(efit, coef=10, sort.by= &quot;P&quot;, n=200)
-up&lt;- some[some$logFC&gt;0,]
-down&lt;-some[some$logFC&lt;0,]</code></pre>
-<pre class="r"><code>head(up,10)</code></pre>
-<pre><code>          logFC  AveExpr        t      P.Value    adj.P.Val        B
-SKA3   4.000412 4.683639 20.67823 6.264567e-45 2.442063e-42 91.69270
-POLR3G 4.512689 4.260883 16.69633 1.768181e-35 1.754518e-33 70.13741
-ESCO2  3.238793 4.228161 16.53727 4.386124e-35 3.956574e-33 69.19999
-PKMYT1 2.958103 3.972926 16.32128 1.512901e-34 1.260559e-32 67.99548
-ARRB1  3.886548 3.638653 16.26005 2.150960e-34 1.726303e-32 67.62550
-SOCS1  3.969757 4.318091 16.08709 5.824945e-34 4.415227e-32 66.66986
-PIF1   4.457772 4.732559 15.95008 1.285305e-33 9.169350e-32 65.87761
-MYC    4.447913 3.732291 15.83589 2.489411e-33 1.666989e-31 65.22051
-TEAD4  3.850521 3.667473 15.60049 9.766757e-33 5.988998e-31 63.86067
-AUNIP  2.755692 3.310330 15.46787 2.114846e-32 1.227848e-30 63.06869</code></pre>
-<pre class="r"><code>head(down,10)</code></pre>
-<pre><code>           logFC  AveExpr         t      P.Value    adj.P.Val        B
-TTC3   -5.079898 6.918583 -24.46025 4.128689e-53 4.506464e-49 110.5114
-MAPK10 -5.344690 4.486971 -24.03208 3.188848e-52 1.740314e-48 108.2798
-PHC2   -5.310932 5.269648 -23.93672 5.042892e-52 1.834772e-48 107.8429
-FZD3   -3.332954 6.513489 -23.86247 7.210753e-52 1.967634e-48 107.6864
-ZNF428 -3.626402 7.012878 -23.73323 1.345891e-51 2.938080e-48 107.0666
-MAP2   -5.829260 4.260302 -23.48411 4.507438e-51 8.199781e-48 105.6220
-SDK2   -4.655060 3.877262 -23.44048 5.574245e-51 8.691841e-48 105.3686
-CDH2   -5.556189 6.197210 -23.16302 2.164450e-50 2.953121e-47 104.2561
-TLE4   -3.916044 6.198220 -22.99731 4.888275e-50 5.928392e-47 103.4821
-KMT2E  -2.641580 6.699401 -22.97569 5.437974e-50 5.935549e-47 103.3818</code></pre>
-<p>clust0 v clust7</p>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=7, n=nrow(fit))
-labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-37) | (vol$logFC&gt; 0 &amp; vol$adj.P.Val &lt; 1e-21) |vol$logFC&gt; 6 |vol$logFC &lt; -7,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>some&lt;-topTable(efit, coef=7, sort.by= &quot;P&quot;, n=300)
-up&lt;- some[some$logFC&gt;0,]
-down&lt;-some[some$logFC&lt;0,]</code></pre>
-<pre class="r"><code>head(up,10)</code></pre>
-<pre><code>           logFC  AveExpr        t      P.Value    adj.P.Val        B
-L1TD1   4.078318 7.936582 12.90836 8.383958e-26 6.354655e-24 47.93565
-TERF1   2.808480 7.872473 12.58365 5.924013e-25 4.066705e-23 45.93276
-JARID2  2.082664 6.738158 12.49413 1.016141e-24 6.672461e-23 45.52516
-ESRP1   6.151823 3.313360 12.39767 1.817980e-24 1.140417e-22 44.91822
-UGP2    2.569624 7.611443 12.35363 2.371135e-24 1.478911e-22 44.58794
-CYCS    1.511861 8.549251 11.98598 2.180865e-23 1.144430e-21 42.27029
-DPPA4   2.522185 7.359877 11.93308 3.001498e-23 1.567529e-21 42.07324
-PDLIM1  3.423607 6.674474 11.91445 3.358907e-23 1.721243e-21 42.09967
-DNMT3B  3.501431 6.674119 11.86661 4.483610e-23 2.234639e-21 41.77162
-HTATIP2 5.317395 4.378024 11.78004 7.562030e-23 3.652193e-21 41.22032</code></pre>
-<pre class="r"><code>head(down, 10)</code></pre>
-<pre><code>           logFC  AveExpr         t      P.Value    adj.P.Val         B
-TTC3   -5.455607 6.918583 -23.37193 7.786981e-51 8.499490e-47 105.25649
-COL2A1 -6.360132 5.435774 -20.97251 1.356663e-45 7.403986e-42  93.18050
-PHC2   -5.203011 5.269648 -20.79681 3.377529e-45 1.228858e-41  92.21278
-PALLD  -4.304422 5.169170 -19.74562 8.588625e-43 2.343621e-39  86.81091
-SDK2   -4.557873 3.877262 -19.32911 8.011512e-42 1.748913e-38  84.40667
-EFNA5  -5.100087 5.437646 -18.66424 2.959962e-40 4.661925e-37  81.06530
-ZBTB16 -5.756527 3.883852 -18.66240 2.989783e-40 4.661925e-37  80.85787
-VIM    -4.626255 9.934601 -18.56505 5.095523e-40 6.952204e-37  80.38134
-CDH2   -5.034243 6.197210 -18.52564 6.324842e-40 7.078335e-37  80.30312
-ZNF428 -3.342604 7.012878 -18.52109 6.484961e-40 7.078335e-37  80.28518</code></pre>
-<p>comparing the two mature neuron clusters</p>
-<p>clust9 v clust12</p>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=165, n=nrow(fit))
-labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-37) | (vol$logFC&lt; 0 &amp; vol$adj.P.Val &lt; 1e-15) |vol$logFC&gt; 9.5 |vol$logFC &lt; -6,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>some&lt;-topTable(efit, coef=165, sort.by= &quot;P&quot;, n=400)
-up&lt;- some[some$logFC&gt;0,]
-down&lt;-some[some$logFC&lt;0,]</code></pre>
-<pre class="r"><code>head(up,10)</code></pre>
-<pre><code>            logFC  AveExpr        t      P.Value    adj.P.Val         B
-EGFL7    5.013369 5.480814 29.21823 2.316511e-62 2.528471e-58 131.71827
-IGFBP4   4.622808 4.468332 27.18708 1.514547e-58 8.265642e-55 122.93935
-RAMP2    5.577156 4.671294 24.10036 2.298396e-52 8.362330e-49 108.81136
-GNG11    4.952769 4.650268 20.90612 1.914072e-45 5.223024e-42  92.92592
-SLC9A3R2 4.990341 4.042906 20.79781 3.359921e-45 7.334709e-42  92.35900
-KDR      8.868834 2.717682 19.78715 6.882520e-43 1.252045e-39  86.73472
-RGS5     6.667662 3.677650 18.84047 1.130997e-40 1.763548e-37  82.02311
-FLT1     8.511865 2.096625 18.80700 1.357320e-40 1.851894e-37  81.56069
-DOCK6    4.179149 2.976909 18.67041 2.861699e-40 3.470605e-37  81.00127
-MAP4K2   3.851620 3.225441 18.50198 7.202053e-40 7.861041e-37  80.12463</code></pre>
-<pre class="r"><code>head(down,10)</code></pre>
-<pre><code>           logFC  AveExpr          t      P.Value    adj.P.Val        B
-HDDC2  -2.150967 7.007206 -12.469897 1.176032e-24 9.438522e-23 45.25070
-LMO4   -2.704546 6.830333 -11.486277 4.454955e-22 2.628423e-20 39.35081
-METRN  -3.453564 7.392618 -11.182589 2.782654e-21 1.439463e-19 37.55896
-FZD3   -2.656501 6.513489 -10.877425 1.748821e-20 8.054168e-19 35.83649
-CRABP2 -3.970496 8.339630 -10.237889 8.109766e-19 3.031442e-17 31.81122
-CDH6   -5.030988 4.838455 -10.143413 1.425929e-18 5.205356e-17 31.63891
-COL2A1 -4.798300 5.435774  -9.920974 5.367535e-18 1.854008e-16 30.31351
-TLE1   -2.256331 6.125347  -9.720027 1.769998e-17 5.718115e-16 28.94028
-CNP    -1.907485 5.413204  -9.582488 3.994990e-17 1.231789e-15 28.12738
-ATP1A2 -5.421017 4.104727  -9.505743 6.285654e-17 1.895246e-15 27.95163</code></pre>
-<p>cluster 4 v12</p>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=80, n=nrow(fit))
-labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-40) |vol$logFC&gt; 7 |vol$logFC &lt; -6 | vol$adj.P.Val&lt;1e-27 &amp; vol$logFC&lt;0,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>some&lt;-topTable(efit, coef=80, sort.by= &quot;P&quot;, n=400)
-up&lt;- some[some$logFC&gt;0,]
-down&lt;-some[some$logFC&lt;0,]</code></pre>
-<pre class="r"><code>head(up,10)</code></pre>
-<pre><code>           logFC  AveExpr        t      P.Value    adj.P.Val         B
-RTN1    6.283233 3.322440 29.23024 2.202083e-62 2.403574e-58 131.43213
-INA     6.968998 3.226732 25.01275 3.049435e-54 1.664229e-50 112.44418
-STMN2   7.840766 4.084364 23.27740 1.235857e-50 4.496458e-47 104.83451
-GNG3    5.999507 3.215638 21.30742 2.410473e-46 6.577577e-43  94.81926
-FNDC5   5.667737 2.061072 20.59407 9.722261e-45 2.122369e-41  91.04387
-KLHL35  5.894091 1.987637 20.54765 1.239471e-44 2.254804e-41  90.84930
-IGFBPL1 5.737944 4.520933 20.50719 1.531928e-44 2.367077e-41  90.88251
-MAP6    5.755501 3.308765 20.48345 1.734917e-44 2.367077e-41  90.65277
-ELAVL3  7.351680 2.596420 20.36873 3.168151e-44 3.842263e-41  89.90741
-TAGLN3  4.661624 3.936643 19.37929 6.114721e-42 6.674218e-39  84.91877</code></pre>
-<pre class="r"><code>head(down,10)</code></pre>
-<pre><code>           logFC  AveExpr         t      P.Value    adj.P.Val        B
-GPX8   -3.296792 5.747707 -16.38695 1.037754e-34 3.236309e-32 68.38254
-GINS4  -3.246664 4.658249 -16.10846 5.149545e-34 1.405182e-31 66.76782
-ARPC1B -3.484451 4.736997 -15.34056 4.446607e-32 8.666914e-30 62.36856
-DNAJC1 -2.796057 5.593647 -14.55309 4.558586e-30 6.219621e-28 57.67779
-ATP1A2 -5.714578 4.104727 -14.53399 5.103827e-30 6.877564e-28 57.63630
-YAP1   -2.825628 5.669665 -14.50000 6.240852e-30 8.279520e-28 57.46226
-UACA   -3.979332 5.445227 -14.49649 6.371779e-30 8.279520e-28 57.44869
-MDFI   -4.659454 5.432176 -14.42558 9.695961e-30 1.230598e-27 57.03341
-CNP    -2.357814 5.413204 -14.06274 8.360898e-29 8.609358e-27 54.80104
-MCM10  -4.400485 4.677969 -14.06063 8.466354e-29 8.636472e-27 54.84023</code></pre>
-<p>cluster2 v cluster13</p>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=47, n=nrow(fit))
-labsig&lt;-  vol[(vol$adj.P.Val &lt; 5e-15) |vol$logFC&gt; 3 |vol$logFC &lt; -4,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>some&lt;-topTable(efit, coef=47, sort.by= &quot;P&quot;, n=400)
-up&lt;- some[some$logFC&gt;0,]
-down&lt;-some[some$logFC&lt;0,]</code></pre>
-<pre class="r"><code>head(up,10)</code></pre>
-<pre><code>             logFC   AveExpr         t      P.Value    adj.P.Val        B
-MT-CO2   1.1583742 13.873780 12.501636 9.712033e-25 1.060068e-20 45.33755
-MT-ND4   1.0221558 12.565437 11.255825 1.789275e-21 5.832717e-18 37.89834
-EIF2S3   0.9893087  8.163179 10.444154 2.359706e-19 4.292699e-16 33.33784
-MT-ND4L  1.1128059  7.687674 10.362095 3.857638e-19 4.678457e-16 32.88074
-MT-ND5   0.9355394 10.245649  9.995515 3.444192e-18 3.132780e-15 30.53457
-MT-ND2   0.8907165 10.782929  9.944795 4.658255e-18 3.389657e-15 30.19041
-TOMM7    1.1603328  8.961618  9.845063 8.428573e-18 5.749867e-15 29.73764
-SLC25A39 1.0181265  7.083068  9.702886 1.959231e-17 1.188056e-14 29.03117
-LRRC75A  1.6189398  6.067424  9.677037 2.283408e-17 1.311758e-14 28.91758
-USO1     1.1629757  6.410516  9.636840 2.896813e-17 1.437214e-14 28.67141</code></pre>
-<pre class="r"><code>head(down,10)</code></pre>
-<pre><code>            logFC  AveExpr          t      P.Value    adj.P.Val        B
-MAPK10  -4.360461 4.486971 -11.943649 2.815950e-23 1.536805e-19 41.34367
-PRTG    -4.224031 5.708449 -11.226336 2.137505e-21 5.832717e-18 37.91330
-BOC     -3.423740 3.962865 -10.509912 1.590931e-19 3.473003e-16 33.28337
-ZEB2    -3.968027 4.429497 -10.410542 2.886147e-19 4.500328e-16 32.83816
-SDK2    -3.110266 3.877262 -10.384955 3.364141e-19 4.589950e-16 32.53557
-MAP2    -4.200851 4.260302 -10.047809 2.522143e-18 2.733613e-15 30.45636
-ZNF518B -2.408133 3.903056 -10.032998 2.754901e-18 2.733613e-15 30.59062
-YAF2    -3.675311 4.041744  -9.969237 4.027572e-18 3.228978e-15 29.96532
-FGFBP3  -2.771643 5.387173  -9.964547 4.141612e-18 3.228978e-15 30.61020
-EPHA4   -2.993781 4.152873  -9.723684 1.732049e-17 1.112077e-14 29.03634</code></pre>
 <p>1 v all contrasts</p>
 <pre class="r"><code>fit&lt;- lmFit(v,design)</code></pre>
-<pre class="r"><code>contrasts&lt;- NULL
+<pre class="r"><code>nclust&lt;- length(unique(dge$samples$cluster))
+contrasts&lt;- NULL
 for (i in 1:nclust){
     c&lt;- c(rep(-1,nclust),0,0,0,0)
     c[i]&lt;- nclust-1
@@ -2156,10 +1421,7 @@ for (i in 1:nclust){
 fit&lt;- contrasts.fit(fit, contrasts= contrasts)</code></pre>
 <pre class="r"><code>efit&lt;- eBayes(fit)</code></pre>
 <pre class="r"><code>plotSA(efit)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
-abline(0,1)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>summary(decideTests(efit))</code></pre>
 <pre><code>          c    c    c    c    c    c    c    c    c    c    c    c    c    c
 Down   3750 3515 3003 2004 3949 2029 3079 1365 2784 2278 3530 2713 2403 2065
@@ -2169,289 +1431,74 @@ Up     4352 3398 3211 2001 3126 2279 3871 1515 3010 2641 3339 3064 2535 3067
 Down   2889 3194 3141 2776
 NotSig 4709 3841 4775 5519
 Up     3317 3880 2999 2620</code></pre>
-<pre class="r"><code>c16vall&lt;- topTable(efit, coef=17, sort.by= &quot;P&quot;, n=nrow(fit))
+<p>output all OneVall cluster comparisons</p>
+<pre class="r"><code>output.list&lt;- list()
+for (i in 1:nclust){
+  ta&lt;- topTable(efit, coef=i,n=nrow(fit))
+  output.list[[i]]&lt;- ta
+}
 
-head(c16vall, n=30)</code></pre>
-<pre><code>           logFC  AveExpr        t      P.Value    adj.P.Val         B
-NEK2    52.63998 4.830189 27.61041 2.339853e-59 2.553949e-55  90.94901
-CKAP2L  47.26989 4.411568 25.25623 9.783802e-55 5.339510e-51  81.08220
-CENPF   46.46481 8.689377 24.93375 4.416354e-54 1.606817e-50 100.65144
-ECT2    35.92285 5.452767 24.85592 6.365568e-54 1.737004e-50  84.92280
-H2AFX   34.48278 6.793425 24.71820 1.217685e-53 2.658207e-50  91.99501
-PSRC1   48.73518 5.034690 24.60589 2.070114e-53 3.765882e-50  83.68168
-CENPE   46.59960 5.745943 24.55099 2.684582e-53 4.186031e-50  87.64523
-HMGB2   34.61832 8.685212 24.41265 5.176596e-53 7.062818e-50  97.65636
-BUB3    25.99295 7.111377 24.12989 1.995135e-52 2.419656e-49  89.77597
-CCNB2   39.16759 6.823961 23.90708 5.816110e-52 6.348284e-49  89.44644
-ARL6IP1 32.72680 7.250500 23.78154 1.065606e-51 1.057372e-48  90.03132
-PBK     46.65631 4.455516 23.68767 1.677901e-51 1.526191e-48  77.65680
-TOP2A   47.79335 7.630618 23.62612 2.261016e-51 1.898384e-48  92.60334
-KPNA2   35.62962 8.432579 23.49655 4.242623e-51 3.307730e-48  93.37520
-ASPM    47.38279 6.735890 23.44058 5.571612e-51 4.054276e-48  88.79310
-MXD3    49.42145 3.792698 23.27443 1.253942e-50 8.554234e-48  72.19251
-PRR11   44.06991 4.277712 23.11040 2.802465e-50 1.799347e-47  73.33055
-CDCA8   46.52676 5.010388 23.02524 4.260111e-50 2.583284e-47  78.66194
-KIFC1   41.47115 4.189600 22.92123 7.113761e-50 4.086669e-47  72.60899
-KIF14   43.86825 4.675526 22.83414 1.093970e-49 5.970339e-47  75.65319
-GPSM2   39.65333 4.276758 22.75962 1.582170e-49 8.223519e-47  72.50739
-KNSTRN  37.12816 5.612926 22.53221 4.899035e-49 2.430589e-46  79.31939
-KIF18A  43.77790 3.996648 22.49239 5.975223e-49 2.835633e-46  69.97055
-NDC80   42.16411 5.204179 22.33322 1.324143e-48 5.884742e-46  77.21708
-NUF2    40.30199 6.214613 22.31840 1.426144e-48 5.884742e-46  81.79203
-GTSE1   42.70245 5.393118 22.31730 1.434054e-48 5.884742e-46  78.13370
-CKAP2   33.83509 6.072220 22.31431 1.455685e-48 5.884742e-46  80.89015
-FAM83D  45.23841 4.088318 22.17147 2.982018e-48 1.162454e-45  69.88796
-TROAP   39.35532 4.986507 22.15790 3.192716e-48 1.201672e-45  75.42388
-CDCA3   50.62851 5.039881 22.12639 3.741268e-48 1.361198e-45  76.90545</code></pre>
-<pre class="r"><code>vol&lt;- topTable(efit, coef=17, n=nrow(fit))
-labsig&lt;- vol[(vol$adj.P.Val &lt; 5e-50) | (vol$logFC&lt; 0 &amp; vol$adj.P.Val &lt; 5e-20) |vol$logFC&gt; 65 |vol$logFC &lt; -55,]
-labsiggenes&lt;- rownames(labsig)
-thresh&lt;- vol$adj.P.Val &lt; 0.05
-vol&lt;-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
-  geom_text(data=labsig, aes(label=labsiggenes))</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>c12vall&lt;- topTable(efit, coef=13, sort.by=&quot;P&quot;,n=nrow(fit))
+listnames&lt;- c(paste0(&quot;Cluster&quot;, unique(dge$samples$cluster)))
+names(output.list)&lt;- as.vector(listnames)
 
-head(c12vall, n=40)</code></pre>
-<pre><code>            logFC    AveExpr        t      P.Value    adj.P.Val        B
-S100B    86.77566  2.1297724 23.59344 2.649432e-51 2.891855e-47 60.38339
-NPR3    100.83128  1.3195987 22.46218 6.947619e-49 3.271570e-45 50.65431
-EDNRA    86.05856  1.5675030 22.41055 8.991947e-49 3.271570e-45 50.60999
-ERBB3    74.13220  3.4417554 21.84957 1.515032e-47 4.134145e-44 64.02814
-SOX10   101.81566  1.1720426 21.75720 2.421158e-47 5.285388e-44 46.51703
-DNAJC1   41.23444  5.5936472 21.49547 9.193175e-47 1.672392e-43 74.99844
-PHACTR3  82.29166  1.3836614 21.27013 2.919713e-46 4.552666e-43 46.43938
-MPZ     109.29321  1.7629100 21.14529 5.553749e-46 7.577396e-43 51.51075
-ZEB2     57.91105  4.4294971 20.96913 1.380650e-45 1.674422e-42 68.11718
-SCRG1    94.21982  2.4322644 20.93373 1.658689e-45 1.810459e-42 56.21624
-ATP1A2   56.35268  4.1047267 20.32266 4.036653e-44 4.005461e-41 64.47439
-PRELP    80.64422  1.3023938 19.67936 1.223389e-42 1.112774e-39 44.16888
-KANK4    83.96534  1.9754425 19.56751 2.225701e-42 1.868733e-39 49.89094
-CNP      33.74355  5.4132040 19.33849 7.616532e-42 5.938174e-39 64.95289
-MOXD1    91.94808  1.2674002 18.60692 4.050861e-40 2.947676e-37 41.39881
-CDH6     52.33876  4.8384554 18.28204 2.416229e-39 1.648322e-36 61.54456
-LMO4     35.53733  6.8303330 18.17881 4.273225e-39 2.743662e-36 66.19360
-TFAP2B   95.18319  2.3665878 18.04160 9.135990e-39 5.539963e-36 51.05426
-PLEKHA4  39.80359  4.1138458 17.60786 1.024229e-37 5.883925e-35 53.41998
-PRSS56  111.56675  0.4937154 17.59039 1.129537e-37 6.164448e-35 34.80450
-NR2F1    64.62671  5.4087644 17.03619 2.561962e-36 1.331610e-33 59.50517
-TFAP2A   74.10051  3.2682912 16.73238 1.439645e-35 7.142604e-33 50.88564
-ITGA4    83.30224  0.8937784 16.38121 1.072449e-34 5.089468e-32 31.86468
-RHOB     32.31834  5.7224898 16.30481 1.662998e-34 7.563175e-32 55.89868
-BCHE     68.33868  2.0975778 16.24588 2.333595e-34 1.018847e-31 40.28551
-SNAI2    65.81066  1.7635782 16.23643 2.464005e-34 1.034408e-31 39.71319
-ABCC2    81.47828  0.6166620 15.97622 1.104975e-33 4.466963e-31 28.77660
-SMOC1    59.95529  2.9949411 15.59847 9.882470e-33 3.852399e-30 42.91014
-ADAMTS4  50.73641  2.0053885 15.54126 1.378839e-32 5.189665e-30 35.52102
-ROPN1   101.34272 -0.2122844 15.44117 2.471229e-32 8.991154e-30 23.60729
-MEF2C    61.10032  1.7901830 15.41274 2.917140e-32 1.027115e-29 36.18023
-PLAT     66.65920  2.4173335 15.23226 8.377905e-32 2.828164e-29 39.66642
-COL2A1   41.71693  5.4357744 15.22878 8.550565e-32 2.828164e-29 51.13801
-PRDM12   81.75199  0.5413568 15.22295 8.847577e-32 2.840332e-29 27.59441
-CMTM5    57.73733  1.3880257 14.68747 2.060778e-30 6.426682e-28 30.70686
-LSAMP    42.83652  4.1862570 14.67433 2.227030e-30 6.752232e-28 43.68183
-RFTN2    47.05674  2.2719455 14.66626 2.335711e-30 6.890347e-28 35.40663
-S100A1   58.44306  2.0321371 14.64483 2.650882e-30 7.614311e-28 32.91760
-CUEDC2   25.17400  6.6188366 14.63521 2.805784e-30 7.852599e-28 50.04919
-OAF      42.78513  2.7984324 14.56259 4.309601e-30 1.175982e-27 38.86536</code></pre>
-<p>batch + ind comparisons</p>
-<pre class="r"><code>fit&lt;- lmFit(v,design)</code></pre>
-<pre class="r"><code>fit&lt;-contrasts.fit(fit, coefficients = (nclust+1):(nclust+4))</code></pre>
-<pre class="r"><code>efit&lt;- eBayes(fit)</code></pre>
-<pre class="r"><code>plotSA(efit)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-61-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>qqt(efit$t, df=efit$df.prior+efit$df.residual, pch=16, cex=0.2)
-abline(0,1)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>topsBatch&lt;- topTable(efit, coef=c(1:2),n=nrow(fit))
+write.csv(output.list, &quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv&quot;)</code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
 
-head(topsBatch, n=40)</code></pre>
-<pre><code>           dge.samples.batchBatch2 dge.samples.batchBatch3   AveExpr        F
-EEF1A1                  -1.4306147              -1.0525243  9.730178 579.4724
-PPP1CB                   1.2935540               1.2786922  7.003696 475.8166
-CLIC1                   -2.0033220              -1.3258816  4.937045 434.9431
-AP001267.5              -2.3869624              -1.5947683  3.336455 431.5869
-MRPL42                   0.8772992               1.0076378  7.310103 394.4952
-SMARCB1                 -1.5068365              -1.1857060  4.862201 390.5907
-LRRC75A                  2.1737607               1.4443018  6.067424 385.9050
-SF3A2                   -0.9778686              -1.4569135  5.324960 381.1228
-CAPZA1                   1.0209149               1.0578690  6.715245 380.1256
-TBL1XR1                  1.0696723               1.1951648  6.236839 340.5775
-GPBP1                    0.8186246               0.8675824  6.945178 340.5608
-H3F3A                   -1.3164993              -0.9010471  6.185463 335.1198
-EIF3E                    0.8194785               0.7601219  9.223865 334.4057
-TRA2A                    1.0150333               0.9439583  6.162212 319.3388
-N4BP2L2                  0.8283410               0.8872747  6.970941 305.5450
-NME2                    -1.6074268              -1.2508633  3.912930 301.2705
-PGAM1                   -0.9598645              -0.7759151  6.859031 297.9188
-SLC25A6                 -1.5197161              -1.3622162  4.555480 290.5582
-MED21                    0.9763726               1.1246960  5.653105 288.3694
-DNAJA2                   0.5822158               0.8000127  7.104472 266.8075
-PRPF31                  -1.6766705              -1.0900384  3.254492 265.2866
-EIF4E                    1.0612566               0.8219131  5.676749 264.6764
-MT-ND1                  -0.7769798              -0.8078985 11.390268 259.2355
-RSL24D1                  0.6786157               0.7681192  7.681722 255.6105
-YWHAG                    0.6674777               0.9599464  6.694974 238.3306
-TMEM167A                 0.6064178               0.8207721  7.355623 237.5583
-CMTM6                    0.7656784               0.8676582  6.715668 235.5807
-TMED2                    0.9196650               0.9181669  6.787542 232.4091
-BZW1                     0.5689984               0.8313351  7.002194 232.1843
-MTX1                    -1.1896438              -1.0046155  4.560252 229.7192
-CAPZA2                   0.7409954               0.7839070  6.718293 228.0493
-LYPLA2                  -1.0300137              -1.0242190  4.859538 225.5143
-ZFAND6                   0.7986269               0.8499418  6.782021 225.0197
-BTF3L4                   0.7078889               0.7197503  7.468313 219.7953
-HNRNPH1                  0.8324717               0.7110226  8.237763 218.6944
-SKIL                     1.0342334               1.3569664  6.659637 216.6658
-ACTR2                    0.6112190               0.8560656  7.072977 216.4177
-C6orf62                  0.9176043               0.9107224  5.519504 213.5445
-MOB4                     0.7597861               0.6440750  6.320181 213.3128
-SYNC                     1.3706567               1.3937707  4.325719 211.3674
-                P.Value    adj.P.Val
-EEF1A1     1.480432e-69 1.615891e-65
-PPP1CB     3.838659e-64 2.094948e-60
-CLIC1      1.015459e-61 3.694578e-58
-AP001267.5 1.637488e-61 4.468294e-58
-MRPL42     4.021745e-59 8.779470e-56
-SMARCB1    7.362015e-59 1.339273e-55
-LRRC75A    1.531336e-58 2.387791e-55
-SF3A2      3.258819e-58 4.446251e-55
-CAPZA1     3.818456e-58 4.630939e-55
-TBL1XR1    2.764705e-55 2.751336e-52
-GPBP1      2.772762e-55 2.751336e-52
-H3F3A      7.205907e-55 6.554373e-52
-EIF3E      8.175899e-55 6.864611e-52
-TRA2A      1.238292e-53 9.654254e-51
-N4BP2L2    1.636557e-52 1.190868e-49
-NME2       3.712529e-52 2.532641e-49
-PGAM1      7.103619e-52 4.560941e-49
-SLC25A6    3.015867e-51 1.828788e-48
-MED21      4.662299e-51 2.678368e-48
-DNAJA2     3.946716e-49 2.153920e-46
-PRPF31     5.455084e-49 2.835345e-46
-EIF4E      6.213982e-49 3.082982e-46
-MT-ND1     2.006403e-48 9.521692e-46
-RSL24D1    4.428213e-48 2.013914e-45
-YWHAG      2.183968e-46 9.535204e-44
-TMEM167A   2.612714e-46 1.096838e-43
-CMTM6      4.143245e-46 1.674945e-43
-TMED2      8.733381e-46 3.404459e-43
-BZW1       9.210209e-46 3.466532e-43
-MTX1       1.653865e-45 6.017312e-43
-CAPZA2     2.465526e-45 8.681037e-43
-LYPLA2     4.539335e-45 1.548339e-42
-ZFAND6     5.116664e-45 1.692375e-42
-BTF3L4     1.834197e-44 5.888310e-42
-HNRNPH1    2.407388e-44 7.507612e-42
-SKIL       3.984293e-44 1.208015e-41
-ACTR2      4.238569e-44 1.250378e-41
-C6orf62    8.710304e-44 2.501920e-41
-MOB4       9.234317e-44 2.584425e-41
-SYNC       1.510670e-43 4.122240e-41</code></pre>
-<pre class="r"><code>topsInd&lt;- topTable(efit, coef=c(3:4),n=nrow(fit))
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
 
-head(topsInd, n=40)</code></pre>
-<pre><code>           dge.samples.indNA18858 dge.samples.indNA19160   AveExpr         F
-TYW3                   0.26928141            -5.55543495  4.113800 1525.8094
-EIF1AY                 0.20508973             6.93681076  2.326674 1048.0792
-CRYZ                   0.17882404            -4.81958907  2.839771  690.2228
-AC004556.3            -5.75534452            -6.17888060  1.835405  656.6054
-CAT                   -0.73782305            -5.07969345  2.867017  585.1321
-DDX3Y                  0.56220247             6.34465982  1.945796  513.0746
-IAH1                   2.86642172             3.50414363  4.724134  461.5977
-MAGEH1                -4.21921787             0.08695672  3.723956  439.4305
-USP9Y                  0.30535465             6.70590345  1.684035  411.8934
-USP51                 -4.63927891             0.02424610  2.975420  348.2111
-THOC3                 -0.07080983            -1.56049342  4.320177  334.3516
-ZNF280D                2.84062273             3.51733872  2.725728  328.2798
-SNRPE                 -0.93855774             0.02260109  8.972366  325.5767
-RRAGB                 -3.48527180             0.15316671  2.720922  321.5495
-TOMM20                -0.73295274             0.15607105  8.609516  314.5744
-TAF9B                 -0.07278787            -3.59417724  3.157304  312.6982
-NUCKS1                -0.71312420             0.16623544 10.180196  310.5760
-FDPS                  -1.21877291            -0.02684859  8.334725  297.3570
-RNF187                -1.03317535            -0.02179477  7.155469  293.5132
-TIMM17B                0.95128537            -0.01098697  7.209957  293.1374
-KRTCAP2               -0.91311441             0.06066995  7.057066  288.3349
-QPCT                   0.13830166            -3.76249787  3.000958  284.8849
-TPR                   -0.93976183             0.06625741  8.182364  282.8973
-SP5                   -3.11295951             1.40660934  3.943575  273.6559
-TRIM61                 1.61407622            -3.62478665  1.202615  271.3424
-ILF2                  -0.89329881            -0.15709871  8.864239  265.5155
-NDUFS2                -1.05704830            -0.14211365  7.471435  262.9533
-HAX1                  -0.73733217             0.16587815  6.932201  253.0943
-HCCS                   1.16016653            -0.01690698  5.092590  249.0936
-UBA1                   0.20645551            -0.77137417  6.782157  245.0465
-TCEAL5                 1.58799720            -2.89834113  3.157009  244.2397
-NXT2                   1.43401585             0.02192887  3.535435  239.9512
-RAB4A                 -1.01107992             0.11777263  6.862365  237.8658
-USP9X                  0.71474988            -0.50252712  6.863537  236.8376
-CHCHD2                 0.70387819            -2.35692826  7.107940  234.0863
-MRPS21                -0.81878449             0.02949131  8.499517  233.0113
-UBLCP1                 0.35068073            -0.87261236  5.383690  232.8228
-ZNF717                 0.81324572            -3.22149694  1.204613  232.5085
-ZNF300                 2.57911387            -1.77563074  1.358216  232.4810
-IRX2                   4.05239853             4.61757793  3.704031  225.9666
-                P.Value    adj.P.Val
-TYW3       1.394143e-97 1.521707e-93
-EIF1AY     1.742628e-86 9.510390e-83
-CRYZ       1.843357e-74 6.706745e-71
-AC004556.3 4.728545e-73 1.290302e-69
-CAT        7.946161e-70 1.734647e-66
-DDX3Y      3.377413e-66 6.144077e-63
-IAH1       2.545447e-63 3.969079e-60
-MAGEH1     5.386846e-62 7.349679e-59
-USP9Y      2.886984e-60 3.501270e-57
-USP51      7.394120e-56 8.070682e-53
-THOC3      8.254718e-55 8.190932e-52
-ZNF280D    2.438121e-54 2.217674e-51
-SNRPE      3.969633e-54 3.332965e-51
-RRAGB      8.257078e-54 6.437572e-51
-TOMM20     2.988980e-53 2.174981e-50
-TAF9B      4.241582e-53 2.893554e-50
-NUCKS1     6.314727e-53 4.054426e-50
-FDPS       7.924399e-52 4.805267e-49
-RNF187     1.681918e-51 9.662179e-49
-TIMM17B    1.811086e-51 9.884003e-49
-KRTCAP2    4.694532e-51 2.440039e-48
-QPCT       9.379221e-51 4.653373e-48
-TPR        1.401716e-50 6.652056e-48
-SP5        9.354124e-50 4.254178e-47
-TRIM61     1.516399e-49 6.620598e-47
-ILF2       5.195226e-49 2.180996e-46
-NDUFS2     8.988518e-49 3.633691e-46
-HAX1       7.711098e-48 3.005951e-45
-HCCS       1.879321e-47 7.073376e-45
-UBA1       4.680632e-47 1.702970e-44
-TCEAL5     5.622262e-47 1.979580e-44
-NXT2       1.501420e-46 5.121249e-44
-RAB4A      2.432635e-46 8.046124e-44
-USP9X      3.089731e-46 9.918947e-44
-CHCHD2     5.881745e-46 1.834264e-43
-MRPS21     7.575898e-46 2.296970e-43
-UBLCP1     7.920531e-46 2.336557e-43
-ZNF717     8.530743e-46 2.403061e-43
-ZNF300     8.586293e-46 2.403061e-43
-IRX2       4.069474e-45 1.110458e-42</code></pre>
-<pre class="r"><code>&quot;UTF1&quot; %in% rownames(topsInd)</code></pre>
-<pre><code>[1] TRUE</code></pre>
-<pre class="r"><code>topsInd[rownames(topsInd)== &quot;UTF1&quot;,]</code></pre>
-<pre><code>     dge.samples.indNA18858 dge.samples.indNA19160  AveExpr        F
-UTF1               0.122897             -0.5988935 5.844886 11.48102
-         P.Value    adj.P.Val
-UTF1 2.36572e-05 6.909775e-05</code></pre>
-<pre class="r"><code>plot(density(topsBatch$adj.P.Val))
-lines(density(topsInd$adj.P.Val), col= &quot;red&quot;)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-67-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>boxplot(-log10(topsBatch$adj.P.Val), -log10(topsInd$adj.P.Val), names= c(&quot;Batch&quot;, &quot;Individual&quot;), main=&quot;Distribution of p values from F tests&quot;, ylab=&quot;-log10(adjusted.p.val)&quot;)</code></pre>
-<p><img src="figure/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd/unnamed-chunk-68-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>median(topsBatch$F)</code></pre>
-<pre><code>[1] 8.997543</code></pre>
-<pre class="r"><code>median(topsInd$F)</code></pre>
-<pre><code>[1] 6.817397</code></pre>
+locale:
+[1] C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] UpSetR_1.4.0    ggplot2_3.3.3   reshape2_1.4.4  edgeR_3.28.1   
+[5] limma_3.42.2    dplyr_1.0.2     Matrix_1.2-18   Seurat_3.2.0   
+[9] workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   leiden_0.3.3         
+ [10] listenv_0.8.0         npsurv_0.4-0          ggrepel_0.9.0        
+ [13] codetools_0.2-16      splines_3.6.1         lsei_1.2-0           
+ [16] knitr_1.29            polyclip_1.10-0       jsonlite_1.7.2       
+ [19] ica_1.0-2             cluster_2.1.0         png_0.1-7            
+ [22] uwot_0.1.10           shiny_1.5.0           sctransform_0.2.1    
+ [25] compiler_3.6.1        httr_1.4.2            fastmap_1.0.1        
+ [28] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [31] tools_3.6.1           rsvd_1.0.3            igraph_1.2.6         
+ [34] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
+ [37] rappdirs_0.3.3        Rcpp_1.0.6            spatstat_1.64-1      
+ [40] vctrs_0.3.6           gdata_2.18.0          ape_5.4-1            
+ [43] nlme_3.1-140          lmtest_0.9-37         xfun_0.16            
+ [46] stringr_1.4.0         globals_0.12.5        mime_0.9             
+ [49] miniUI_0.1.1.1        lifecycle_0.2.0       irlba_2.3.3          
+ [52] gtools_3.8.2          goftest_1.2-2         future_1.18.0        
+ [55] MASS_7.3-51.4         zoo_1.8-8             scales_1.1.1         
+ [58] promises_1.1.1        spatstat.utils_1.17-0 parallel_3.6.1       
+ [61] RColorBrewer_1.1-2    yaml_2.2.1            reticulate_1.20      
+ [64] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
+ [67] stringi_1.5.3         highr_0.8             caTools_1.18.0       
+ [70] rlang_0.4.10          pkgconfig_2.0.3       bitops_1.0-6         
+ [73] evaluate_0.14         lattice_0.20-38       ROCR_1.0-7           
+ [76] purrr_0.3.4           tensor_1.5            patchwork_1.1.1      
+ [79] htmlwidgets_1.5.1     cowplot_1.1.1         tidyselect_1.1.0     
+ [82] here_0.1-11           RcppAnnoy_0.0.18      plyr_1.8.6           
+ [85] magrittr_2.0.1        R6_2.5.0              gplots_3.0.4         
+ [88] generics_0.1.0        withr_2.4.2           pillar_1.4.7         
+ [91] whisker_0.4           mgcv_1.8-28           fitdistrplus_1.0-14  
+ [94] survival_3.2-3        abind_1.4-5           tibble_3.0.4         
+ [97] future.apply_1.6.0    crayon_1.3.4          KernSmooth_2.23-15   
+[100] plotly_4.9.2.1        rmarkdown_2.3         locfit_1.5-9.4       
+[103] grid_3.6.1            data.table_1.13.4     git2r_0.26.1         
+[106] digest_0.6.27         xtable_1.8-4          tidyr_1.1.0          
+[109] httpuv_1.5.4          munsell_0.5.0         viridisLite_0.3.0    </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2474,49 +1521,48 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] UpSetR_1.4.0    ggplot2_3.3.2   reshape2_1.4.4  edgeR_3.28.1   
-[5] limma_3.42.2    dplyr_1.0.0     Matrix_1.2-18   Seurat_3.2.0   
+[1] UpSetR_1.4.0    ggplot2_3.3.3   reshape2_1.4.4  edgeR_3.28.1   
+[5] limma_3.42.2    dplyr_1.0.2     Matrix_1.2-18   Seurat_3.2.0   
 [9] workflowr_1.6.2
 
 loaded via a namespace (and not attached):
-  [1] Rtsne_0.15            colorspace_1.4-1      deldir_0.1-28        
-  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_1.3-2      
-  [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
- [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
- [13] ggrepel_0.8.2         codetools_0.2-16      splines_3.6.1        
- [16] lsei_1.2-0            knitr_1.29            polyclip_1.10-0      
- [19] jsonlite_1.7.0        ica_1.0-2             cluster_2.1.0        
- [22] png_0.1-7             uwot_0.1.8            shiny_1.5.0          
- [25] sctransform_0.2.1     compiler_3.6.1        httr_1.4.2           
- [28] backports_1.1.8       fastmap_1.0.1         lazyeval_0.2.2       
- [31] later_1.1.0.1         htmltools_0.5.0       tools_3.6.1          
- [34] rsvd_1.0.3            igraph_1.2.5          gtable_0.3.0         
- [37] glue_1.4.1            RANN_2.6.1            rappdirs_0.3.1       
- [40] Rcpp_1.0.5            spatstat_1.64-1       vctrs_0.3.2          
- [43] gdata_2.18.0          ape_5.3               nlme_3.1-140         
- [46] lmtest_0.9-37         xfun_0.16             stringr_1.4.0        
- [49] globals_0.12.5        mime_0.9              miniUI_0.1.1.1       
- [52] lifecycle_0.2.0       irlba_2.3.3           gtools_3.8.2         
- [55] goftest_1.2-2         future_1.18.0         MASS_7.3-51.4        
- [58] zoo_1.8-8             scales_1.1.1          promises_1.1.1       
- [61] spatstat.utils_1.17-0 parallel_3.6.1        RColorBrewer_1.1-2   
- [64] yaml_2.2.1            reticulate_1.16       pbapply_1.4-2        
- [67] gridExtra_2.3         rpart_4.1-15          stringi_1.4.6        
- [70] caTools_1.18.0        rlang_0.4.7           pkgconfig_2.0.3      
- [73] bitops_1.0-6          evaluate_0.14         lattice_0.20-38      
- [76] ROCR_1.0-7            purrr_0.3.4           tensor_1.5           
- [79] labeling_0.3          patchwork_1.0.1       htmlwidgets_1.5.1    
- [82] cowplot_1.0.0         tidyselect_1.1.0      here_0.1-11          
- [85] RcppAnnoy_0.0.16      plyr_1.8.6            magrittr_1.5         
- [88] R6_2.4.1              gplots_3.0.4          generics_0.0.2       
- [91] withr_2.2.0           pillar_1.4.6          whisker_0.4          
- [94] mgcv_1.8-28           fitdistrplus_1.0-14   survival_3.2-3       
- [97] abind_1.4-5           tibble_3.0.3          future.apply_1.6.0   
-[100] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
-[103] rmarkdown_2.3         locfit_1.5-9.4        grid_3.6.1           
-[106] data.table_1.13.0     git2r_0.26.1          digest_0.6.25        
-[109] xtable_1.8-4          tidyr_1.1.0           httpuv_1.5.4         
-[112] munsell_0.5.0         viridisLite_0.3.0    </code></pre>
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   leiden_0.3.3         
+ [10] listenv_0.8.0         npsurv_0.4-0          ggrepel_0.9.0        
+ [13] codetools_0.2-16      splines_3.6.1         lsei_1.2-0           
+ [16] knitr_1.29            polyclip_1.10-0       jsonlite_1.7.2       
+ [19] ica_1.0-2             cluster_2.1.0         png_0.1-7            
+ [22] uwot_0.1.10           shiny_1.5.0           sctransform_0.2.1    
+ [25] compiler_3.6.1        httr_1.4.2            fastmap_1.0.1        
+ [28] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [31] tools_3.6.1           rsvd_1.0.3            igraph_1.2.6         
+ [34] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
+ [37] rappdirs_0.3.3        Rcpp_1.0.6            spatstat_1.64-1      
+ [40] vctrs_0.3.6           gdata_2.18.0          ape_5.4-1            
+ [43] nlme_3.1-140          lmtest_0.9-37         xfun_0.16            
+ [46] stringr_1.4.0         globals_0.12.5        mime_0.9             
+ [49] miniUI_0.1.1.1        lifecycle_0.2.0       irlba_2.3.3          
+ [52] gtools_3.8.2          goftest_1.2-2         future_1.18.0        
+ [55] MASS_7.3-51.4         zoo_1.8-8             scales_1.1.1         
+ [58] promises_1.1.1        spatstat.utils_1.17-0 parallel_3.6.1       
+ [61] RColorBrewer_1.1-2    yaml_2.2.1            reticulate_1.20      
+ [64] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
+ [67] stringi_1.5.3         highr_0.8             caTools_1.18.0       
+ [70] rlang_0.4.10          pkgconfig_2.0.3       bitops_1.0-6         
+ [73] evaluate_0.14         lattice_0.20-38       ROCR_1.0-7           
+ [76] purrr_0.3.4           tensor_1.5            patchwork_1.1.1      
+ [79] htmlwidgets_1.5.1     cowplot_1.1.1         tidyselect_1.1.0     
+ [82] here_0.1-11           RcppAnnoy_0.0.18      plyr_1.8.6           
+ [85] magrittr_2.0.1        R6_2.5.0              gplots_3.0.4         
+ [88] generics_0.1.0        withr_2.4.2           pillar_1.4.7         
+ [91] whisker_0.4           mgcv_1.8-28           fitdistrplus_1.0-14  
+ [94] survival_3.2-3        abind_1.4-5           tibble_3.0.4         
+ [97] future.apply_1.6.0    crayon_1.3.4          KernSmooth_2.23-15   
+[100] plotly_4.9.2.1        rmarkdown_2.3         locfit_1.5-9.4       
+[103] grid_3.6.1            data.table_1.13.4     git2r_0.26.1         
+[106] digest_0.6.27         xtable_1.8-4          tidyr_1.1.0          
+[109] httpuv_1.5.4          munsell_0.5.0         viridisLite_0.3.0    </code></pre>
 </div>
 
 

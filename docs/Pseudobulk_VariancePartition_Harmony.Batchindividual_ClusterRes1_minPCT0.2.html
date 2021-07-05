@@ -391,7 +391,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -400,7 +400,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -409,10 +409,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-08-31
+<strong>Last updated:</strong> 2021-07-05
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
 </p>
 <p>
 <strong>Knit directory:</strong> <code>Embryoid_Body_Pilot_Workflowr/analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -428,12 +428,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you'll want to first commit it to the Git repo. If you're still working on the analysis, you can ignore this warning. When you're finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -488,28 +488,52 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig4_VarPartRes1.png
+</td>
+<td style="text-align:left;">
+../output/figs/Fig4_VarPartRes1.png
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee16856a07a49bf62bd2fe77b63ab93227d6d25c8targetblanke16856aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e16856a07a49bf62bd2fe77b63ab93227d6d25c8" target="_blank">e16856a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreec8767ac248037859be1a0be3d135ab0a71c7591btargetblankc8767aca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/c8767ac248037859be1a0be3d135ab0a71c7591b" target="_blank">c8767ac</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee16856a07a49bf62bd2fe77b63ab93227d6d25c8targetblanke16856aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreec8767ac248037859be1a0be3d135ab0a71c7591btargetblankc8767aca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e16856a07a49bf62bd2fe77b63ab93227d6d25c8" target="_blank">e16856a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/c8767ac248037859be1a0be3d135ab0a71c7591b" target="_blank">c8767ac</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -520,21 +544,132 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
     Ignored:    output/.Rhistory
-    Ignored:    output/pdfs/
 
 Untracked files:
-    Untracked:  analysis/RunscHCL_HarmonyBatchInd.Rmd
+    Untracked:  GSE122380_raw_counts.txt.gz
+    Untracked:  UTF1_plots.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.Rmd
+    Untracked:  analysis/OLD/
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.8_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.Rmd
+    Untracked:  analysis/RefInt_ComparingFulltoPartialIntegrationAnnotations.Rmd
+    Untracked:  analysis/ReferenceAnn_DE.Rmd
     Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/VarPartPlots_res0.1_SCT.Rmd
+    Untracked:  analysis/VarPart_SC_res0.1_SCT.Rmd
     Untracked:  analysis/child/
+    Untracked:  analysis/k10topics_Explore.Rmd
+    Untracked:  analysis/k6topics_Explore.Rmd
+    Untracked:  build_refint_scale.R
+    Untracked:  build_refint_sct.R
+    Untracked:  build_stuff.R
+    Untracked:  build_varpart_sc.R
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/CellRangerPreprocess.Rmd
     Untracked:  code/ConvertToDGE.Rmd
     Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/ConvertToDGE_SingleCellRes_minPCT0.2.Rmd
     Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/GEO_processed_data.Rmd
+    Untracked:  code/PowerAnalysis_NoiseRatio.ipynb
+    Untracked:  code/Untitled.ipynb
+    Untracked:  code/Untitled1.ipynb
+    Untracked:  code/compile_fits.Rmd
+    Untracked:  code/fit_all_models.sh
+    Untracked:  code/fit_poisson_nmf.R
+    Untracked:  code/fit_poisson_nmf.sbatch
+    Untracked:  code/functions_for_fit_comparison.Rmd
     Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  code/prefit_poisson_nmf.R
+    Untracked:  code/prefit_poisson_nmf.sbatch
+    Untracked:  code/prepare_data_for_fastTopics.Rmd
+    Untracked:  data/HCL_Fig1_adata.h5ad
+    Untracked:  data/HCL_Fig1_adata.h5seurat
+    Untracked:  data/dge/
+    Untracked:  data/dge_raw_data.tar.gz
+    Untracked:  data/ref.expr.rda
     Untracked:  figure/
+    Untracked:  output/CR_sampleQCrds/
+    Untracked:  output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+    Untracked:  output/CaoEtAl.Obj.rds
+    Untracked:  output/ClusterInfo_res0.1.csv
     Untracked:  output/DGELists/
+    Untracked:  output/DownSampleVarPart.rds
+    Untracked:  output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/GEOsubmissionProcessedFiles/
     Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv
+    Untracked:  output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/ResidualVariances_fromDownSampAnalysis.csv
+    Untracked:  output/SingleCell_VariancePartition_RNA_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+    Untracked:  output/TopicModelling_k10_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top15drivergenes.byZ.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustMeso.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv
+    Untracked:  output/VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/azimuth/
+    Untracked:  output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_scres.rds
+    Untracked:  output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/fasttopics/
+    Untracked:  output/figs/
+    Untracked:  output/merge.Cao.SCTwRegressOrigIdent.rds
+    Untracked:  output/merge.all.SCTwRegressOrigIdent.Harmony.rds
+    Untracked:  output/merged.SCT.counts.matrix.rds
+    Untracked:  output/merged.raw.counts.matrix.rds
     Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
     Untracked:  output/sampleQCrds/
+    Untracked:  output/splitgpm_gsea_results/
+    Untracked:  slurm-12005914.out
+    Untracked:  slurm-12005923.out
+
+Unstaged changes:
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatch.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.Rmd
+    Modified:   analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Deleted:    analysis/RunscHCL_HarmonyBatchInd.Rmd
 
 </code></pre>
 <p>
@@ -573,6 +708,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/5536daee4018ca38de410a745a190e079e7eaa57/docs/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.html" target="_blank">5536dae</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -670,6 +822,43 @@ summary(submerged$samples$norm.factors)</code></pre>
 <pre class="r"><code>design&lt;- model.matrix(~submerged$samples$cluster+submerged$samples$batch+submerged$samples$ind)</code></pre>
 <pre class="r"><code>v&lt;- voom(submerged, design, plot=T)</code></pre>
 <p><img src="figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/5536daee4018ca38de410a745a190e079e7eaa57/docs/figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd/unnamed-chunk-9-1.png" target="_blank">5536dae</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>v</code></pre>
 <pre><code>An object of class &quot;EList&quot;
 $targets
@@ -1484,46 +1673,127 @@ ISG15   0.001938057 0.7361390 0.00000000 0.2619230</code></pre>
 <pre class="r"><code>vp&lt;- sortCols(varpart)</code></pre>
 <pre class="r"><code>plotPercentBars(vp[1:10,])</code></pre>
 <p><img src="figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plotVarPart(vp)</code></pre>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/5536daee4018ca38de410a745a190e079e7eaa57/docs/figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd/unnamed-chunk-15-1.png" target="_blank">5536dae</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>colnames(vp)&lt;- c(&quot;Cluster&quot;, &quot;Replicate&quot;, &quot;Individual&quot;, &quot;Residuals&quot;)
+V&lt;- plotVarPart(vp)
+V</code></pre>
 <p><img src="figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/5536daee4018ca38de410a745a190e079e7eaa57/docs/figure/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd/unnamed-chunk-16-1.png" target="_blank">5536dae</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>png(file= &quot;/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig4_VarPartRes1.png&quot;, width=8, height=5, units= &quot;in&quot;, res=1080)
+
+V
+  
+dev.off()</code></pre>
 <pre class="r"><code>#do the genes most effected by individual match what I did in limma?
-vp&lt;- vp[order(vp$ind, decreasing=T),]
+vp&lt;- vp[order(vp$Individual, decreasing=T),]
 head(vp, 30)</code></pre>
-<pre><code>               cluster        batch       ind  Residuals
-TYW3       0.012673254 3.194716e-11 0.9626331 0.02469367
-EIF1AY     0.007990717 2.862921e-04 0.9581962 0.03352684
-CRYZ       0.023990563 0.000000e+00 0.9233626 0.05264679
-DDX3Y      0.017819828 0.000000e+00 0.9181737 0.06400645
-CAT        0.019923713 5.494305e-03 0.9109269 0.06365504
-USP9Y      0.020347845 2.677458e-11 0.8973358 0.08231632
-AC004556.3 0.031422589 1.564283e-02 0.8783546 0.07457996
-RWDD2B     0.020407214 2.851418e-11 0.8486486 0.13094422
-USP51      0.073114130 1.923581e-11 0.8400385 0.08684740
-ZNF280D    0.035580567 0.000000e+00 0.8239942 0.14042524
-TAF9B      0.005534833 1.420684e-02 0.8224649 0.15779342
-TRIM61     0.050591435 1.043082e-02 0.8189257 0.12005204
-RRAGB      0.070846429 6.026204e-03 0.8110918 0.11203554
-IAH1       0.092588865 5.835641e-03 0.7999390 0.10163646
-MAGEH1     0.127273192 1.733048e-02 0.7923943 0.06300202
-TSPYL5     0.020730890 1.610238e-03 0.7918744 0.18578446
-ZNF248     0.089006498 5.025846e-03 0.7734273 0.13254038
-CHCHD2     0.027792151 4.653040e-03 0.7459806 0.22157425
-ZNF300     0.121672426 1.097822e-10 0.7249267 0.15340082
-ZNF717     0.137789144 4.200968e-03 0.7138058 0.14420405
-NDUFS2     0.140961352 0.000000e+00 0.7131410 0.14589766
-PRKY       0.065456192 9.472876e-11 0.6957758 0.23876801
-MRPS14     0.039223597 0.000000e+00 0.6906343 0.27014212
-QPCT       0.207580995 5.654361e-03 0.6842109 0.10255375
-MRPS21     0.168356845 1.609365e-03 0.6782824 0.15175134
-PSMD4      0.103423859 2.170627e-02 0.6726663 0.20220355
-PNPLA4     0.074041297 5.257533e-02 0.6693239 0.20405947
-RNF187     0.143695026 7.541818e-02 0.6685190 0.11236782
-FAM199X    0.032805358 1.079154e-01 0.6545404 0.20473888
-THOC3      0.174798442 1.233453e-02 0.6481008 0.16476625</code></pre>
+<pre><code>               Cluster    Replicate Individual  Residuals
+TYW3       0.012673254 3.194716e-11  0.9626331 0.02469367
+EIF1AY     0.007990717 2.862921e-04  0.9581962 0.03352684
+CRYZ       0.023990563 0.000000e+00  0.9233626 0.05264679
+DDX3Y      0.017819828 0.000000e+00  0.9181737 0.06400645
+CAT        0.019923713 5.494305e-03  0.9109269 0.06365504
+USP9Y      0.020347845 2.677458e-11  0.8973358 0.08231632
+AC004556.3 0.031422589 1.564283e-02  0.8783546 0.07457996
+RWDD2B     0.020407214 2.851418e-11  0.8486486 0.13094422
+USP51      0.073114130 1.923581e-11  0.8400385 0.08684740
+ZNF280D    0.035580567 0.000000e+00  0.8239942 0.14042524
+TAF9B      0.005534833 1.420684e-02  0.8224649 0.15779342
+TRIM61     0.050591435 1.043082e-02  0.8189257 0.12005204
+RRAGB      0.070846429 6.026204e-03  0.8110918 0.11203554
+IAH1       0.092588865 5.835641e-03  0.7999390 0.10163646
+MAGEH1     0.127273192 1.733048e-02  0.7923943 0.06300202
+TSPYL5     0.020730890 1.610238e-03  0.7918744 0.18578446
+ZNF248     0.089006498 5.025846e-03  0.7734273 0.13254038
+CHCHD2     0.027792151 4.653040e-03  0.7459806 0.22157425
+ZNF300     0.121672426 1.097822e-10  0.7249267 0.15340082
+ZNF717     0.137789144 4.200968e-03  0.7138058 0.14420405
+NDUFS2     0.140961352 0.000000e+00  0.7131410 0.14589766
+PRKY       0.065456192 9.472876e-11  0.6957758 0.23876801
+MRPS14     0.039223597 0.000000e+00  0.6906343 0.27014212
+QPCT       0.207580995 5.654361e-03  0.6842109 0.10255375
+MRPS21     0.168356845 1.609365e-03  0.6782824 0.15175134
+PSMD4      0.103423859 2.170627e-02  0.6726663 0.20220355
+PNPLA4     0.074041297 5.257533e-02  0.6693239 0.20405947
+RNF187     0.143695026 7.541818e-02  0.6685190 0.11236782
+FAM199X    0.032805358 1.079154e-01  0.6545404 0.20473888
+THOC3      0.174798442 1.233453e-02  0.6481008 0.16476625</code></pre>
 <pre class="r"><code>#do the genes most effected by batch match what I did in limma?
-vp&lt;- vp[order(vp$batch, decreasing=T),]
+vp&lt;- vp[order(vp$Replicate, decreasing=T),]
 head(vp, 30)</code></pre>
-<pre><code>              cluster     batch          ind  Residuals
+<pre><code>              Cluster Replicate   Individual  Residuals
 EEF1A1     0.11974329 0.7673963 4.086558e-02 0.07199486
 AP001267.5 0.02406530 0.7411943 5.611633e-02 0.17862406
 SMARCB1    0.09433392 0.7156048 2.210116e-02 0.16796011
@@ -1554,39 +1824,85 @@ CAPZA2     0.23838649 0.5477628 2.372182e-02 0.19012885
 QSER1      0.21927223 0.5380249 6.138884e-03 0.23656401
 PCNP       0.21460607 0.5343011 0.000000e+00 0.25109285
 ZFAND6     0.25047728 0.5339575 6.888443e-03 0.20867680</code></pre>
-<pre class="r"><code>summary(vp$ind)</code></pre>
+<pre class="r"><code>summary(vp$Individual)</code></pre>
 <pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 0.000000 0.009085 0.033515 0.064427 0.079708 0.962633 </code></pre>
-<pre class="r"><code>summary(vp$batch)</code></pre>
+<pre class="r"><code>summary(vp$Replicate)</code></pre>
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 0.00000 0.01022 0.03631 0.06834 0.09430 0.76740 </code></pre>
 <pre class="r"><code>#genes for which individual contributes more to variance than batch?
-vp.indgreaterthanbatch&lt;- vp[vp$ind&gt;vp$batch,]
+vp.indgreaterthanbatch&lt;- vp[vp$Individual&gt;vp$Replicate,]
 
 dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356</code></pre>
 <pre><code>[1] 5458    4</code></pre>
 <pre class="r"><code>head(vp.indgreaterthanbatch, 20)</code></pre>
-<pre><code>           cluster     batch       ind Residuals
-MORF4L2 0.13368671 0.3305262 0.3748252 0.1609618
-RNF2    0.05470967 0.3270797 0.3656271 0.2525835
-CHM     0.04738132 0.3246448 0.3576527 0.2703212
-SF3B4   0.18631050 0.3201600 0.3353219 0.1582076
-SNAP47  0.01531640 0.3015715 0.3953149 0.2877971
-ZNF281  0.18298881 0.3005685 0.3088606 0.2075821
-GAPDH   0.24148707 0.2946808 0.3247554 0.1390767
-TSNAX   0.09686234 0.2752320 0.4217176 0.2061881
-MDM4    0.15786840 0.2690496 0.4317879 0.1412941
-PRCC    0.19296982 0.2628047 0.2843338 0.2598916
-UHMK1   0.09206190 0.2626274 0.2893352 0.3559755
-TPI1    0.24538846 0.2591399 0.2672175 0.2282542
-SCNM1   0.09285215 0.2590271 0.4035077 0.2446131
-CDK16   0.14904931 0.2515498 0.4295413 0.1698596
-SMG9    0.11170557 0.2398780 0.3800367 0.2683797
-B4GALT3 0.19446296 0.2351935 0.3182017 0.2521418
-CDC73   0.06846824 0.2277811 0.4339902 0.2697605
-ADNP    0.35396235 0.2253128 0.2361214 0.1846035
-RAP2C   0.24318596 0.2187700 0.3508156 0.1872284
-VEGFB   0.28876666 0.2094572 0.2703386 0.2314376</code></pre>
+<pre><code>           Cluster Replicate Individual Residuals
+MORF4L2 0.13368671 0.3305262  0.3748252 0.1609618
+RNF2    0.05470967 0.3270797  0.3656271 0.2525835
+CHM     0.04738132 0.3246448  0.3576527 0.2703212
+SF3B4   0.18631050 0.3201600  0.3353219 0.1582076
+SNAP47  0.01531640 0.3015715  0.3953149 0.2877971
+ZNF281  0.18298881 0.3005685  0.3088606 0.2075821
+GAPDH   0.24148707 0.2946808  0.3247554 0.1390767
+TSNAX   0.09686234 0.2752320  0.4217176 0.2061881
+MDM4    0.15786840 0.2690496  0.4317879 0.1412941
+PRCC    0.19296982 0.2628047  0.2843338 0.2598916
+UHMK1   0.09206190 0.2626274  0.2893352 0.3559755
+TPI1    0.24538846 0.2591399  0.2672175 0.2282542
+SCNM1   0.09285215 0.2590271  0.4035077 0.2446131
+CDK16   0.14904931 0.2515498  0.4295413 0.1698596
+SMG9    0.11170557 0.2398780  0.3800367 0.2683797
+B4GALT3 0.19446296 0.2351935  0.3182017 0.2521418
+CDC73   0.06846824 0.2277811  0.4339902 0.2697605
+ADNP    0.35396235 0.2253128  0.2361214 0.1846035
+RAP2C   0.24318596 0.2187700  0.3508156 0.1872284
+VEGFB   0.28876666 0.2094572  0.2703386 0.2314376</code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
+
+locale:
+[1] C
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] variancePartition_1.16.1 Biobase_2.46.0           BiocGenerics_0.32.0     
+ [4] scales_1.1.1             foreach_1.5.0            ggplot2_3.3.3           
+ [7] edgeR_3.28.1             limma_3.42.2             dplyr_1.0.2             
+[10] workflowr_1.6.2         
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.6          locfit_1.5-9.4      here_0.1-11        
+ [4] lattice_0.20-38     prettyunits_1.1.1   gtools_3.8.2       
+ [7] rprojroot_2.0.2     digest_0.6.27       plyr_1.8.6         
+[10] R6_2.5.0            evaluate_0.14       highr_0.8          
+[13] pillar_1.4.7        progress_1.2.2      gplots_3.0.4       
+[16] rlang_0.4.10        minqa_1.2.4         gdata_2.18.0       
+[19] whisker_0.4         nloptr_1.2.2.2      Matrix_1.2-18      
+[22] rmarkdown_2.3       labeling_0.4.2      splines_3.6.1      
+[25] BiocParallel_1.20.1 lme4_1.1-23         statmod_1.4.34     
+[28] stringr_1.4.0       munsell_0.5.0       compiler_3.6.1     
+[31] httpuv_1.5.4        xfun_0.16           pkgconfig_2.0.3    
+[34] htmltools_0.5.0     tidyselect_1.1.0    tibble_3.0.4       
+[37] codetools_0.2-16    crayon_1.3.4        withr_2.4.2        
+[40] later_1.1.0.1       MASS_7.3-51.4       bitops_1.0-6       
+[43] grid_3.6.1          nlme_3.1-140        gtable_0.3.0       
+[46] lifecycle_0.2.0     git2r_0.26.1        magrittr_2.0.1     
+[49] KernSmooth_2.23-15  stringi_1.5.3       farver_2.0.3       
+[52] reshape2_1.4.4      fs_1.4.2            promises_1.1.1     
+[55] doParallel_1.0.15   colorRamps_2.3      ellipsis_0.3.1     
+[58] generics_0.1.0      vctrs_0.3.6         boot_1.3-23        
+[61] iterators_1.0.12    tools_3.6.1         glue_1.4.2         
+[64] purrr_0.3.4         hms_0.5.3           pbkrtest_0.4-8.6   
+[67] yaml_2.2.1          colorspace_2.0-0    caTools_1.18.0     
+[70] knitr_1.29         </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1611,34 +1927,34 @@ attached base packages:
 
 other attached packages:
  [1] variancePartition_1.16.1 Biobase_2.46.0           BiocGenerics_0.32.0     
- [4] scales_1.1.1             foreach_1.5.0            ggplot2_3.3.2           
- [7] edgeR_3.28.1             limma_3.42.2             dplyr_1.0.0             
+ [4] scales_1.1.1             foreach_1.5.0            ggplot2_3.3.3           
+ [7] edgeR_3.28.1             limma_3.42.2             dplyr_1.0.2             
 [10] workflowr_1.6.2         
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5          locfit_1.5-9.4      here_0.1-11        
+ [1] Rcpp_1.0.6          locfit_1.5-9.4      here_0.1-11        
  [4] lattice_0.20-38     prettyunits_1.1.1   gtools_3.8.2       
- [7] rprojroot_1.3-2     digest_0.6.25       plyr_1.8.6         
-[10] R6_2.4.1            backports_1.1.8     evaluate_0.14      
-[13] pillar_1.4.6        gplots_3.0.4        rlang_0.4.7        
-[16] progress_1.2.2      minqa_1.2.4         gdata_2.18.0       
+ [7] rprojroot_2.0.2     digest_0.6.27       plyr_1.8.6         
+[10] R6_2.5.0            evaluate_0.14       highr_0.8          
+[13] pillar_1.4.7        progress_1.2.2      gplots_3.0.4       
+[16] rlang_0.4.10        minqa_1.2.4         gdata_2.18.0       
 [19] whisker_0.4         nloptr_1.2.2.2      Matrix_1.2-18      
-[22] rmarkdown_2.3       labeling_0.3        splines_3.6.1      
+[22] rmarkdown_2.3       labeling_0.4.2      splines_3.6.1      
 [25] BiocParallel_1.20.1 lme4_1.1-23         statmod_1.4.34     
 [28] stringr_1.4.0       munsell_0.5.0       compiler_3.6.1     
 [31] httpuv_1.5.4        xfun_0.16           pkgconfig_2.0.3    
-[34] htmltools_0.5.0     tidyselect_1.1.0    tibble_3.0.3       
-[37] codetools_0.2-16    crayon_1.3.4        withr_2.2.0        
+[34] htmltools_0.5.0     tidyselect_1.1.0    tibble_3.0.4       
+[37] codetools_0.2-16    crayon_1.3.4        withr_2.4.2        
 [40] later_1.1.0.1       MASS_7.3-51.4       bitops_1.0-6       
 [43] grid_3.6.1          nlme_3.1-140        gtable_0.3.0       
-[46] lifecycle_0.2.0     git2r_0.26.1        magrittr_1.5       
-[49] KernSmooth_2.23-15  stringi_1.4.6       farver_2.0.3       
+[46] lifecycle_0.2.0     git2r_0.26.1        magrittr_2.0.1     
+[49] KernSmooth_2.23-15  stringi_1.5.3       farver_2.0.3       
 [52] reshape2_1.4.4      fs_1.4.2            promises_1.1.1     
 [55] doParallel_1.0.15   colorRamps_2.3      ellipsis_0.3.1     
-[58] generics_0.0.2      vctrs_0.3.2         boot_1.3-23        
-[61] iterators_1.0.12    tools_3.6.1         glue_1.4.1         
+[58] generics_0.1.0      vctrs_0.3.6         boot_1.3-23        
+[61] iterators_1.0.12    tools_3.6.1         glue_1.4.2         
 [64] purrr_0.3.4         hms_0.5.3           pbkrtest_0.4-8.6   
-[67] yaml_2.2.1          colorspace_1.4-1    caTools_1.18.0     
+[67] yaml_2.2.1          colorspace_2.0-0    caTools_1.18.0     
 [70] knitr_1.29         </code></pre>
 </div>
 
