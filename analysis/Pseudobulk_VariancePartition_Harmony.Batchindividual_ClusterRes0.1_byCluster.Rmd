@@ -1,0 +1,143 @@
+---
+title: "Variance Partition on Pseudobulk data"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(limma)
+library(edgeR)
+library(variancePartition)
+library(ggplot2)
+```
+
+
+choose parameters (integration type, clustering res, min pct threshold)
+```{r}
+f<- 'Harmony.Batchindividual'
+pct<-0.2
+res<- 'SCT_snn_res.0.1'
+```
+
+```{r}
+path<- here::here("output/DGELists/")
+submerged<- readRDS(paste0(path,"Pseudobulk_dge_",f, "_", res,"_minPCT",pct,".rds"))
+```
+
+
+```{r, eval=F}
+clusters<- as.vector(sort(unique(submerged$samples[,"cluster"])))
+varpart.list<- NULL
+voom.plots<- NULL
+
+for(i in 1:length(clusters)){
+  cluster<- clusters[i]
+  sub<- submerged[, submerged$samples[,"cluster"] == cluster]
+  
+  #remove ribosomal genes
+  genes.ribo <- grep('^RP',rownames(sub),value=T)
+  genes.no.ribo <- rownames(sub)[which(!(rownames(sub) %in%   genes.ribo))]
+  sub$counts <- sub$counts[which(rownames(sub$counts) %in% genes.no.ribo),]
+  
+  #filter to expressed genes
+  genes.keep<- rownames(sub)[rowSums(sub$counts)>0]
+  sub<- sub[rownames(sub$counts) %in% genes.keep,]
+   
+  #CalcNormFactors
+  sub<- calcNormFactors(sub, method="TMM")
+  
+  #specify design matrix
+  design<- model.matrix(~sub$samples$batch+sub$samples$ind)
+  
+  #voom
+  v<- voom(sub, design, plot=T)
+  voom.plots[[cluster]]<- v
+  
+  #form
+  form<- ~ (1|batch) + (1|ind)
+  
+  #run variance partition
+  varpart<- suppressWarnings(fitExtractVarPartModel(v, form, sub$samples, useWeights=TRUE, quiet=TRUE, showWarnings = FALSE))
+  
+  #store varpart results
+  varpart.list[[cluster]]<- varpart
+  
+}
+
+voom.plots
+```
+
+```{r, eval=F}
+saveRDS(varpart.list, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_VarPart.ByCluster.Res0.1.rds")
+```
+
+```{r}
+varpart.list<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_VarPart.ByCluster.Res0.1.rds")
+```
+
+
+```{r}
+vp.bar.list<- NULL
+
+for (i in 1:length(varpart.list)){
+  v<- varpart.list[[i]]
+  colnames(v)<- c("Replicate", "Individual", "Residuals")
+  #vp<- sortCols(v)
+  vp.bar.list[[i]]<-plotVarPart(v, main= paste0("Cluster ", (i-1)))
+}
+  
+vp.bar.list
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/VarPart_PseudobulkByCluster_res0.1.pdf")
+
+vp.bar.list
+
+dev.off()
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/VarPart_PseudobulkByCluster_res0.1.png", width= 7.5, height=7.5, units= "in", res= 1080)
+
+vp.bar.list
+
+dev.off()
+```
+
+```{r}
+med.batch<- NULL
+med.ind<- NULL
+for (i in 1:7){
+  v<- varpart.list[[i]]
+  mb<-median(v$batch)
+  mi<- median(v$ind)
+  med.batch[i]<- mb
+  med.ind[i]<- mi
+}
+cluster<- c(0:6)
+med.batch<- cbind(cluster, med.batch)
+med.ind<- cbind(cluster, med.ind)
+meds<- c(rep("replicate", 7), rep("individual", 7))
+med.df<- rbind(med.batch, med.ind)
+med.df<- as.data.frame(cbind(meds, med.df))
+colnames(med.df)<- c("meds","cluster", "value")
+```
+
+```{r}
+g<- ggplot(med.df, aes(x=cluster, y=(as.numeric(as.character(value))*100), fill=meds)) +geom_col(position="dodge") +ylim(0,100)  +xlab("cluster (resolution 0.1)")+ylab("Median % variance explained")+theme(legend.title = element_blank())
+g
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/VarPart_Pseudobulk_res0.1_MedianExplainedBarPlot.png", width= 4, height=3, units= "in", res= 1080)
+
+g
+
+dev.off()
+```
+
+```{r}
+sessionInfo()
+```
+

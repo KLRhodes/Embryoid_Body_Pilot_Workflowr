@@ -48,3 +48,8 @@ ha<- HeatmapAnnotation(cluster= dge$samples$cluster, batch= dge$samples$batch, i
 
 Heatmap(pseudo.lcpm, bottom_annotation = ha, show_column_names = F, show_row_names = F, name = "lcpm", use_raster = TRUE)
 ```
+
+```{r}
+sessionInfo()
+```
+

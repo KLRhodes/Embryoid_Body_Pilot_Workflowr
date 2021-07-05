@@ -83,32 +83,43 @@ plotPercentBars(vp[1:10,])
 ```
 
 ```{r}
-plotVarPart(vp)
+colnames(vp)<- c("Cluster", "Replicate", "Individual", "Residuals")
+V<- plotVarPart(vp)
+V
+```
+
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig4_VarPartRes0.1.png", width=8, height=5, units= "in", res=1080)
+
+V
+  
+dev.off()
 ```
 
 ```{r}
 #do the genes most effected by individual match what I did in limma?
-vp<- vp[order(vp$ind, decreasing=T),]
+vp<- vp[order(vp$Individual, decreasing=T),]
 head(vp, 30)
 ```
 
 ```{r}
 #do the genes most effected by batch match what I did in limma?
-vp<- vp[order(vp$batch, decreasing=T),]
+vp<- vp[order(vp$Replicate, decreasing=T),]
 head(vp, 30)
 ```
 
 ```{r}
-summary(vp$ind)
+summary(vp$Individual)
 ```
 
 ```{r}
-summary(vp$batch)
+summary(vp$Replicate)
 ```
 
 ```{r}
 #genes for which individual contributes more to variance than batch?
-vp.indgreaterthanbatch<- vp[vp$ind>vp$batch,]
+vp.indgreaterthanbatch<- vp[vp$Individual>vp$Replicate,]
 
 dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356
 ```
@@ -116,3 +127,8 @@ dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356
 ```{r}
 head(vp.indgreaterthanbatch, 20)
 ```
+
+```{r}
+sessionInfo()
+```
+

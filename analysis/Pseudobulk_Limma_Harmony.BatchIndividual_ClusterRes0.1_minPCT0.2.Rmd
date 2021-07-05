@@ -67,145 +67,7 @@ v
 ```
 
 
-```{r}
-fit<- lmFit(v,design)
-```
 
-```{r}
-dim(fit)
-```
-
-```{r}
-head(fit)
-```
-
-```{r}
-#all pairwise cluster comparisons
-nclust<- length(unique(dge$samples$cluster))
-nterms<- ncol(fit)
-contrasts<- NULL
-for (b in 1:nclust){
-for (i in 1:nclust){
-    c<- rep(0,nterms)
-    c[b]<- 1
-    c[i]<- -1
-    contrasts<- cbind(contrasts, c)
-}
-}
-
-selfcols<- c()
-el<- 1
-while (length(selfcols) <= nclust){
-  selfcols<- c(selfcols, el)
-  el<- el + nclust + 1
-}
-
-contrasts<- contrasts[,-selfcols]
-```
-
-```{r}
-contrasts
-```
-
-
-```{r}
-#first, testing all pairwise cluster comparisons. 
-fit<- contrasts.fit(fit, contrasts= contrasts)
-```
-
-```{r}
-efit<- eBayes(fit)
-```
-
-```{r}
-plotSA(efit)
-```
-
-
-```{r}
-summary(decideTests(efit))
-```
-
-
-
-```{r}
-topTable(efit, coef=1, sort.by= "P")
-```
-
-
-```{r}
-vol<- topTable(efit, coef=13, n=nrow(fit))
-labsig<- vol[abs(vol$logFC) >=9.5 | vol$adj.P.Val < 1e-29,]
-labsiggenes<- rownames(labsig)
-thresh<- vol$adj.P.Val < 0.05
-vol<-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
-  geom_text(data=labsig, aes(label=labsiggenes))
-```
-
-```{r}
-vol<- topTable(efit, coef=1, n=nrow(fit))
-labsig<-  vol[(vol$adj.P.Val < 5e-29) | (vol$logFC> 0 & vol$adj.P.Val < 1e-22) |vol$logFC> 5 |vol$logFC < -7,]
-labsiggenes<- rownames(labsig)
-thresh<- vol$adj.P.Val < 0.05
-vol<-cbind(vol, thresh)
-ggplot(vol, aes(x=logFC, y= -log10(adj.P.Val))) +
-  geom_point(aes(colour=thresh), show.legend = FALSE) +
-  scale_colour_manual(values = c("TRUE" = "red", "FALSE" = "black")) +
-  geom_text(data=labsig, aes(label=labsiggenes))
-```
-
-```{r}
-dt<- decideTests(efit)
-
-#which genes are always significantly upreg in cluster 0
-c0.common<- which(dt[,1]>0 & dt[,2]>0 & dt[,3]>0 & dt[,4]>0 & dt[,5]>0 & dt[,6]>0)
-
-length(c0.common)
-```
-
-
-```{r}
-genes.common<- rownames(dt[c0.common,])
-```
-
-
-```{r}
-tops0<- topTable(efit, coef=c(1:9), n=nrow(fit))
-tops0.common<- tops0[rownames(tops0) %in% genes.common,]
-
-head(tops0.common, n=40)
-```
-
-```{r}
-"POU5F1" %in% rownames(tops0.common)
-```
-
-```{r}
-"NANOG" %in% rownames(tops0.common)
-```
-
-
-
-```{r}
-#upsetr plot showing overlaps in DE genes between cluster 0 and all other clusters
-c0v1<- as.vector(rownames(dt[which(dt[,1] != 0),]))
-c0v2<-as.vector(rownames(dt[which(dt[,2] != 0),]))
-c0v3<-as.vector(rownames(dt[which(dt[,3] != 0),]))
-c0v4<-as.vector(rownames(dt[which(dt[,4] != 0),]))
-c0v5<-as.vector(rownames(dt[which(dt[,5] != 0),]))
-c0v6<-as.vector(rownames(dt[which(dt[,6] != 0),]))
-c0v7<-as.vector(rownames(dt[which(dt[,7] != 0),]))
-c0v8<-as.vector(rownames(dt[which(dt[,8] != 0),]))
-c0v9<-as.vector(rownames(dt[which(dt[,9] != 0),]))
-
-List.0<- list(c0vc1=c0v1,c0vc2=c0v2,c0vc3=c0v3,c0vc4=c0v4,c0vc5=c0v5,c0vc6=c0v6,c0vc7=c0v7,c0vc8=c0v8,c0vc9=c0v9)
-
-#List.0<- list(dt[,1:9])
-upset(fromList(List.0), nsets = 9)
-```
 
 1 v all contrasts
 
@@ -214,6 +76,7 @@ fit<- lmFit(v,design)
 ```
 
 ```{r}
+nclust<- length(unique(dge$samples$cluster))
 contrasts<- NULL
 for (i in 1:nclust){
     c<- c(rep(-1,nclust),0,0,0,0)
@@ -312,18 +175,26 @@ c6vall<- topTable(efit, coef=7, n=nrow(fit))
 head(c6vall, n=40)
 ```
 
-```{r}
-#output results from each cluster
-TopTable.EachCluster.OnevAll<- list(c0vall, c1vall, c2vall,c3vall,c4vall,c5vall,c6vall)
 
-write.csv(TopTable.EachCluster.OnevAll, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv")
+```{r}
+output.list<- list()
+for (i in 1:nclust){
+  ta<- topTable(efit, coef=i,n=nrow(fit))
+  output.list[[i]]<- ta
+}
+
+listnames<- c(paste0("Cluster", unique(dge$samples$cluster)))
+names(output.list)<- as.vector(listnames)
+
+write.csv(output.list, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv")
 ```
+
 
 ```{r}
 #output table with top 5 upreg DE genes in each cluster by adjusted p
 OnevAll.top10.adjP<- NULL
 for(i in 1:nclust){
-  c<- TopTable.EachCluster.OnevAll[[i]]
+  c<- output.list[[i]]
   top10<- c[c$logFC>0,]
   top10<- top10[order(top10$adj.P.Val),]
   top10<- rownames(top10)[1:10]
@@ -338,7 +209,7 @@ write.csv(OnevAll.top10.adjP, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Bod
 #output table with top 5 upreg DE genes in each cluster by logFC
 OnevAll.top10.logFC<- NULL
 for(i in 1:nclust){
-  c<- TopTable.EachCluster.OnevAll[[i]]
+  c<- output.list[[i]]
   top10<- c[order(c$logFC, decreasing = T),]
   top10<- rownames(top10)[1:10]
   OnevAll.top10.logFC<- cbind(OnevAll.top10.logFC, top10)
@@ -348,66 +219,7 @@ colnames(OnevAll.top10.logFC)<- as.character(0:(nclust-1))
 write.csv(OnevAll.top10.logFC, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv")
 ```
 
-
-batch + ind comparisons
-
 ```{r}
-fit<- lmFit(v,design)
-```
-
-```{r}
-fit<-contrasts.fit(fit, coefficients = (nclust+1):(nclust+4))
-```
-
-
-```{r}
-efit<- eBayes(fit)
-```
-
-```{r}
-plotSA(efit)
-```
-
-
-```{r}
-topsBatch<- topTable(efit, coef=c(1:2),n=nrow(fit))
-
-head(topsBatch, n=40)
-```
-
-```{r}
-topsInd<- topTable(efit, coef=c(3:4),n=nrow(fit))
-
-head(topsInd, n=40)
-```
-
-```{r}
-"UTF1" %in% rownames(topsInd)
-```
-
-```{r}
-topsInd[rownames(topsInd)== "UTF1",]
-```
-
-```{r}
-topsInd[rownames(topsInd)== "TAC3",]
-```
-
-
-```{r}
-plot(density(topsBatch$adj.P.Val))
-lines(density(topsInd$adj.P.Val), col= "red")
-```
-
-```{r}
-boxplot(-log10(topsBatch$adj.P.Val), -log10(topsInd$adj.P.Val), names= c("Batch", "Individual"), main="Distribution of p values from F tests", ylab="-log10(adjusted.p.val)")
-```
-
-```{r}
-median(topsBatch$F)
-```
-
-```{r}
-median(topsInd$F)
+sessionInfo()
 ```
 

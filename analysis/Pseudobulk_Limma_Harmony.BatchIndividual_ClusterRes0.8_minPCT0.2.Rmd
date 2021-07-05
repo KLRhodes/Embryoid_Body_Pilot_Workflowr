@@ -1,48 +1,28 @@
 ---
-title: "Differential Expression with Limma"
+title: "Limma Res 0.8"
+author: "Katie Rhodes"
+date: "5/27/2021"
 output: html_document
 ---
-
 ```{r, message=F}
 library(Seurat)
 library(Matrix)
 library(dplyr)
 library(edgeR)
 library(limma)
-library(reshape2)
-library(ggplot2)
-library(UpSetR)
 ```
-
 
 choose parameters (integration type, clustering res, min pct threshold)
 ```{r}
 f<- 'Harmony.Batchindividual'
 pct<-0.2
-res<- 'SCT_snn_res.0.5'
+res<- 'SCT_snn_res.0.8'
 ```
 
 ```{r}
 path<- here::here("output/DGELists/")
 dge<- readRDS(paste0(path,"Pseudobulk_dge_",f, "_", res,"_minPCT",pct,".rds"))
 ```
-
-```{r}
-cpm<- cpmByGroup(dge, group=dge$samples$cluster)
-lcpm<- cpmByGroup(dge, group=dge$samples$cluster, log=TRUE)
-```
-
-```{r}
-hist(lcpm)
-```
-
-
-
-```{r}
-L<- mean(dge$samples$lib.size) *1e-6
-M<- median(dge$samples$lib.size) *1e-6
-```
-
 
 ```{r}
 genes.ribo <- grep('^RP',rownames(dge),value=T)
@@ -66,8 +46,6 @@ v<- voom(dge, design, plot=TRUE)
 v
 ```
 
-
-1 v all contrasts
 
 ```{r}
 fit<- lmFit(v,design)
@@ -101,13 +79,10 @@ efit<- eBayes(fit)
 plotSA(efit)
 ```
 
-
 ```{r}
 summary(decideTests(efit))
 ```
 
-
-output all OneVall cluster comparisons
 ```{r}
 output.list<- list()
 for (i in 1:nclust){
@@ -118,17 +93,10 @@ for (i in 1:nclust){
 listnames<- c(paste0("Cluster", unique(dge$samples$cluster)))
 names(output.list)<- as.vector(listnames)
 
-write.csv(output.list, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv")
+write.csv(output.list, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv")
 ```
 
 ```{r}
 sessionInfo()
 ```
-
-
-
-
-
-
-
 
