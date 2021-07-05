@@ -71,7 +71,7 @@ See code directory: https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/bl
 
 Here, we integrate our EB data with 1) scRNA-seq data from human fetal tissues (Cao et al. 2020) and with Embryoid body cells and human embryonic stem cells from Human Cell Landscape (Han et al. 2020)
 
-+ [Integrate Reference and Annotate EB cells](IntegrateReference_SCTregressCaoPlusScHCL.Rmd)
++ [Integrate Reference and Annotate EB cells](IntegrateReference_SCTregressCaoPlusScHCL.html)
 
 We then checked that the integration and annotation procedure was robust by subsetting our EB data to only cells for a particular type and re-integrated to check that most cells were annotated the same as in the full integration.
 
