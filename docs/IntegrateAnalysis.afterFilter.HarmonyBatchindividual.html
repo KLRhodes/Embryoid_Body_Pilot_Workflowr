@@ -11,9 +11,8 @@
 
 
 
-<title>Integrate lanes from all batches of EB pilot (Human data only, no doublets</title>
+<title>Integrate lanes from all batches of EB pilot</title>
 
-<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -26,6 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -34,8 +35,6 @@ div.section {
   padding-top: 12px;
 }
 </style>
-
-
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -369,7 +368,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -379,7 +384,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Integrate lanes from all batches of EB pilot (Human data only, no doublets</h1>
+<h1 class="title toc-ignore">Integrate lanes from all batches of EB pilot</h1>
 
 </div>
 
@@ -404,7 +409,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-08-10
+<strong>Last updated:</strong> 2021-07-05
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -440,7 +445,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it's best to always run the code in an empty environment.</p>
 </div>
 </div>
 </div>
@@ -495,16 +500,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongf50ebd3"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> f50ebd3 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee9247fbdf3ab7e7d424aeb6e195ce69ffb45f700targetblanke9247fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e9247fbdf3ab7e7d424aeb6e195ce69ffb45f700" target="_blank">e9247fb</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongf50ebd3" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtreee9247fbdf3ab7e7d424aeb6e195ce69ffb45f700targetblanke9247fba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version f50ebd3. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/e9247fbdf3ab7e7d424aeb6e195ce69ffb45f700" target="_blank">e9247fb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -513,33 +518,137 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
     Ignored:    output/.Rhistory
 
 Untracked files:
+    Untracked:  GSE122380_raw_counts.txt.gz
+    Untracked:  UTF1_plots.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEarlyEcto.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustEndo.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustMeso.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuralCrest.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustNeuron.Rmd
+    Untracked:  analysis/IntegrateReference_SCTregressCaoPlusScHCL_JustPluri.Rmd
+    Untracked:  analysis/OLD/
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.8_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes1_minPCT0.2.Rmd
+    Untracked:  analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_byCluster.Rmd
+    Untracked:  analysis/RefInt_ComparingFulltoPartialIntegrationAnnotations.Rmd
+    Untracked:  analysis/ReferenceAnn_DE.Rmd
+    Untracked:  analysis/SingleCell_HierarchicalClustering_NoGeneFilter.Rmd
+    Untracked:  analysis/SingleCell_VariancePartitionByCluster_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Untracked:  analysis/VarPartPlots_res0.1_SCT.Rmd
+    Untracked:  analysis/VarPart_SC_res0.1_SCT.Rmd
     Untracked:  analysis/child/
+    Untracked:  analysis/k10topics_Explore.Rmd
+    Untracked:  analysis/k6topics_Explore.Rmd
+    Untracked:  build_refint_scale.R
+    Untracked:  build_refint_sct.R
+    Untracked:  build_stuff.R
+    Untracked:  build_varpart_sc.R
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/CellRangerPreprocess.Rmd
+    Untracked:  code/ConvertToDGE.Rmd
+    Untracked:  code/ConvertToDGE_PseudoBulk.Rmd
+    Untracked:  code/ConvertToDGE_SingleCellRes_minPCT0.2.Rmd
     Untracked:  code/EB.getHumanMetadata.Rmd
+    Untracked:  code/GEO_processed_data.Rmd
+    Untracked:  code/PowerAnalysis_NoiseRatio.ipynb
+    Untracked:  code/Untitled.ipynb
+    Untracked:  code/Untitled1.ipynb
+    Untracked:  code/compile_fits.Rmd
+    Untracked:  code/fit_all_models.sh
+    Untracked:  code/fit_poisson_nmf.R
+    Untracked:  code/fit_poisson_nmf.sbatch
+    Untracked:  code/functions_for_fit_comparison.Rmd
+    Untracked:  code/get_genelist_byPCTthresh.Rmd
+    Untracked:  code/prefit_poisson_nmf.R
+    Untracked:  code/prefit_poisson_nmf.sbatch
+    Untracked:  code/prepare_data_for_fastTopics.Rmd
+    Untracked:  data/HCL_Fig1_adata.h5ad
+    Untracked:  data/HCL_Fig1_adata.h5seurat
+    Untracked:  data/dge/
+    Untracked:  data/dge_raw_data.tar.gz
+    Untracked:  data/ref.expr.rda
     Untracked:  figure/
+    Untracked:  output/CR_sampleQCrds/
+    Untracked:  output/CaoEtAl.Obj.CellsOfAllClusters.ProteinCodingGenes.rds
+    Untracked:  output/CaoEtAl.Obj.rds
+    Untracked:  output/ClusterInfo_res0.1.csv
+    Untracked:  output/DGELists/
+    Untracked:  output/DownSampleVarPart.rds
+    Untracked:  output/Frequency.MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/GEOsubmissionProcessedFiles/
+    Untracked:  output/GeneLists_by_minPCT/
+    Untracked:  output/MostCommonAnnotation.FiveNearestRefCells.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.EuclideanDistanceinHarmonySpace.csv
+    Untracked:  output/NearestReferenceCell.SCTregressRNAassay.Cao.hESC.FrequencyofEachAnnotation.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_adjP.csv
+    Untracked:  output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv
+    Untracked:  output/Pseudobulk_Limma_res0.5_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res0.8_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_Limma_res1_OnevAllTopTables.csv
+    Untracked:  output/Pseudobulk_VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/ResidualVariances_fromDownSampAnalysis.csv
+    Untracked:  output/SingleCell_VariancePartition_RNA_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_Res0.1_minPCT0.2.rds
+    Untracked:  output/SingleCell_VariancePartition_SCT_Res0.1_minPCT0.2.rds
+    Untracked:  output/TopicModelling_k10_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top10drivergenes.byBeta.csv
+    Untracked:  output/TopicModelling_k6_top15drivergenes.byZ.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustMeso.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustNeuron.csv
+    Untracked:  output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv
+    Untracked:  output/VarPart.ByCluster.Res0.1.rds
+    Untracked:  output/azimuth/
+    Untracked:  output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_scres.rds
+    Untracked:  output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds
+    Untracked:  output/fasttopics/
+    Untracked:  output/figs/
+    Untracked:  output/merge.Cao.SCTwRegressOrigIdent.rds
+    Untracked:  output/merge.all.SCTwRegressOrigIdent.Harmony.rds
+    Untracked:  output/merged.SCT.counts.matrix.rds
+    Untracked:  output/merged.raw.counts.matrix.rds
     Untracked:  output/mergedObjects/
+    Untracked:  output/pdfs/
     Untracked:  output/sampleQCrds/
+    Untracked:  output/splitgpm_gsea_results/
+    Untracked:  slurm-12005914.out
+    Untracked:  slurm-12005923.out
 
 Unstaged changes:
-    Modified:   .Rprofile
-    Modified:   .gitattributes
-    Modified:   .gitignore
-    Modified:   Embryoid_Body_Pilot_Workflowr.Rproj
-    Modified:   README.md
-    Modified:   _workflowr.yml
-    Modified:   analysis/_site.yml
-    Modified:   analysis/about.Rmd
-    Modified:   analysis/index.Rmd
-    Modified:   analysis/license.Rmd
-    Modified:   code/README.md
-    Modified:   data/README.md
-    Modified:   output/README.md
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatch.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.HarmonyBatchSampleIDindividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.NOHARMONYjustmerge.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividual.Rmd
+    Deleted:    analysis/IntegrateAnalysis.afterFilter.SCTregressBatchIndividualHarmonyBatchindividual.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_HierarchicalClustering_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_Limma_Harmony.BatchIndividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.1_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.5_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes0.8_minPCT0.2.Rmd
+    Modified:   analysis/Pseudobulk_VariancePartition_Harmony.Batchindividual_ClusterRes1_minPCT0.2.Rmd
+    Deleted:    analysis/RunscHCL_HarmonyBatchInd.Rmd
 
 </code></pre>
 <p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
 </p>
 </div>
 </div>
@@ -550,7 +659,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd</code>) and HTML (<code>docs/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd</code>) and HTML (<code>docs/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html</code>) files. If you've configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -579,7 +688,41 @@ Message
 Rmd
 </td>
 <td>
-f50ebd3
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/e9247fbdf3ab7e7d424aeb6e195ce69ffb45f700/analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd" target="_blank">e9247fb</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-07-05
+</td>
+<td>
+wflow_publish(&quot;analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd&quot;)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/edaa6a30e919c14434e3ef52cb9a734d3c4ae09f/docs/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html" target="_blank">edaa6a3</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2020-08-11
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/f50ebd3397ca06e401a651820a40b75ebf4ec6c7/analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd" target="_blank">f50ebd3</a>
 </td>
 <td>
 KLRhodes
@@ -588,7 +731,7 @@ KLRhodes
 2020-08-10
 </td>
 <td>
-wflow_publish("analysis/Integrate*")
+wflow_publish(&quot;analysis/Integrate*&quot;)
 </td>
 </tr>
 <tr>
@@ -596,7 +739,7 @@ wflow_publish("analysis/Integrate*")
 html
 </td>
 <td>
-421a225
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.html" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -613,7 +756,7 @@ Build site.
 Rmd
 </td>
 <td>
-bc8ec6f
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/bc8ec6ff5b2f25b7e9abec5248cd501db03c41e5/analysis/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd" target="_blank">bc8ec6f</a>
 </td>
 <td>
 KLRhodes
@@ -647,53 +790,6 @@ for (i in 1:length(filelist)){
   objectlist[i]&lt;- rds
   
 }</code></pre>
-<pre><code>Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated
-
-Warning in `[&lt;-`(`*tmp*`, i, value = rds): implicit list embedding of S4 objects
-is deprecated</code></pre>
 <p>create a merged seurat object</p>
 <pre class="r"><code>ids&lt;-substr(basename(filelist),1,12)
 merged&lt;- merge(objectlist[[1]], c(objectlist[[2]], objectlist[[3]],objectlist[[4]],objectlist[[5]],objectlist[[6]],objectlist[[7]],objectlist[[8]],objectlist[[9]],objectlist[[10]],objectlist[[11]],objectlist[[12]],objectlist[[13]],objectlist[[14]],objectlist[[15]],objectlist[[16]]),add.cell.ids=ids, merge.data=T)</code></pre>
@@ -734,7 +830,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-6-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -781,7 +877,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-7-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -822,7 +918,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-8-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -862,7 +958,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-8-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -916,7 +1012,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-12-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -955,7 +1051,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-12-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -994,7 +1090,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-12-3.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1046,7 +1142,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-13-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1084,7 +1180,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-13-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1122,7 +1218,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-13-3.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1161,7 +1257,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-14-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1200,7 +1296,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-14-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1239,7 +1335,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-14-3.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1287,7 +1383,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-14-4.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1325,7 +1421,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-14-5.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1363,7 +1459,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-14-6.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1403,7 +1499,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-15-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1442,7 +1538,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-16-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1481,7 +1577,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-17-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1521,7 +1617,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-18-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1560,7 +1656,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-19-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1600,7 +1696,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-20-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1641,7 +1737,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-21-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1681,7 +1777,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-21-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1721,7 +1817,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-21-3.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1761,7 +1857,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-21-4.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1801,7 +1897,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-21-5.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1841,7 +1937,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-21-6.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1882,7 +1978,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1922,7 +2018,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -1962,7 +2058,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-3.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2002,7 +2098,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-4.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2042,7 +2138,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-5.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2082,7 +2178,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-6.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2122,7 +2218,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-7.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2162,7 +2258,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-22-8.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2203,7 +2299,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2243,7 +2339,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-2.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2283,7 +2379,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-3.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2323,7 +2419,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-4.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2363,7 +2459,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-5.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2403,7 +2499,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-6.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2443,7 +2539,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-7.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2483,7 +2579,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-8.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2523,7 +2619,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-9.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2563,7 +2659,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-23-10.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2606,7 +2702,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-24-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2653,79 +2749,6 @@ t1</code></pre>
   25     83     38     99
   26    101     19     29
   27     80     10     29</code></pre>
-<pre class="r"><code>#percent of cells in each cluster per batch
-t1colsum&lt;- colSums(t1)
-percT1&lt;-t1/t1colsum
-percT1</code></pre>
-<pre><code>    
-           Batch1       Batch2       Batch3
-  0  0.1408759557 0.1435377598 0.1492063492
-  1  0.2157121135 0.0756190476 0.1079239021
-  2  0.1278730159 0.0774017661 0.1172833249
-  3  0.1012268121 0.0730866700 0.0557460317
-  4  0.1379624937 0.0276190476 0.0516209329
-  5  0.0257777778 0.0506726723 0.0751140395
-  6  0.0244177088 0.0519006589 0.0682539683
-  7  0.0696401419 0.0163809524 0.0383452854
-  8  0.0493968254 0.0130978486 0.0533198175
-  9  0.0325964559 0.0496705525 0.0280634921
-  10 0.0252407501 0.0173333333 0.0509097375
-  11 0.0282539683 0.0242991762 0.0313228586
-  12 0.0364487643 0.0209832742 0.0208888889
-  13 0.0421692854 0.0089523810 0.0320037930
-  14 0.0281269841 0.0112605938 0.0409528637
-  15 0.0196764061 0.0205778003 0.0203174603
-  16 0.0036492651 0.0058412698 0.0350856398
-  17 0.0162539683 0.0145202394 0.0209832742
-  18 0.0006519291 0.0055752661 0.0401904762
-  19 0.0106436898 0.0076190476 0.0218692586
-  20 0.0183492063 0.0151129023 0.0043588444
-  21 0.0336632490 0.0003041054 0.0000000000
-  22 0.0083122149 0.0047619048 0.0149351034
-  23 0.0151111111 0.0037930421 0.0095286366
-  24 0.0061044272 0.0060821085 0.0085079365
-  25 0.0084135834 0.0024126984 0.0058673621
-  26 0.0064126984 0.0011260594 0.0029396858
-  27 0.0047413027 0.0010136847 0.0018412698</code></pre>
-<pre class="r"><code>heatmap(t(percT1))</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
-Past versions of unnamed-chunk-27-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-27-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <pre class="r"><code>#how many cells per cluster from each individual?
 t2&lt;-table(merged@meta.data$SCT_snn_res.1, merged@meta.data$individual)
 t2</code></pre>
@@ -2759,42 +2782,29 @@ t2</code></pre>
   25          18         193           9
   26           0         149           0
   27          16           0         103</code></pre>
-<pre class="r"><code>t2colsums&lt;-colSums(t2)
-
-percT2&lt;- t2/t2colsums
-
-percT2</code></pre>
-<pre><code>    
-      SNG-NA18511  SNG-NA18858  SNG-NA19160
-  0  0.0303791112 0.3379124175 0.0105991780
-  1  0.0119376125 0.3503497008 0.0068624990
-  2  0.2166702718 0.0198342958 0.0740851830
-  3  0.1318101933 0.0092381524 0.1137789314
-  4  0.0498500300 0.0022352008 0.1510586660
-  5  0.0081476675 0.1457025693 0.0088782244
-  6  0.0728931291 0.0173365327 0.0604946283
-  7  0.0050389922 0.1057033672 0.0035149385
-  8  0.0111760040 0.0028454264 0.0801439712
-  9  0.0812620303 0.0061787642 0.0294181268
-  10 0.0314337133 0.0027399236 0.0685413005
-  11 0.0076429447 0.0807598962 0.0055788842
-  12 0.0116327726 0.0011397720 0.0715985291
-  13 0.0053389322 0.0007931358 0.0834379446
-  14 0.0097339390 0.0005858231 0.0536892621
-  15 0.0486233158 0.0022195561 0.0170884707
-  16 0.0246550690 0.0011536520 0.0245208804
-  17 0.0299949528 0.0046865847 0.0141571686
-  18 0.0376600552 0.0002999400 0.0175931935
-  19 0.0092981404 0.0010815488 0.0354841409
-  20 0.0095897325 0.0364047201 0.0011397720
-  21 0.0274499958 0.0019796041 0.0151416829
-  22 0.0064787043 0.0004326195 0.0246882584
-  23 0.0059845699 0.0112980166 0.0106778644
-  24 0.0075320110 0.0001799640 0.0147090634
-  25 0.0010797840 0.0139159276 0.0007532011
-  26 0.0000000000 0.0124696627 0.0000000000
-  27 0.0013390242 0.0000000000 0.0074266349</code></pre>
-<pre class="r"><code>heatmap(t(percT2))</code></pre>
+<p>Reclustering with less resolution, check if everything is robust</p>
+<pre class="r"><code>#reassign idents
+Idents(merged)&lt;- &#39;SCT_snn_res.0.5&#39;</code></pre>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-28-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-28-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
+ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = &quot;umap&quot;, 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-28-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-28-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-28-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#reassign idents
+Idents(merged)&lt;- &#39;SCT_snn_res.0.1&#39;</code></pre>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
@@ -2820,7 +2830,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2833,102 +2843,41 @@ KLRhodes
 </table>
 </div>
 </div>
-<pre class="r"><code>cormat&lt;-round(cor(percT2),2)
-library(reshape2)
-melted_cormat&lt;-melt(cormat)
-ugly&lt;-ggplot(data= melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
-  geom_tile() +
-  ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster&quot;)
-
-get_lower_tri&lt;- function(cormat){
-  cormat[upper.tri(cormat)]&lt;-NA
-  return(cormat)
-}
-
-lower_tri&lt;- get_lower_tri(cormat)
-melted_tri&lt;- melt(lower_tri)
-pretty&lt;-ggplot(data= melted_tri, aes(x=Var1, y=Var2, fill=value)) +
-  geom_tile(color=&quot;white&quot;) +
-  scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, midpoint = 0, limit= c(-1,1), space= &quot;Lab&quot;, name=&quot;Pearson\nCorrelation&quot;) +
-  theme_minimal() +
-  ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster&quot;)
-
-pretty</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-31-1">
-Past versions of unnamed-chunk-31-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-31-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#exploring similarity in the number of cells per individual between batches
-merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
-b1t&lt;- table(merged.Batch1$SCT_snn_res.1, merged.Batch1$individual)
-remove(&quot;merged.Batch1&quot;)
-b1tcolsums&lt;- colSums(b1t)
-percb1t&lt;- b1t/b1tcolsums                
-
-merged.Batch2&lt;- (subset(merged, Batch == &quot;Batch2&quot;))
-b2t&lt;- table(merged.Batch2$SCT_snn_res.1, merged.Batch2$individual)
-remove(&quot;merged.Batch2&quot;)
-b2tcolsums&lt;- colSums(b2t)
-percb2t&lt;- b2t/b2tcolsums
-
-merged.Batch3&lt;- (subset(merged, Batch == &quot;Batch3&quot;))
-b3t&lt;- table(merged.Batch3$SCT_snn_res.1, merged.Batch3$individual)
-remove(&quot;merged.Batch3&quot;)
-b3tcolsums&lt;- colSums(b3t)
-percb3t&lt;- b3t/b3tcolsums</code></pre>
-<pre class="r"><code>cols1&lt;- c(&quot;Batch1_18511&quot;,&quot;Batch1_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_18511&quot;, &quot;Batch2_18858&quot;,&quot;Batch2_19160&quot;,
-         &quot;Batch3_18511&quot;,&quot;Batch3_18858&quot;, &quot;Batch3_19160&quot;)
-
-cols2&lt;- c(&quot;Batch1_18511&quot;, &quot;Batch2_18511&quot;, &quot;Batch3_18511&quot;,&quot;Batch1_18858&quot;, &quot;Batch2_18858&quot;, &quot;Batch3_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_19160&quot;, &quot;Batch3_19160&quot;)
-
-fullpercs&lt;- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
-colnames(fullpercs)&lt;-cols1
-fullpercs&lt;- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
-                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
-                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
-colnames(fullpercs)&lt;-cols2
-fullpercs_cor&lt;- round(cor(fullpercs),2)
-fullpercs_melt&lt;- melt(fullpercs_cor)
-ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
-  geom_tile(color=&quot;white&quot;) +
-  scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, midpoint = 0, limit= c(-1,1), space= &quot;Lab&quot;, name=&quot;Pearson\nCorrelation&quot;) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 30, hjust=1))+
-  ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster (res 1)&quot;)</code></pre>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
+ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = &quot;umap&quot;, 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-30-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#reassign idents
+Idents(merged)&lt;- &#39;SCT_snn_res.0.8&#39;</code></pre>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-32-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-32-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
+ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
+          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
+for (i in individuals)
+{
+  print(DimPlot(merged, reduction = &quot;umap&quot;, 
+                cells = WhichCells(merged, expression = individual == i)) +
+          xlim(xlim) + ylim(ylim) + ggtitle(i))
+}</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-32-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-32-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-32-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>VlnPlot(merged, features= &quot;percent.mt&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size = 0)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-33-1">
@@ -2954,7 +2903,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-33-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -2967,14 +2916,10 @@ KLRhodes
 </table>
 </div>
 </div>
-<pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
-
-beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
-
-rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
-
-heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
-text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
+<pre class="r"><code>merged[[&quot;percent.rps&quot;]]&lt;- PercentageFeatureSet(merged, pattern = &quot;^RPS&quot;)
+merged[[&quot;percent.rpl&quot;]]&lt;- PercentageFeatureSet(merged, pattern = &quot;^RPL&quot;)
+merged[[&quot;percent.rp&quot;]]&lt;- merged[[&quot;percent.rps&quot;]]+merged[[&quot;percent.rpl&quot;]]
+VlnPlot(merged, features= &quot;percent.rp&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size=0)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-34-1">
@@ -3000,7 +2945,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-34-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -3013,288 +2958,17 @@ KLRhodes
 </table>
 </div>
 </div>
-<pre class="r"><code>#generate a heatmap of the proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
-<p>Reclustering with less resolution, check if everything is robust</p>
-<pre class="r"><code>#reassign idents
-Idents(merged)&lt;- &#39;SCT_snn_res.0.5&#39;</code></pre>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-1">
-Past versions of unnamed-chunk-36-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-36-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-2">
-Past versions of unnamed-chunk-36-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-36-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-3">
-Past versions of unnamed-chunk-36-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
-          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
-ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
-          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
-for (i in individuals)
-{
-  print(DimPlot(merged, reduction = &quot;umap&quot;, 
-                cells = WhichCells(merged, expression = individual == i)) +
-          xlim(xlim) + ylim(ylim) + ggtitle(i))
-}</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-36-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-4">
-Past versions of unnamed-chunk-36-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-36-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-5">
-Past versions of unnamed-chunk-36-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-36-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-6">
-Past versions of unnamed-chunk-36-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-36-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#exploring similarity in the number of cells per individual between batches
-merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
-b1t&lt;- table(merged.Batch1$SCT_snn_res.0.5, merged.Batch1$individual)
-remove(&quot;merged.Batch1&quot;)
-b1tcolsums&lt;- colSums(b1t)
-percb1t&lt;- b1t/b1tcolsums                
-
-merged.Batch2&lt;- (subset(merged, Batch == &quot;Batch2&quot;))
-b2t&lt;- table(merged.Batch2$SCT_snn_res.0.5, merged.Batch2$individual)
-remove(&quot;merged.Batch2&quot;)
-b2tcolsums&lt;- colSums(b2t)
-percb2t&lt;- b2t/b2tcolsums
-
-merged.Batch3&lt;- (subset(merged, Batch == &quot;Batch3&quot;))
-b3t&lt;- table(merged.Batch3$SCT_snn_res.0.5, merged.Batch3$individual)
-remove(&quot;merged.Batch3&quot;)
-b3tcolsums&lt;- colSums(b3t)
-percb3t&lt;- b3t/b3tcolsums</code></pre>
-<pre class="r"><code>cols1&lt;- c(&quot;Batch1_18511&quot;,&quot;Batch1_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_18511&quot;, &quot;Batch2_18858&quot;,&quot;Batch2_19160&quot;,
-         &quot;Batch3_18511&quot;,&quot;Batch3_18858&quot;, &quot;Batch3_19160&quot;)
-
-cols2&lt;- c(&quot;Batch1_18511&quot;, &quot;Batch2_18511&quot;, &quot;Batch3_18511&quot;,&quot;Batch1_18858&quot;, &quot;Batch2_18858&quot;, &quot;Batch3_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_19160&quot;, &quot;Batch3_19160&quot;)
-
-fullpercs&lt;- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
-colnames(fullpercs)&lt;-cols1
-fullpercs&lt;- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
-                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
-                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
-colnames(fullpercs)&lt;-cols2
-fullpercs_cor&lt;- round(cor(fullpercs),2)
-fullpercs_melt&lt;- melt(fullpercs_cor)
-ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
-  geom_tile(color=&quot;white&quot;) +
-  scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, midpoint = 0, limit= c(-1,1), space= &quot;Lab&quot;, name=&quot;Pearson\nCorrelation&quot;) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 30, hjust=1))+
-  ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.5&quot;)</code></pre>
+<pre class="r"><code>FeaturePlot(merged, features = &quot;nFeature_RNA&quot;)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>head(merged)</code></pre>
+<pre><code>An object of class Seurat 
+2 features across 42488 samples within 2 assays 
+Active assay: SCT (1 features, 1 variable features)
+ 1 other assay present: RNA
+ 3 dimensional reductions calculated: pca, harmony, umap</code></pre>
+<pre class="r"><code>VlnPlot(merged, features= &quot;nFeature_RNA&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size=0)</code></pre>
+<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>FeaturePlot(merged, features = c(&quot;POU5F1&quot;, &quot;SOX17&quot;,  &quot;HAND1&quot;, &quot;PAX6&quot;), pt.size = 0.2, ncol=2, combine=T)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-38-1">
@@ -3320,7 +2994,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-38-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -3333,14 +3007,7 @@ KLRhodes
 </table>
 </div>
 </div>
-<pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
-
-beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
-
-rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
-
-heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
-text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
+<pre class="r"><code>FeaturePlot(merged, features = c(&quot;FGB&quot;, &quot;ECSCR&quot;,  &quot;NEUROD1&quot;, &quot;SOX10&quot;), pt.size = 0.2, ncol=2)</code></pre>
 <p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-39-1">
@@ -3366,7 +3033,7 @@ Date
 <tbody>
 <tr>
 <td>
-421a225
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/421a225c891ef60cb5923bd71dbb50ea9b033082/docs/figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-39-1.png" target="_blank">421a225</a>
 </td>
 <td>
 KLRhodes
@@ -3379,982 +3046,63 @@ KLRhodes
 </table>
 </div>
 </div>
-<pre class="r"><code>#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
-<pre class="r"><code>#reassign idents
-Idents(merged)&lt;- &#39;SCT_snn_res.0.1&#39;</code></pre>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-1">
-Past versions of unnamed-chunk-41-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-41-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-2">
-Past versions of unnamed-chunk-41-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-41-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-3">
-Past versions of unnamed-chunk-41-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
-          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
-ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
-          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
-for (i in individuals)
-{
-  print(DimPlot(merged, reduction = &quot;umap&quot;, 
-                cells = WhichCells(merged, expression = individual == i)) +
-          xlim(xlim) + ylim(ylim) + ggtitle(i))
-}</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-41-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-4">
-Past versions of unnamed-chunk-41-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-41-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-5">
-Past versions of unnamed-chunk-41-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-41-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-6">
-Past versions of unnamed-chunk-41-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-41-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#exploring similarity in the number of cells per individual between batches
-merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
-b1t&lt;- table(merged.Batch1$SCT_snn_res.0.1, merged.Batch1$individual)
-remove(&quot;merged.Batch1&quot;)
-b1tcolsums&lt;- colSums(b1t)
-percb1t&lt;- b1t/b1tcolsums                
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.4 (Nitrogen)
 
-merged.Batch2&lt;- (subset(merged, Batch == &quot;Batch2&quot;))
-b2t&lt;- table(merged.Batch2$SCT_snn_res.0.1, merged.Batch2$individual)
-remove(&quot;merged.Batch2&quot;)
-b2tcolsums&lt;- colSums(b2t)
-percb2t&lt;- b2t/b2tcolsums
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.2.19-el7-x86_64/lib/libopenblas_haswellp-r0.2.19.so
 
-merged.Batch3&lt;- (subset(merged, Batch == &quot;Batch3&quot;))
-b3t&lt;- table(merged.Batch3$SCT_snn_res.0.1, merged.Batch3$individual)
-remove(&quot;merged.Batch3&quot;)
-b3tcolsums&lt;- colSums(b3t)
-percb3t&lt;- b3t/b3tcolsums</code></pre>
-<pre class="r"><code>cols1&lt;- c(&quot;Batch1_18511&quot;,&quot;Batch1_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_18511&quot;, &quot;Batch2_18858&quot;,&quot;Batch2_19160&quot;,
-         &quot;Batch3_18511&quot;,&quot;Batch3_18858&quot;, &quot;Batch3_19160&quot;)
+locale:
+[1] C
 
-cols2&lt;- c(&quot;Batch1_18511&quot;, &quot;Batch2_18511&quot;, &quot;Batch3_18511&quot;,&quot;Batch1_18858&quot;, &quot;Batch2_18858&quot;, &quot;Batch3_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_19160&quot;, &quot;Batch3_19160&quot;)
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
-fullpercs&lt;- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
-colnames(fullpercs)&lt;-cols1
-fullpercs&lt;- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
-                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
-                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
-colnames(fullpercs)&lt;-cols2
-fullpercs_cor&lt;- round(cor(fullpercs),2)
-fullpercs_melt&lt;- melt(fullpercs_cor)
-ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
-  geom_tile(color=&quot;white&quot;) +
-  scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, midpoint = 0, limit= c(-1,1), space= &quot;Lab&quot;, name=&quot;Pearson\nCorrelation&quot;) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 30, hjust=1))+
-  ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.1&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-43-1">
-Past versions of unnamed-chunk-43-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-43-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
+other attached packages:
+[1] RColorBrewer_1.1-2 here_0.1-11        DataCombine_0.2.21 ggplot2_3.3.3     
+[5] harmony_1.0        Rcpp_1.0.6         Seurat_3.2.0       workflowr_1.6.2   
 
-beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
-#fullnonorm&lt;- as.data.frame(cbind(b1t[,1:3], b2t,b3t))
-#colnames(fullnonorm)&lt;-cols1
-#heatmap((as.matrix(fullnonorm)), scale=&quot;column&quot;, col= beauty)
-
-rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
-
-heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
-text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-44-1">
-Past versions of unnamed-chunk-44-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-44-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
-<pre class="r"><code>#reassign idents
-Idents(merged)&lt;- &#39;SCT_snn_res.0.8&#39;</code></pre>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-1">
-Past versions of unnamed-chunk-46-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;Batch&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-46-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-2">
-Past versions of unnamed-chunk-46-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>DimPlot(merged, reduction = &quot;umap&quot;, group.by = &quot;individual&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-46-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-3">
-Past versions of unnamed-chunk-46-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>xlim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]),
-          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_1&#39;]))
-ylim &lt;- c(min(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]),
-          max(merged@reductions$umap@cell.embeddings[,&#39;UMAP_2&#39;]))
-for (i in individuals)
-{
-  print(DimPlot(merged, reduction = &quot;umap&quot;, 
-                cells = WhichCells(merged, expression = individual == i)) +
-          xlim(xlim) + ylim(ylim) + ggtitle(i))
-}</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-46-4.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-4">
-Past versions of unnamed-chunk-46-4.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-4" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-46-5.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-5">
-Past versions of unnamed-chunk-46-5.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-5" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-46-6.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-6">
-Past versions of unnamed-chunk-46-6.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-46-6" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#exploring similarity in the number of cells per individual between batches
-merged.Batch1&lt;- (subset(merged, Batch == &quot;Batch1&quot;))
-b1t&lt;- table(merged.Batch1$SCT_snn_res.0.8, merged.Batch1$individual)
-remove(&quot;merged.Batch1&quot;)
-b1tcolsums&lt;- colSums(b1t)
-percb1t&lt;- b1t/b1tcolsums                
-
-merged.Batch2&lt;- (subset(merged, Batch == &quot;Batch2&quot;))
-b2t&lt;- table(merged.Batch2$SCT_snn_res.0.8, merged.Batch2$individual)
-remove(&quot;merged.Batch2&quot;)
-b2tcolsums&lt;- colSums(b2t)
-percb2t&lt;- b2t/b2tcolsums
-
-merged.Batch3&lt;- (subset(merged, Batch == &quot;Batch3&quot;))
-b3t&lt;- table(merged.Batch3$SCT_snn_res.0.8, merged.Batch3$individual)
-remove(&quot;merged.Batch3&quot;)
-b3tcolsums&lt;- colSums(b3t)
-percb3t&lt;- b3t/b3tcolsums</code></pre>
-<pre class="r"><code>cols1&lt;- c(&quot;Batch1_18511&quot;,&quot;Batch1_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_18511&quot;, &quot;Batch2_18858&quot;,&quot;Batch2_19160&quot;,
-         &quot;Batch3_18511&quot;,&quot;Batch3_18858&quot;, &quot;Batch3_19160&quot;)
-
-cols2&lt;- c(&quot;Batch1_18511&quot;, &quot;Batch2_18511&quot;, &quot;Batch3_18511&quot;,&quot;Batch1_18858&quot;, &quot;Batch2_18858&quot;, &quot;Batch3_18858&quot;,&quot;Batch1_19160&quot;, &quot;Batch2_19160&quot;, &quot;Batch3_19160&quot;)
-
-fullpercs&lt;- as.data.frame(cbind(percb1t[,1:3], percb2t,percb3t))
-colnames(fullpercs)&lt;-cols1
-fullpercs&lt;- cbind(fullpercs$Batch1_18511, fullpercs$Batch2_18511, fullpercs$Batch3_18511,
-                  fullpercs$Batch1_18858, fullpercs$Batch2_18858, fullpercs$Batch3_18858,
-                  fullpercs$Batch1_19160, fullpercs$Batch2_19160, fullpercs$Batch3_19160)
-colnames(fullpercs)&lt;-cols2
-fullpercs_cor&lt;- round(cor(fullpercs),2)
-fullpercs_melt&lt;- melt(fullpercs_cor)
-ggplot(data= fullpercs_melt, aes(x=Var1, y=Var2, fill=value)) +
-  geom_tile(color=&quot;white&quot;) +
-  scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, midpoint = 0, limit= c(-1,1), space= &quot;Lab&quot;, name=&quot;Pearson\nCorrelation&quot;) +
-  theme_minimal() +
-  ggtitle(&quot;Pairwise Pearson Correlation of the percent of cells from \neach cell line assigned to each Seurat Cluster\ncluster res. 0.8&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-48-1">
-Past versions of unnamed-chunk-48-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-48-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#now clustering individual_Batch samples with hierarchical clustering/they will get reordered based on similarity
-
-beauty&lt;- colorRampPalette(brewer.pal(9,&quot;Purples&quot;))(200)
-
-rownames(fullpercs)&lt;- c(0:(nrow(fullpercs)-1))
-
-heatmap(as.matrix(fullpercs), scale=&quot;none&quot;, col=beauty, cexCol = .7, cexRow=.6)
-text(1:ncol(fullpercs),labels=names(fullpercs),srt=30)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-49-1">
-Past versions of unnamed-chunk-49-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-49-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#generate a heatmap of the raw proportion of cells from each individual_batch in each seurat cluster. dendrograms based on similarity of the vectors. should be colored by the value(proportion), but some of the cluster/sample values to seem to match with the color</code></pre>
-<pre class="r"><code>VlnPlot(merged, features= &quot;percent.mt&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size = 0)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-50-1">
-Past versions of unnamed-chunk-50-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-50-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>merged[[&quot;percent.rps&quot;]]&lt;- PercentageFeatureSet(merged, pattern = &quot;^RPS&quot;)
-merged[[&quot;percent.rpl&quot;]]&lt;- PercentageFeatureSet(merged, pattern = &quot;^RPL&quot;)
-merged[[&quot;percent.rp&quot;]]&lt;- merged[[&quot;percent.rps&quot;]]+merged[[&quot;percent.rpl&quot;]]
-VlnPlot(merged, features= &quot;percent.rp&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size=0)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-51-1">
-Past versions of unnamed-chunk-51-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-51-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>FeaturePlot(merged, features = &quot;nFeature_RNA&quot;)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-52-1">
-Past versions of unnamed-chunk-52-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-52-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>head(merged)</code></pre>
-<pre><code>An object of class Seurat 
-2 features across 42488 samples within 2 assays 
-Active assay: SCT (1 features, 1 variable features)
- 1 other assay present: RNA
- 3 dimensional reductions calculated: pca, harmony, umap</code></pre>
-<pre class="r"><code>VlnPlot(merged, features= &quot;nFeature_RNA&quot;, group.by = &quot;SCT_snn_res.1&quot;, pt.size=0)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-54-1">
-Past versions of unnamed-chunk-54-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-54-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>FeaturePlot(merged, features = c(&quot;POU5F1&quot;, &quot;SOX17&quot;,  &quot;HAND1&quot;, &quot;PAX6&quot;), pt.size = 0.2, ncol=2, combine=T)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-55-1">
-Past versions of unnamed-chunk-55-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-55-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>FeaturePlot(merged, features = c(&quot;FGB&quot;, &quot;ECSCR&quot;,  &quot;NEUROD1&quot;, &quot;SOX10&quot;), pt.size = 0.2, ncol=2)</code></pre>
-<p><img src="figure/IntegrateAnalysis.afterFilter.HarmonyBatchindividual.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-56-1">
-Past versions of unnamed-chunk-56-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-56-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-421a225
-</td>
-<td>
-KLRhodes
-</td>
-<td>
-2020-08-10
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
+  [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
+ [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
+ [13] ggrepel_0.9.0         RSpectra_0.16-0       codetools_0.2-16     
+ [16] splines_3.6.1         lsei_1.2-0            knitr_1.29           
+ [19] polyclip_1.10-0       jsonlite_1.7.2        ica_1.0-2            
+ [22] cluster_2.1.0         png_0.1-7             uwot_0.1.10          
+ [25] shiny_1.5.0           sctransform_0.2.1     compiler_3.6.1       
+ [28] httr_1.4.2            Matrix_1.2-18         fastmap_1.0.1        
+ [31] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [34] tools_3.6.1           rsvd_1.0.3            igraph_1.2.6         
+ [37] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
+ [40] reshape2_1.4.4        dplyr_1.0.2           rappdirs_0.3.3       
+ [43] spatstat_1.64-1       vctrs_0.3.6           gdata_2.18.0         
+ [46] ape_5.4-1             nlme_3.1-140          lmtest_0.9-37        
+ [49] xfun_0.16             stringr_1.4.0         globals_0.12.5       
+ [52] mime_0.9              miniUI_0.1.1.1        lifecycle_0.2.0      
+ [55] irlba_2.3.3           gtools_3.8.2          goftest_1.2-2        
+ [58] future_1.18.0         MASS_7.3-51.4         zoo_1.8-8            
+ [61] scales_1.1.1          promises_1.1.1        spatstat.utils_1.17-0
+ [64] parallel_3.6.1        yaml_2.2.1            reticulate_1.20      
+ [67] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
+ [70] stringi_1.5.3         caTools_1.18.0        rlang_0.4.10         
+ [73] pkgconfig_2.0.3       bitops_1.0-6          evaluate_0.14        
+ [76] lattice_0.20-38       ROCR_1.0-7            purrr_0.3.4          
+ [79] tensor_1.5            labeling_0.4.2        patchwork_1.1.1      
+ [82] htmlwidgets_1.5.1     cowplot_1.1.1         tidyselect_1.1.0     
+ [85] RcppAnnoy_0.0.18      plyr_1.8.6            magrittr_2.0.1       
+ [88] R6_2.5.0              gplots_3.0.4          generics_0.1.0       
+ [91] pillar_1.4.7          whisker_0.4           withr_2.4.2          
+ [94] mgcv_1.8-28           fitdistrplus_1.0-14   survival_3.2-3       
+ [97] abind_1.4-5           tibble_3.0.4          future.apply_1.6.0   
+[100] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
+[103] rmarkdown_2.3         grid_3.6.1            data.table_1.13.4    
+[106] git2r_0.26.1          digest_0.6.27         xtable_1.8-4         
+[109] tidyr_1.1.0           httpuv_1.5.4          munsell_0.5.0        
+[112] viridisLite_0.3.0    </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -4377,47 +3125,46 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] reshape2_1.4.4     RColorBrewer_1.1-2 here_0.1-11        DataCombine_0.2.21
-[5] ggplot2_3.3.2      harmony_1.0        Rcpp_1.0.5         Seurat_3.2.0      
-[9] workflowr_1.6.2   
+[1] RColorBrewer_1.1-2 here_0.1-11        DataCombine_0.2.21 ggplot2_3.3.3     
+[5] harmony_1.0        Rcpp_1.0.6         Seurat_3.2.0       workflowr_1.6.2   
 
 loaded via a namespace (and not attached):
-  [1] Rtsne_0.15            colorspace_1.4-1      deldir_0.1-28        
-  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_1.3-2      
+  [1] Rtsne_0.15            colorspace_2.0-0      deldir_0.1-28        
+  [4] ellipsis_0.3.1        ggridges_0.5.2        rprojroot_2.0.2      
   [7] fs_1.4.2              spatstat.data_1.4-3   farver_2.0.3         
  [10] leiden_0.3.3          listenv_0.8.0         npsurv_0.4-0         
- [13] ggrepel_0.8.2         RSpectra_0.16-0       codetools_0.2-16     
+ [13] ggrepel_0.9.0         RSpectra_0.16-0       codetools_0.2-16     
  [16] splines_3.6.1         lsei_1.2-0            knitr_1.29           
- [19] polyclip_1.10-0       jsonlite_1.7.0        ica_1.0-2            
- [22] cluster_2.1.0         png_0.1-7             uwot_0.1.8           
+ [19] polyclip_1.10-0       jsonlite_1.7.2        ica_1.0-2            
+ [22] cluster_2.1.0         png_0.1-7             uwot_0.1.10          
  [25] shiny_1.5.0           sctransform_0.2.1     compiler_3.6.1       
- [28] httr_1.4.2            backports_1.1.8       Matrix_1.2-18        
- [31] fastmap_1.0.1         lazyeval_0.2.2        later_1.1.0.1        
- [34] htmltools_0.5.0       tools_3.6.1           rsvd_1.0.3           
- [37] igraph_1.2.5          gtable_0.3.0          glue_1.4.1           
- [40] RANN_2.6.1            dplyr_1.0.0           rappdirs_0.3.1       
- [43] spatstat_1.64-1       vctrs_0.3.2           gdata_2.18.0         
- [46] ape_5.3               nlme_3.1-140          lmtest_0.9-37        
+ [28] httr_1.4.2            Matrix_1.2-18         fastmap_1.0.1        
+ [31] lazyeval_0.2.2        later_1.1.0.1         htmltools_0.5.0      
+ [34] tools_3.6.1           rsvd_1.0.3            igraph_1.2.6         
+ [37] gtable_0.3.0          glue_1.4.2            RANN_2.6.1           
+ [40] reshape2_1.4.4        dplyr_1.0.2           rappdirs_0.3.3       
+ [43] spatstat_1.64-1       vctrs_0.3.6           gdata_2.18.0         
+ [46] ape_5.4-1             nlme_3.1-140          lmtest_0.9-37        
  [49] xfun_0.16             stringr_1.4.0         globals_0.12.5       
  [52] mime_0.9              miniUI_0.1.1.1        lifecycle_0.2.0      
  [55] irlba_2.3.3           gtools_3.8.2          goftest_1.2-2        
  [58] future_1.18.0         MASS_7.3-51.4         zoo_1.8-8            
  [61] scales_1.1.1          promises_1.1.1        spatstat.utils_1.17-0
- [64] parallel_3.6.1        yaml_2.2.1            reticulate_1.16      
+ [64] parallel_3.6.1        yaml_2.2.1            reticulate_1.20      
  [67] pbapply_1.4-2         gridExtra_2.3         rpart_4.1-15         
- [70] stringi_1.4.6         caTools_1.18.0        rlang_0.4.7          
+ [70] stringi_1.5.3         caTools_1.18.0        rlang_0.4.10         
  [73] pkgconfig_2.0.3       bitops_1.0-6          evaluate_0.14        
  [76] lattice_0.20-38       ROCR_1.0-7            purrr_0.3.4          
- [79] tensor_1.5            labeling_0.3          patchwork_1.0.1      
- [82] htmlwidgets_1.5.1     cowplot_1.0.0         tidyselect_1.1.0     
- [85] RcppAnnoy_0.0.16      plyr_1.8.6            magrittr_1.5         
- [88] R6_2.4.1              gplots_3.0.4          generics_0.0.2       
- [91] withr_2.2.0           pillar_1.4.6          whisker_0.4          
+ [79] tensor_1.5            labeling_0.4.2        patchwork_1.1.1      
+ [82] htmlwidgets_1.5.1     cowplot_1.1.1         tidyselect_1.1.0     
+ [85] RcppAnnoy_0.0.18      plyr_1.8.6            magrittr_2.0.1       
+ [88] R6_2.5.0              gplots_3.0.4          generics_0.1.0       
+ [91] pillar_1.4.7          whisker_0.4           withr_2.4.2          
  [94] mgcv_1.8-28           fitdistrplus_1.0-14   survival_3.2-3       
- [97] abind_1.4-5           tibble_3.0.3          future.apply_1.6.0   
+ [97] abind_1.4-5           tibble_3.0.4          future.apply_1.6.0   
 [100] crayon_1.3.4          KernSmooth_2.23-15    plotly_4.9.2.1       
-[103] rmarkdown_2.3         grid_3.6.1            data.table_1.13.0    
-[106] git2r_0.26.1          digest_0.6.25         xtable_1.8-4         
+[103] rmarkdown_2.3         grid_3.6.1            data.table_1.13.4    
+[106] git2r_0.26.1          digest_0.6.27         xtable_1.8-4         
 [109] tidyr_1.1.0           httpuv_1.5.4          munsell_0.5.0        
 [112] viridisLite_0.3.0    </code></pre>
 </div>
@@ -4434,8 +3181,6 @@ footer is added to webpages before the MathJax javascript. -->
     "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
-
-
 
 
 </div>
