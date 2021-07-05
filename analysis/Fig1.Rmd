@@ -1,0 +1,252 @@
+---
+title: "Visualization"
+author: "Katie Rhodes"
+date: "4/8/2021"
+output: html_document
+---
+```{r}
+library(Seurat)
+library(patchwork)
+library(reshape2)
+library(ggplot2)
+library(tidyr)
+library(ComplexHeatmap)
+library(circlize)
+library(ggplotify)
+library(dplyr)
+```
+
+```{r}
+merged<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds")
+```
+
+```{r}
+p0<- FeaturePlot(merged, features = c("POU5F1", "SOX17", "HAND1", "PAX6"), cols= c("grey","blue"), combine=T, slot= "data", ncol=4)
+```
+
+```{r}
+p1<- DimPlot(merged, group.by= "SCT_snn_res.1")
+p2<- DimPlot(merged, group.by= "SCT_snn_res.0.5")
+p4<- DimPlot(merged, group.by= "SCT_snn_res.0.8")
+p3<- DimPlot(merged, group.by= "SCT_snn_res.0.1")
+```
+
+
+make at able of number of cells per group in each cluster at resolution 0.1
+```{r}
+test<- merged@meta.data %>% unite(group, c("individual", "Batch"))
+gr<- gsub("SNG-NA", "", test$group)
+merged<- AddMetaData(merged, metadata = gr, col.name= "group")
+tabi<- table(merged@meta.data$group, merged@meta.data$SCT_snn_res.0.1)
+```
+
+manipulate table to prepare for ggplot
+```{r}
+tot<- rowSums(tabi)
+tabprop<- tabi/tot
+dat<- melt(tabprop)
+
+dat$Var2<- factor(dat$Var2, levels = c("6", "5", "4", "3", "2", "1", "0"))
+colnames(dat)<- c("Var1", "Cluster_Res0.1", "value")
+```
+
+make stacked barplot of cell type / cluster composition of each line
+```{r}
+samps<- c("18511_Rep1","18511_Rep2","18511_Rep3","19160_Rep1","19160_Rep2","19160_Rep3","18858_Rep1","18858_Rep2","18858_Rep3")
+clrs2<- c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#bc80bd", "#ccebc5", "#ffed6f", "#a6cee3", "#1f78b4", "midnightblue", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928", "darkseagreen4", "darkorange3", "darkorchid4", "palevioletred2", "khaki3", "cornsilk3")
+V<- ggplot(dat, aes(x= factor(Var1, levels = c("18511_Batch1","18511_Batch2","18511_Batch3","19160_Batch1","19160_Batch2","19160_Batch3","18858_Batch1","18858_Batch2","18858_Batch3")), y=value))+
+  geom_col(aes(fill=Cluster_Res0.1), width = 0.8)+
+  xlab("sample")+
+  ylab("cell type proportion")+
+  scale_fill_manual(values = clrs2)+
+  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  scale_x_discrete(labels=samps)+
+  labs(fill = "Cluster (Res. 0.1)")
+
+
+V
+```
+
+
+
+
+
+```{r}
+fig1<- p0+p3 +p1
+  
+
+fig1
+```
+
+
+```{r}
+pdf(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.1.pdf", width= 16, height=8)
+
+fig1
+
+dev.off()
+```
+
+```{r}
+pdf(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.2.pdf", width= 7, height=4)
+
+V
+
+dev.off()
+```
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.1.png", width= 16, height=8, units= "in", res= 1080)
+
+fig1
+
+dev.off()
+```
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.2.png", width=7, height=4, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+
+Supp Figure showing hierarchical clustering of samples based on cluster proportions
+
+New metadata w/ clean names
+```{r}
+#add clean names to samples df
+replicate<- merged@meta.data$Batch
+replicate[replicate == "Batch1"]<- "Rep1"
+replicate[replicate == "Batch2"]<- "Rep2"
+replicate[replicate == "Batch3"]<- "Rep3"
+
+ind<- merged@meta.data$individual
+ind[ind == "SNG-NA18511"]<- "18511"
+ind[ind == "SNG-NA19160"]<- "19160"
+ind[ind == "SNG-NA18858"]<- "18858"
+
+merged<- AddMetaData(merged, replicate, col.name = "replicate")
+merged<- AddMetaData(merged, ind, col.name = "ind")
+merged@meta.data<- merged@meta.data %>% unite(SampGroup, c("ind", "replicate"))
+
+```
+
+```{r}
+col_fun<- colorRamp2(c(0,0.3, 1), c("white", '#117733', "black"))
+hp<- list()
+res<- c("SCT_snn_res.0.1", "SCT_snn_res.0.5", "SCT_snn_res.0.8", "SCT_snn_res.1")
+fortitle<- c("0.1", "0.5", "0.8", "1")
+
+for (i in 1:length(res)){
+v<- res[i]
+tabi<- table(merged@meta.data$SampGroup, merged@meta.data[,v])
+tot<- rowSums(tabi)
+tabprop<- tabi/tot
+
+m<- t(as.data.frame.matrix(tabprop))
+
+hp[[i]]<-Heatmap(m, col= col_fun, show_heatmap_legend = FALSE, row_names_gp = gpar(fontsize = 8), column_title = paste0("Resolution ", fortitle[i]), cluster_rows= FALSE)
+}
+
+hp
+```
+
+
+
+```{r}
+all<-(as.ggplot(hp[[1]]) + as.ggplot(hp[[2]])+ as.ggplot(hp[[3]]) + as.ggplot(hp[[4]]))
+all
+```
+
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_ClusterPropHeat.png", width=5, height=8.5, units= "in", res=1080)
+
+all
+
+dev.off()
+```
+
+```{r}
+lgd<- Legend(col_fun = col_fun, title="Proportion \nof cells")
+
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_ClusterProp_JUSTLEGEND.png", width=1, height=2, units= "in", res=1080)
+
+draw(lgd)
+
+dev.off()
+```
+```{r}
+Idents(merged)<- 'SampGroup'
+a<-VlnPlot(merged, features = 'nCount_RNA', pt.size=0)+NoLegend()
+a
+```
+
+```{r}
+b<-VlnPlot(merged, features = 'nFeature_RNA', pt.size=0)+NoLegend()
+b
+```
+
+```{r}
+c<-VlnPlot(merged, features = 'nCount_SCT', pt.size=0)+NoLegend()
+c
+```
+
+```{r}
+d<-VlnPlot(merged, features = 'nFeature_SCT', pt.size=0)+NoLegend()
+d
+```
+
+```{r}
+a|b
+```
+
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_nCountnFeat_RNA.png", width= 7.5, height=3, units= "in", res= 1080)
+
+a|b
+
+dev.off()
+```
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_nCountnFeat_SCT.png", width= 7.5, height=3, units= "in", res= 1080)
+
+c|d
+
+dev.off()
+```
+```{r}
+G<- DimPlot(merged, group.by = "SCT_snn_res.0.5", pt.size = 0.005)
+H<- DimPlot(merged, group.by = "SCT_snn_res.0.8", pt.size = 0.005)
+
+G|H
+```
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SUPP_DimPlot_res0.5and0.8.png", width=9, height=5, units= "in", res=1080)
+
+G|H
+
+dev.off()
+```
+```{r}
+w<- VlnPlot(merged, features= c("EOMES", "MIXL1"), group.by= "SCT_snn_res.1", pt.size=0)
+w
+```
+
+```{r}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SUPP_clust22_primitiveStreakVlnPlot.png", width=11, height=4, units= "in", res=1080)
+
+w
+
+dev.off()
+```
+
+```{r}
+sessionInfo()
+```
+

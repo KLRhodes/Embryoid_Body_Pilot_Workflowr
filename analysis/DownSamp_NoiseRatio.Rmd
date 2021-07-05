@@ -1,0 +1,457 @@
+---
+title: "DownSamp_NoiseRat"
+output: html_document
+---
+
+```{r}
+library(Seurat)
+library(variancePartition)
+library(edgeR)
+library(scater)
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(reshape2)
+library(patchwork)
+```
+
+
+choose parameters (integration type, clustering res, min pct threshold)
+```{r}
+f<- 'Harmony.Batchindividual'
+pct<-0.2
+res<- 'SCT_snn_res.1'
+
+```
+
+```{r}
+path<- here::here("output/mergedObjects/")
+
+merged<- readRDS(paste0(path,f, ".rds"))
+```
+
+subset cells, run variance partition to see the effect of experiment size (total number of cells) on median variance explained by residuals
+
+subsetting cells evenly between replicates and individuals
+
+using clusters defined at res 1 (28 clusters), not subsetting equally between clusters
+
+downsampling to total cell counts of 2700,5400,10800,21600 (only numbers divisible by 9, equal cell numbers from each group. only 2418 cells came from 19160 in Batch2, so the max cells we can test using this approach is ~21000 to still have equal cells from each individual/batch group)
+
+
+
+```{r}
+rep_subsamp<- function(ncells, nreps){
+set.seed(1)
+
+
+
+cellids<- list()
+
+
+#take even numbers of cells from each replicate and individual (9 total groups)
+npergroup<- ncells/9
+metsub<- merged@meta.data
+
+n<-0
+
+repeat{
+sizegroup<- c()
+  for (k in 1:3){
+    ind<- unique(metsub$individual)[k]
+    sub<- metsub[metsub$individual == ind,]
+    
+    for(g in 1:3){
+    repl<- unique(metsub$Batch)[g]
+    cells<- rownames(sub[sub$Batch == repl,])
+    
+    samp<- sample(cells, npergroup, replace=FALSE)
+    
+   sizegroup<- c(sizegroup, samp)
+   
+  
+  
+    }
+    
+   
+  }
+ n<- n+1
+    print(n)
+    cellids[[n]]<- sizegroup
+
+ if(n > (nreps-1)){
+    break
+    }
+}
+
+return(cellids)
+}
+
+```
+
+```{r}
+subone<- rep_subsamp(2700,10)
+subtwo<- rep_subsamp(5400,10)
+subthree<- rep_subsamp(7200,10)
+subfour<- rep_subsamp(10800,10)
+subfive<- rep_subsamp(16200,10)
+subsix<- rep_subsamp(21600, 10)
+
+```
+
+```{r}
+path<- here::here("output/GeneLists_by_minPCT/")
+genelist<- read.table(file = paste0(path, "genelist.PCTthresh",pct,"_",f,".rds_",res,".txt"), sep=",")
+genelist<- as.vector(genelist$x)
+
+#subset merged to only the genes with PCT > min pct threshold in at least 1 cluster
+mergesub<- subset(merged, features = genelist )
+```
+
+
+
+```{r}
+median_exp_resids<- function(cellids){
+varpart.list<- NULL
+varpart.meds<- NULL
+ncells.ind<- NULL
+ncells.rep<- NULL
+ncellsi<- NULL
+ncellsr<- NULL
+
+  for (i in 1:length(cellids)){
+  print(i)
+msub<- subset(mergesub, cells = cellids[[i]])
+
+ncells.ind[[i]]<- table(msub@meta.data$SCT_snn_res.1, msub@meta.data$individual)
+ncells.rep[[i]]<- table(msub@meta.data$SCT_snn_res.1, msub@meta.data$Batch)
+
+ncellsi[[i]]<- ncells.ind
+ncellsr[[i]]<- ncells.rep
+#sub<- DGEList(counts=msub@assays$SCT@data, lib.size=colSums(msub@assays$SCT@data), samples=msub@meta.data)
+
+  
+  #group meta
+  Group<- factor(paste(msub@meta.data[,res], msub@meta.data$Batch, msub@meta.data$individual, sep="."))
+
+msub<- AddMetaData(msub, Group, col.name = "Group")
+
+submerged<- as.SingleCellExperiment(msub, assay="SCT")
+sumex<- sumCountsAcrossCells(submerged, ids=submerged@colData$Group)
+
+Group<- colnames(sumex)
+cluster<- as.vector(substr(Group, 1, regexpr("*.B", Group)-1))
+batch<- substr(Group, regexpr("Batch", Group),regexpr("Batch", Group)+5)
+ind<-  substr(Group, regexpr("NA", Group),regexpr("NA", Group)+6)
+
+samps<- cbind(cluster,batch,ind,Group)
+
+dge<- DGEList(sumex, samples=samps, remove.zeros = T)
+
+ #remove ribosomal genes
+  genes.ribo <- grep('^RP',rownames(dge),value=T)
+  genes.no.ribo <- rownames(dge)[which(!(rownames(dge) %in%   genes.ribo))]
+  dge$counts <- dge$counts[which(rownames(dge$counts) %in% genes.no.ribo),]
+  
+  
+  #CalcNormFactors
+  dge<- calcNormFactors(dge, method="TMM")
+  
+  #specify design matrix
+  design<- model.matrix(~dge$samples$cluster+dge$samples$batch+dge$samples$ind)
+  
+  #voom
+  v<- voom(dge, design, plot=F)
+  #voom.plots[[i]]<- v
+  
+  #form
+  form<- ~ (1|cluster) + (1|batch) + (1|ind)
+  
+  #run variance partition
+  varpart<- suppressWarnings(fitExtractVarPartModel(v, form, dge$samples, useWeights=TRUE, quiet=TRUE, showWarnings = FALSE))
+  
+  #store varpart results
+  varpart.meds[i]<- median(varpart$Residuals)
+  
+  
+}
+
+varpart.list<- list(varpart.meds, ncellsi, ncellsr)
+return(varpart.list)
+
+}
+```
+
+```{r}
+remove(merged)
+remove(genelist)
+```
+
+```{r,eval=F}
+meds_subone<- median_exp_resids(subone)
+```
+
+
+
+```{r,eval=F}
+saveRDS(meds_subone, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+```
+
+
+```{r,eval=F}
+meds_subtwo<- median_exp_resids(subtwo)
+saveRDS(meds_subtwo, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+```
+
+```{r,eval=F}
+meds_subthree<- median_exp_resids(subthree)
+saveRDS(meds_subthree, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+```
+
+```{r,eval=F}
+meds_subfour<- median_exp_resids(subfour)
+saveRDS(meds_subfour, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+```
+
+```{r,eval=F}
+meds_subfive<- median_exp_resids(subfive)
+saveRDS(meds_subfive, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+```
+
+```{r,eval=F}
+meds_subsix<- median_exp_resids(subsix)
+saveRDS(meds_subsix, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+```
+
+```{r}
+meds_subone<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_2700cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+meds_subtwo<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_5400cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+meds_subthree<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_7200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+meds_subfour<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_10800cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+meds_subfive<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_16200cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+meds_subsix<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/downsamp_21600cells_10subreps_medianexplainedbyresiduals_varpart_PsB.rds")
+
+```
+
+```{r}
+#get median of medians
+objects<- list(meds_subone[[1]], meds_subtwo[[1]], meds_subthree[[1]], meds_subfour[[1]], meds_subfive[[1]], meds_subsix[[1]])
+medmeds<- c()
+for (i in 1:6){
+  m<- median(objects[[i]])
+  medmeds<- c(medmeds, m)
+}
+
+medmeds
+```
+
+boxplots of median variance explained by residuals in 10 subsets of cells at each experiment size
+```{r}
+s<- c(2700,5400,7200,10800,16200, 21600)
+names(objects)<- s
+boxplot(objects, xlab= "experiment size", ylab= "median variance explained by residuals")
+```
+
+
+```{r}
+#reformat to dataframe
+dat<- data.frame(s, medmeds)
+colnames(dat)<- c("SampleSize", "MedianExp")
+
+```
+
+fit an exponential decay:
+```{r}
+decay_fit<- nls(MedianExp~SSasymp(SampleSize, yf, y0, log_alpha), data=dat)
+
+decay_fit
+```
+
+
+```{r}
+ggplot(dat, aes(x = SampleSize, y=MedianExp))+
+  geom_point()+
+  xlim(0,100000)+
+  stat_smooth(method="nls", formula = y~ SSasymp(x, Asym, R0, lrc), se=FALSE, fullrange=TRUE)
+```
+
+
+```{r}
+#median exp predicted for other total sample sizes (#s of high quality cells sequenced)
+
+cellspersamp<- c(100,500,1000,2000,4000,10000)
+cellstot<- cellspersamp*9
+
+MedExpSizes<- NULL
+
+for (i in 1:length(cellstot)){
+  numb<- SSasymp(cellstot[i], 0.4112, 0.8112, -9.2141)
+  MedExpSizes<- c(MedExpSizes, numb)
+  
+}
+
+MedExpSizes
+```
+
+```{r}
+dat<- data.frame(cellspersamp, cellstot, MedExpSizes)
+```
+
+
+```{r,eval=F}
+
+write.csv(dat, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/ResidualVariances_fromDownSampAnalysis.csv")
+```
+  
+
+visualize how many cells per cluster in each experiment size
+```{r}
+indbyclust<- list(meds_subone[[2]], meds_subtwo[[2]], meds_subthree[[2]], meds_subfour[[2]], meds_subfive[[2]], meds_subsix[[2]])
+ncellsperclust<- NULL
+
+for (i in 1:6){
+  l<- indbyclust[[i]]
+  clustcount<- NULL
+  for (j in 1:10){
+    su<- rowSums(l[[10]][[j]])
+    clustcount<- cbind(clustcount, su)
+  }
+  ncellsperclust[[i]]<- clustcount
+}
+```
+
+At each downsample size: plot ncells per cluster (yaxis: total cells and percent of total cells)
+
+
+w/y axis total cells: 
+```{r}
+s<- c(2700,5400,7200,10800,16200, 21600)
+
+totalcells.plots<- NULL
+for (i in 1:6){
+# prepare data
+m<- melt(ncellsperclust[[i]])
+m$Var1<- as.factor(m$Var1)
+
+#plot
+p<- ggplot(m, aes(x= Var1, y= value)) +
+  geom_violin()+
+  stat_summary(fun.y=median, geom="point", size=1,color="red")+#plot median as red dot
+  ggtitle(paste0('ncells per cluster sampled from ', s[i], ' total cells')) +
+  xlab("cluster")+
+  ylab("number of cells")+
+  scale_y_continuous(breaks=seq(0, s[i],s[i]/90))
+
+
+totalcells.plots[[i]]<- p
+}
+
+totalcells.plots
+```
+
+
+power analysis using variance at each experiment size learned from downsampling analysis
+
+adapted from code by Abhishek Sarkar and Anthony Hung.
+
+```{r}
+colors <- cbPalette <- c('#AA3377', "#E69F00", "#56B4E9", "#009E73", "grey50", "#0072B2", "#D55E00", "#CC79A7")
+samp_size <- c(3, 10, 20, 40, 58, 100)
+alpha <- 5e-6 #for FWER of 0.05
+
+power_function <- function(x, n, v){ 
+     pnorm(qnorm(alpha/2) + x * sqrt(n/v))
+}
+
+power.plots<- NULL
+
+ns<- c(3,10, 30,58, 100)
+
+
+  i<- 3
+p <- ggplot(data.frame(x = c(0, 1)), aes(x = x)) +
+     stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[1]),
+                      aes(colour = "300"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[2]),
+                      aes(colour = "1500"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[3]),
+                      aes(colour = "3000"), size = .75)+
+   stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[4]),
+                      aes(colour = "6000"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[5]),
+                      aes(colour = "12000"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[6]),
+                      aes(colour = "30000"), size = .75)+
+  scale_x_continuous(name = "Effect Size",
+                              limits=c(0, 1)) +
+     scale_y_continuous(name = "Power",
+                           limits = c(0,1)) +
+  theme_classic()+
+     ggtitle(paste0("n = ", i)) +
+     scale_colour_manual("Cells per individual", breaks = c("300", "1500", "3000", "6000", "12000", "30000"), values = colors) +
+     #scale_linetype_manual("Curve Type", breaks = c("Power", "dynamic QTL FPR"), values = c("dynamic QTL FPR" = "dotted", "Power" = "solid")) +
+     #theme_bw() +
+     geom_hline(yintercept = .8, linetype = "dashed", color = "red")
+
+power.plots[[1]]<- p
+
+for (j in 2:5){
+  i<- ns[j]
+p <- ggplot(data.frame(x = c(0, 1)), aes(x = x)) +
+     stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[1]),
+                      aes(colour = "300"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[2]),
+                      aes(colour = "1500"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[3]),
+                      aes(colour = "3000"), size = .75)+
+   stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[4]),
+                      aes(colour = "6000"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[5]),
+                      aes(colour = "12000"), size = .75)+
+    stat_function(fun = power_function, args = list(n = i, v= dat$MedExpSizes[6]),
+                      aes(colour = "30000"), size = .75)+
+  scale_x_continuous(name = "Effect Size",
+                              limits=c(0, 1)) +
+     scale_y_continuous(name = element_blank(),limits = c(0,1)) +
+  theme_classic()+
+     ggtitle(paste0("n = ", i)) +
+     scale_colour_manual("Cells per individual", breaks = c("300", "1500", "3000", "6000", "12000", "30000"), values = colors) +
+     #scale_linetype_manual("Curve Type", breaks = c("Power", "dynamic QTL FPR"), values = c("dynamic QTL FPR" = "dotted", "Power" = "solid")) +
+     #theme_bw() +
+     geom_hline(yintercept = .8, linetype = "dashed", color = "red")
+
+power.plots[[j]]<- p
+}
+
+
+
+
+power.plots
+```
+
+```{r}
+V<- (power.plots[[1]]+ NoLegend())+(power.plots[[2]]+NoLegend())+(power.plots[[3]]+NoLegend())+(power.plots[[4]]+NoLegend())+power.plots[[5]] +plot_layout(ncol=5)
+V
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig5_DownSamp_Power.png", width=11, height=3, units= "in", res=1080)
+
+V
+  
+dev.off()
+```
+
+
+
+if n=58, b=0.5, alpha=5e-6, 6000 cells per individual (collected across 3 batches) then power equals:
+
+```{r}
+power_function(0.6, 58, dat$MedExpSizes[3])
+```
+
+```{r}
+sessionInfo()
+```
+
+

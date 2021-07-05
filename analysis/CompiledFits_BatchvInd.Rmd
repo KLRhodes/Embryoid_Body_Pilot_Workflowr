@@ -1,0 +1,143 @@
+---
+title: "CompiledFits_BatchvInd"
+output: html_document
+---
+
+```{r}
+library(fastTopics)
+library(stringr)
+library(ggplot2)
+library(cowplot)
+library(tidyr)
+library(ComplexHeatmap)
+library(circlize)
+library(patchwork)
+library(ggplotify)
+library(ggplot2)
+```
+
+```{r}
+load("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/fits.RData")
+
+load("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/prepared_data_YorubaOnly_genesExpressedInMoreThan10Cells.RData")
+
+```
+
+```{r}
+scd<- grep("scd", names(fits))
+scd<- names(fits)[scd]
+```
+
+```{r}
+#loadings plot for Batch 
+
+lps<- NULL
+for ( i in 1:length(scd)){
+  
+lps[[i]]<- loadings_plot(poisson2multinom(fits[[scd[i]]]$fit), as.factor(samples$Batch))
+}
+lps
+```
+
+
+
+```{r}
+#loadings plot for individual 
+
+lps<- NULL
+for ( i in 1:length(scd)){
+  
+lps[[i]]<- loadings_plot(poisson2multinom(fits[[scd[i]]]$fit), as.factor(samples$individual))
+}
+lps
+```
+
+
+```{r add clean names}
+#add clean names to samples df
+replicate<- samples$Batch
+replicate[replicate == "Batch1"]<- "Rep1"
+replicate[replicate == "Batch2"]<- "Rep2"
+replicate[replicate == "Batch3"]<- "Rep3"
+
+samples<- cbind(samples, replicate)
+
+
+samples$individual[samples$individual == "SNG-NA18511"]<- "18511"
+samples$individual[samples$individual == "SNG-NA19160"]<- "19160"
+samples$individual[samples$individual == "SNG-NA18858"]<- "18858"
+
+```
+
+```{r}
+samples<- samples %>% unite(rep_individual, c("replicate", "individual"))
+```
+
+```{r}
+#loadings plot for Batch_individual groups 
+
+lps<- NULL
+for ( i in 1:length(scd)){
+  
+lps[[i]]<- loadings_plot(poisson2multinom(fits[[scd[i]]]$fit), as.factor(samples$rep_individual))
+}
+lps
+```
+
+
+
+
+
+```{r}
+col_fun<- colorRamp2(c(0,0.3, 1), c("white", '#332288', "black"))
+hp<- list()
+for(i in 1:length(scd)){
+
+#split Loadings by batch_individual groups
+l<- poisson2multinom(fits[[scd[i]]]$fit)$L
+l<- split.data.frame(l, samples$rep_individual)
+
+#compute average loading for each batch_ind in each topic
+m<- lapply(l, colMeans)
+
+#to matrix
+m<- as.matrix(as.data.frame(m))
+
+#generate correlation heatmap
+#heatmap(m, cexCol = 0.8, cexRow = 0.5, margins= c(8,3), main= paste0(ncol(l$`Batch1_SNG-NA18511`), " Topics"))
+
+hp[[i]]<-Heatmap(m, col= col_fun, show_heatmap_legend = FALSE, column_title = paste0(ncol(l$Rep1_18511), " topics"), row_names_gp = gpar(fontsize = 8), cluster_rows=FALSE)
+}
+
+hp
+
+```
+
+
+
+```{r}
+all<-(as.ggplot(hp[[1]]) + as.ggplot(hp[[2]])+ as.ggplot(hp[[3]]) + as.ggplot(hp[[4]]) + as.ggplot(hp[[5]]))
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_TopicLoadingHeat.png", width=7.5, height=8.5, units= "in", res=1080)
+
+all
+
+dev.off()
+```
+
+```{r,eval=F}
+lgd<- Legend(col_fun = col_fun, title= "average \nloading")
+
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_TopicLoadingHeat_JUSTLEGEND.png", width=1, height=2, units= "in", res=1080)
+
+draw(lgd)
+
+dev.off()
+```
+
+```{r}
+sessionInfo()
+```
+
