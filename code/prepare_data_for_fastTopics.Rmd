@@ -1,0 +1,49 @@
+---
+title: "prepare_data_for_fastTopics"
+output: html_document
+---
+```{r}
+library(Seurat)
+library(Matrix)
+```
+
+```{r}
+merged<- (readRDS('/project2/gilad/katie/Pilot_HumanEBs/merged.VeryStrict.5000variablefeatures.harmonyBatchSampleIDindividual.reclustered.rds'))
+```
+
+```{r}
+submerged<- FindClusters(merged, resolution=0.1, verbose=F)
+submerged<- subset(submerged, individual != "SNG-SCM-9.variant")
+submerged<- subset(submerged, individual != "SNG-SCM-10.variant")
+```
+
+```{r}
+samples<- submerged@meta.data
+```
+
+```{r}
+counts<- GetAssayData(submerged, slot="counts", assay="RNA")
+counts<- t(counts)
+```
+
+Peter recommended filtering genes expressed in fewer than 10 cells, so filtering here. leaving results above to see how percent 0s changes
+```{r}
+genes<- colnames(counts)
+j<- which(colSums(counts > 0) >=10)
+genes<- genes[j]
+counts<- counts[,j]
+```
+
+```{r}
+cat(sprintf("Number of samples:%d\n", nrow(counts)))
+cat(sprintf("Number of genes:%d\n", ncol(counts)))
+cat(sprintf("Proportion of counts that are non-zero: %0.1f%%.\n",
+            100*mean(counts > 0)))
+```
+
+saving the processed data
+```{r}
+save(list = c("samples", "genes", "counts"), 
+     file= "/project2/gilad/katie/Pilot_HumanEBs/fastTopics/prepared_data_YorubaOnly_genesExpressedInMoreThan10Cells.RData")
+```
+

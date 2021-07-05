@@ -1,0 +1,47 @@
+---
+title: "ConvertToDGE"
+output: html_document
+params:
+  f: 'Harmony.Batchindividual.rds'
+---
+```{r}
+library(Seurat)
+library(Matrix)
+library(dplyr)
+library(scater)
+library(scran)
+library(edgeR)
+```
+This will convert a the SCTransformed counts (for genes expressed in > 20% of cells in at least 1 cluster) to pseudobulk expression values by cluster-batch-individual groups and store in a DGEList.
+
+```{r}
+path<- here::here("output/mergedObjects/")
+merged<- readRDS(paste0(path,params$f))
+```
+
+
+```{r}
+#save metadata
+samps<- merged@meta.data
+```
+
+```{r}
+submerged<- as.SingleCellExperiment(merged, assay="SCT")
+```
+
+
+```{r}
+submerged<- convertTo(submerged, type= "edgeR")
+```
+
+```{r}
+submerged$samples<- cbind(submerged$samples, samps)
+```
+
+```{r}
+f<- gsub(".rds", "", params$f)
+path<- here::here("output/DGELists/")
+saveRDS(submerged, file=paste0(path,"dge_",f, "_NoGeneFilter.rds")) 
+```
+
+

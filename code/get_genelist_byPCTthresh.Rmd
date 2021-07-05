@@ -1,0 +1,81 @@
+---
+title: "get_genelist_byPCTthresh"
+output: html_document
+params:
+  f: 'Harmony.Batchindividual.rds'
+  res: 'SCT_snn_res.1'
+  pct: 0.2
+---
+```{r}
+library(Seurat)
+library(Matrix)
+library(dplyr)
+library(edgeR)
+
+```
+
+```{r}
+path<- here::here("output/mergedObjects/")
+merged<- readRDS(paste0(path,params$f))
+
+```
+
+
+
+```{r}
+#Function from Ryan-Zhu, version from 2/4/2020
+PrctCellExpringGene <- function(object, genes, group.by = "all"){
+    if(group.by == "all"){
+        prct = unlist(lapply(genes,calc_helper, object=object))
+        result = data.frame(Markers = genes, Cell_proportion = prct)
+        return(result)
+    }
+
+    else{        
+        list = SplitObject(object, group.by)
+        factors = names(list)
+
+        results = lapply(list, PrctCellExpringGene, genes=genes)
+        for(i in 1:length(factors)){
+        results[[i]]$Feature = factors[i]
+        }
+        combined = do.call("rbind", results)
+        return(combined)
+    }
+}
+
+calc_helper <- function(object,genes){
+    counts = object[['RNA']]@counts
+    ncells = ncol(counts)
+    if(genes %in% row.names(counts)){
+    sum(counts[genes,]>0)/ncells
+    }else{return(NA)}
+}
+```
+
+```{r}
+all.genes<- rownames(merged)
+testRNApctThresh<- PrctCellExpringGene(merged, all.genes, group.by = params$res)
+```
+
+
+```{r}
+#loop to generate list of genes with min.pct
+
+genelist<-NULL
+
+for (i in 1:length(all.genes)){
+    gene <- all.genes[i]
+    subgene<- testRNApctThresh[testRNApctThresh$Markers == gene,]
+    val<- sum(subgene$Cell_proportion > params$pct) #This is where you set the threshold
+    
+    if (val >= 1) genelist<- c(genelist, gene)
+}
+```
+
+```{r}
+path<- here::here("output/GeneLists_by_minPCT/")
+write.table(genelist, file = paste0(path, "genelist.PCTthresh",params$pct,"_",params$f,"_",params$res,".txt"), sep=",", quote=FALSE) 
+```
+
+```

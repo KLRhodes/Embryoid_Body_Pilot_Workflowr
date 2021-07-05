@@ -1,0 +1,71 @@
+---
+title: "ConvertToDGE"
+output: html_document
+params:
+  f: 'Harmony.Batchindividual.rds'
+  res: 'SCT_snn_res.1'
+  pct: 0.2
+---
+```{r, message=FALSE}
+library(Seurat)
+library(Matrix)
+library(dplyr)
+library(scater)
+library(edgeR)
+```
+This will convert a the SCTransformed counts (for genes expressed in > 20% of cells in at least 1 cluster) to pseudobulk expression values by cluster-batch-individual groups and store in a DGEList.
+
+```{r}
+path<- here::here("output/mergedObjects/")
+
+merged<- readRDS(paste0(path,params$f))
+```
+
+
+```{r}
+path<- here::here("output/GeneLists_by_minPCT/")
+genelist<- read.table(file = paste0(path, "genelist.PCTthresh",params$pct,"_",params$f,"_",params$res,".txt"), sep=",")
+genelist<- as.vector(genelist$x)
+```
+
+
+```{r}
+#subset merged to only the genes with PCT > min pct threshold in at least 1 cluster
+submerged<- subset(merged, features = genelist )
+```
+
+```{r}
+#Add Group Metadata
+Group<- factor(paste(submerged@meta.data[,params$res], submerged@meta.data$Batch, submerged@meta.data$individual, sep="."))
+
+submerged<- AddMetaData(submerged, Group, col.name = "Group")
+```
+
+```{r}
+submerged<- as.SingleCellExperiment(submerged, assay="SCT")
+```
+
+```{r}
+sumex<- sumCountsAcrossCells(submerged, ids=submerged@colData$Group)
+```
+
+```{r}
+Group<- colnames(sumex)
+cluster<- as.vector(substr(Group, 1, regexpr("*.B", Group)-1))
+batch<- substr(Group, regexpr("Batch", Group),regexpr("Batch", Group)+5)
+ind<-  substr(Group, regexpr("NA", Group),regexpr("NA", Group)+6)
+
+samps<- cbind(cluster,batch,ind,Group)
+```
+
+```{r}
+dge<- DGEList(sumex, samples=samps, remove.zeros = T)
+```
+
+```{r}
+f<- gsub(".rds", "", params$f)
+path<- here::here("output/DGELists/")
+saveRDS(dge, file=paste0(path,"Pseudobulk_dge_",f, "_", params$res,"_minPCT",params$pct,".rds")) 
+```
+
+

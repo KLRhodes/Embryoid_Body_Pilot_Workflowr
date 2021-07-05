@@ -1,0 +1,183 @@
+---
+title: "Get QC metadata"
+output: html_document
+params:
+  sample: '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane5'
+---
+load libraries
+```{r}
+library(Seurat)
+library(Matrix)
+library(DropletUtils)
+library(ggplot2)
+options(future.globals.maxSize= 4000*1024^2) # allow global exceeding 4Gb
+```
+
+A function for reading in star-solo output
+reads in raw data matrix, renames columns as barcodes and rows as genes. outputs a dgTMatrix
+A function for reading in star-solo output
+
+```{r}
+read.solo <- function(folder)
+{
+  raw.data <- readMM(paste0(folder, '/matrix.mtx'))
+  colnames(raw.data) <- read.table(
+    paste0(folder, '/barcodes.tsv'), stringsAsFactors = FALSE)$V1
+  rownames(raw.data) <- read.table(
+    paste0(folder, '/genes.tsv'), stringsAsFactors = FALSE)$V2
+  raw.data
+}
+```
+
+Specify the directories
+```{r}
+#d<- c('/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane1',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane3',
+#     '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane4',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane5',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane6',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane7',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane8',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch1/Batch1_Lane9',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch2/Batch2_Lane1',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch2/Batch2_Lane2',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch2/Batch2_Lane3',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch2/Batch2_Lane4',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch3/Batch3_Lane1',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch3/Batch3_Lane2',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch3/Batch3_Lane3',
+#      '/project2/gilad/kenneth/HumanChimpEBs/Batch3/Batch3_Lane4')
+
+```
+
+```{r}
+print(params$sample)
+```
+
+```{r}
+    human.dirname = paste(params$sample, "human/", sep="_")
+    
+    human.raw <- read.solo(paste0(human.dirname, 'Gene/raw/'))
+
+    
+    human.ranks <- barcodeRanks(human.raw, lower=10, fit.bounds=NULL)
+    human.ranks <- human.ranks[which(human.ranks$rank<=100000),]
+    human.raw <- human.raw[,rownames(human.ranks)]
+
+
+    
+    human.empty <- emptyDrops(human.raw, lower = 100)
+ 
+    
+    human.raw <- human.raw[, which(human.empty$FDR<=0.05)]
+  
+    
+    human.meta <- human.empty[which(human.empty$FDR<=0.05),]
+
+
+    human.meta$knee <- metadata(human.ranks)$knee
+
+    
+    species <- read.csv(paste0(params$sample, '/species.csv.gz'), sep='\t', stringsAsFactors = FALSE)
+    human.barcodes <- species$barcode[which(species$hg_specificity_score>=0.8 
+                                            & species$human_score>=5)]
+
+    human.raw <- human.raw[,which(colnames(human.raw) %in% human.barcodes)]
+    
+  rownames(species)<- species$barcode
+  
+  human.meta$hg_specificity_score<- species[rownames(human.meta), "hg_specificity_score"]
+  
+  human.meta$chimp_score<-species[rownames(human.meta),"chimp_score"]
+  
+  human.meta$human_score<-species[rownames(human.meta), "human_score"]
+``` 
+
+```{r}  
+samp<-basename(params$sample)
+```
+
+Make it a seurat object
+
+```{r}
+human <- CreateSeuratObject(human.raw, project = 'human')
+```
+Add identity from demuxlet
+
+```{r}
+add_demuxlet <- function(object, best)
+{
+  best <- read.table(best, header=TRUE, stringsAsFactors = FALSE) # read in the file
+  best <- best[-1,] # remove the first line (not a barcode)
+  
+  m <- match(rownames(object@meta.data),best$BARCODE)
+  if (any(is.na(m))) {
+    s <- sum(is.na(m))
+    cat(paste(s, "barcodes were not in the demuxlet data. Removing these cells.\n"))
+    object@meta.data$remove <- !is.na(m)
+    object <- subset(object, remove==TRUE)
+    object@meta.data$remove <- NULL
+    m <- m[!is.na(m)]
+    
+  }
+  
+  #filter so the demux data corresponds to the 10x data
+  best <- best[m,]
+  individuals <- unique(best$BEST)
+  individuals <- individuals[grep("SNG", individuals)]
+  individual <- rep("Doublet", dim(object)[2])
+  for (i in individuals)
+  {
+    individual[which(best$BEST==i)] <- i
+  }
+  names(individual) <- best$BARCODE
+  AddMetaData(object, individual, col.name ='individual')
+}
+```
+
+```{r}
+human <- add_demuxlet(human, paste0(params$sample, '_human/demuxlet.best.gz'))
+```
+Add empty drops and species spec metadata
+```{r}
+meta.sub<- human.meta[rownames(human.meta) %in% rownames(human@meta.data),]
+human<- AddMetaData(human, meta.sub$Total, col.name = "EmptyDrops.Total")
+human<- AddMetaData(human, meta.sub$LogProb, col.name = "EmptyDrops.LogProb")
+human<- AddMetaData(human, meta.sub$PValue, col.name = "EmptyDrops.Pvalue")
+human<- AddMetaData(human, meta.sub$Limited, col.name = "EmptyDrops.Limited")
+human<- AddMetaData(human, meta.sub$FDR, col.name = "EmptyDrops.FDR")
+human<- AddMetaData(human, meta.sub$knee, col.name = "EmptyDrops.knee")
+human<- AddMetaData(human, meta.sub$hg_specificity_score, col.name = "hg_specificity_score")
+human<- AddMetaData(human, meta.sub$chimp_score, col.name = "chimp_score")
+human<- AddMetaData(human, meta.sub$human_score, col.name = "human_score")
+```
+
+```{r}
+Batch<- substr(samp, 1, 6)
+human<- AddMetaData(human,samp, col.name="SampleID")
+human<- AddMetaData(human,Batch, col.name="Batch")
+```
+
+```{r}
+#add %MT to metadata
+human[["percent.mt"]]<- PercentageFeatureSet(human, pattern= "^MT-")
+```
+
+```{r}
+human[["percent.rps"]]<- PercentageFeatureSet(human, pattern = "^RPS")
+human[["percent.rpl"]]<- PercentageFeatureSet(human, pattern = "^RPL")
+human[["percent.rp"]]<- human[["percent.rps"]]+human[["percent.rpl"]]
+```
+
+```{r}
+saveRDS(human, paste0('/project2/gilad/katie/Pilot_HumanEBs/HumanEB_QCmetadata/',samp,'_seurat_NoNorm_QCMetaAdded.rds'))
+```
+
+
+
+
+
+
+
+
+
