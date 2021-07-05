@@ -37,27 +37,27 @@ dev.off()
 
 ```{r}
 #do the genes most effected by individual match what I did in limma?
-vp<- vp[order(vp$individual, decreasing=T),]
+vp<- vp[order(vp$Individual, decreasing=T),]
 head(vp, 30)
 ```
 
 ```{r}
 #do the genes most effected by batch match what I did in limma?
-vp<- vp[order(vp$Batch, decreasing=T),]
+vp<- vp[order(vp$Replicate, decreasing=T),]
 head(vp, 30)
 ```
 
 ```{r}
-summary(vp$individual)
+summary(vp$Individual)
 ```
 
 ```{r}
-summary(vp$Batch)
+summary(vp$Replicate)
 ```
 
 ```{r}
 #genes for which individual contributes more to variance than batch?
-vp.indgreaterthanbatch<- vp[vp$individual>vp$Batch,]
+vp.indgreaterthanbatch<- vp[vp$Individual>vp$Replicate,]
 
 dim(vp.indgreaterthanbatch) #vp greater than batch for 5266 out of 11356
 ```
