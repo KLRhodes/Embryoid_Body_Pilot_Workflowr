@@ -1,0 +1,174 @@
+---
+title: "k10_Explore"
+output: html_document
+---
+
+```{r}
+library(fastTopics)
+library(Matrix)
+library(ggplot2)
+library(Seurat)
+library(cowplot)
+library(dplyr)
+library(tibble)
+```
+
+
+load data
+```{r}
+load("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/prepared_data_YorubaOnly_genesExpressedInMoreThan10Cells.RData")
+```
+
+```{r}
+merged<-readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds")
+```
+
+```{r, eval=F}
+#Ran this in Enrichments.Rmd
+timing<- system.time(diff_count_res <- diff_count_analysis(fit, counts))
+```
+
+```{r}
+load("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/pathways/diff_count_res_scd-ex-k=10.RData")
+```
+
+```{r}
+fit<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/fit-scd-ex-k=10.rds")$fit
+```
+
+```{r}
+summary(fit)
+```
+
+
+```{r}
+#structure plot
+clrs2<- c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f", "#a6cee3", "#1f78b4", "midnightblue", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928", "darkseagreen4", "darkorange3", "darkorchid4", "palevioletred2", "khaki3", "cornsilk3")
+structure_plot(fit,topics=c("k3","k2","k1","k6","k4","k5", "k7", "k8", "k9","k10"), n=5000,num_threads=5, perplexity = 1000, colors = clrs2, verbose=F)
+
+#grouped according to the 1-d t-SNE embedding
+#
+```
+
+
+```{r}
+#structure plot divided by seurat clusters at various resolutions
+
+structure_plot(fit,
+               grouping=factor(merged@meta.data$SCT_snn_res.0.1, c("0", "1", "2", "3", "4", "5", "6")),
+               topics =c("k3","k2","k1","k6","k4","k5", "k7", "k8", "k9","k10"),
+               gap=100, 
+               perplexity=20,
+               num_threads = 4, 
+               n=10000, 
+               verbose = F)
+
+#In t-SNE, perplexity balances local and global aspects of the data. It can be interpreted as the number of close neighbors associated with each point. The suggested range for perplexity is 5 to 50. Since t-SNE is probabilistic and also has the perplexity parameter, it is a very flexible method. However, this may make one a bit suspicious about the results. Note that t-SNE is not suitable for settings such as supervised learning because the resulting dimensions lack interpretability.
+```
+
+
+```{r}
+structure_plot(fit,
+               grouping=factor(merged@meta.data$SCT_snn_res.0.5),
+               topics = c("k3","k2","k1","k6","k4","k5", "k7", "k8", "k9","k10"),
+               gap=100, 
+               perplexity=20,
+               num_threads = 4, 
+               n=10000, 
+               verbose = F)
+```
+
+
+```{r}
+names<- paste0("k10.",colnames(fit$L))
+merged<- AddMetaData(merged, poisson2multinom(fit)$L, col.name = names)
+```
+
+
+```{r}
+feat<- list()
+for(i in 1:ncol(fit$F)){
+  feat[[i]]<- FeaturePlot(merged, features = paste0("k10.k",i))
+}
+feat
+```
+
+
+```{r}
+clust<- c("SCT_snn_res.0.1", "SCT_snn_res.0.5", "SCT_snn_res.0.8", "SCT_snn_res.1")
+cres<- list()
+for(i in 1:length(clust)){
+  cres[[i]]<- DimPlot(merged, group.by = clust[i])
+}
+cres
+```
+
+
+```{r}
+lps<- NULL
+for ( i in 1:length(clust)){
+lps[[i]]<- loadings_plot(poisson2multinom(fit), as.factor(merged@meta.data[,clust[i]]))
+}
+lps
+```
+
+
+volcano plots for genes DE in each topic
+```{r}
+plot.list<- list()
+for (i in 1:ncol(fit$L)){
+p<-volcano_plot(diff_count_res, k=i, labels=genes, label_above_quantile = 0.999)
+plot.list[[i]]<-p
+}
+
+plot.list
+```
+
+
+
+Test just topic 4 vs. 7
+```{r}
+sub<- subset(merged, idents = "0")
+fit_subset<- select(poisson2multinom(fit), loadings=colnames(sub))
+```
+
+```{r, eval=F}
+ans<- diff_count_analysis(fit_subset, counts[colnames(sub),])
+```
+
+```{r,eval=F}
+save(ans,file='/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/fasttopics/k10.4v7.pluripotentsubset.diff_count.Rdata')
+```
+
+```{r}
+load('/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/fasttopics/k10.4v7.pluripotentsubset.diff_count.Rdata')
+```
+
+```{r}
+plot.list<- list()
+for (i in 1:ncol(fit_subset$L)){
+p<-volcano_plot(ans, k=i, labels=genes, label_above_quantile = 0.999)
+plot.list[[i]]<-p
+}
+
+plot.list
+```
+
+
+
+```{r}
+top10.byBeta<- NULL
+for (i in 1:ncol(diff_count_res$beta)){
+  topic<- diff_count_res$beta[,i]
+  topic<- topic[order(topic, decreasing=T)]
+  top10<- names(topic)[1:10]
+  top10.byBeta<- cbind(top10.byBeta,top10)
+}
+
+colnames(top10.byBeta)<- colnames(diff_count_res$beta)
+```
+
+```{r, eval=F}
+write.csv(top10.byBeta, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TopicModelling_k10_top10drivergenes.byBeta.csv")
+```
+

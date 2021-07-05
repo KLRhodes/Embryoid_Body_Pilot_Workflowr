@@ -1,0 +1,145 @@
+---
+title: "RefSubIntegrationComparison"
+output: html_document
+---
+```{r}
+library(dplyr)
+```
+
+
+
+```{r}
+plur<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustPluripotent.csv")
+end<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustEndoderm.csv")
+mes<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustMeso.csv")
+ee<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustEarlyEcto.csv")
+neur<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustNeuron.csv")
+nc<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TranferredAnnotations_ReferenceInt_JustNeuralCrest.csv")
+```
+
+```{r}
+sepint<- rbind(plur, end, mes, ee, neur, nc)
+colnames(sepint)<- c("X.sep", "EB.cell.id", "Annotation.sep", "NofFive.sep")
+```
+
+
+```{r}
+all<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/MostCommonAnnotation.FiveNearestRefCells.csv")
+```
+
+```{r}
+comb<- full_join(all, sepint, by = "EB.cell.id")
+
+dim(comb)
+```
+
+```{r}
+sum(as.character(comb$Annotation) == as.character(comb$Annotation.sep))
+```
+
+```{r}
+33714/42488
+```
+
+79% of cells are assigned to the same cell type between full integration and partial integration
+
+
+Let's see if we see any patterns in the cell types that disagree between integrations
+```{r}
+dis<- comb[as.character(comb$Annotation) != as.character(comb$Annotation.sep),]
+```
+
+```{r}
+barplot(table(dis$Annotation), las=2, cex.names = 0.4)
+```
+
+```{r}
+barplot(table(dis$Annotation.sep), las=2, cex.names = 0.4)
+```
+
+Lots of cells flipping to and from hESC, uncertain. 
+
+
+How many unique cell types total in the separate integrations?
+
+```{r}
+length(unique(sepint$Annotation.sep))
+```
+
+how many in full integration?
+```{r}
+length(unique(all$Annotation))
+```
+
+Both include uncertain. so its 66 fetal cell types + hESC in total, 60 fetal cell types + hESC from sep int. 
+
+Which cell types do we lose?
+
+```{r}
+septypes<- as.character(unique(sepint$Annotation.sep))
+alltypes<- as.character(unique(all$Annotation))
+
+'%notin%' <- Negate('%in%')
+lost<- alltypes[(alltypes %notin% septypes)]
+
+lost
+```
+How many of these cell types were there in the full integration? were they rare?
+
+```{r}
+taball<- table(all$Annotation)
+
+taball[names(taball) %in% lost]
+```
+
+looks like there are some cell types in the separate integration that are not in the full
+
+
+
+```{r}
+gain<- septypes[septypes %notin% alltypes]
+gain
+```
+
+```{r}
+tabsep<- table(sepint$Annotation.sep)
+
+tabsep[names(tabsep) %in% gain]
+```
+
+see most common label transitions
+
+```{r}
+trans<- paste(dis$Annotation, "_", dis$Annotation.sep)
+
+length(unique(trans))
+```
+
+```{r}
+switch<- sort(table(trans), decreasing = T)
+switch
+```
+
+how many are switching to or from hESC or uncertain?
+
+```{r}
+length(grep("hESC|uncertain", trans))
+```
+
+```{r}
+7190/length(trans)
+```
+
+Take a closer look at the other mismatches
+```{r}
+mis<- trans[-grep("hESC|uncertain", trans)]
+
+mistab<- sort(table(mis), decreasing=T)
+
+mistab
+```
+
+```{r}
+sessionInfo()
+```
+

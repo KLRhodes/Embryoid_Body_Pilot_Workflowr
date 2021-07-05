@@ -1,0 +1,47 @@
+---
+title: "Hierarchical Clustering-ComplexHeatmap"
+output: html_document
+---
+
+```{r}
+library(ComplexHeatmap)
+library(edgeR)
+```
+
+
+```{r}
+f<- 'Harmony.Batchindividual'
+```
+
+```{r}
+path<- here::here("output/DGELists/")
+dge<- readRDS(paste0(path,"dge_",f, "_NoGeneFilter.rds"))
+```
+
+```{r}
+pseudo.lcpm<- cpm(dge, log=TRUE)
+```
+
+
+```{r}
+ha<- HeatmapAnnotation(clusterRes1= dge$samples$SCT_snn_res.1,
+                       clusterRes0.8= dge$samples$SCT_snn_res.0.8,
+                       clusterRes0.5= dge$samples$SCT_snn_res.0.5,
+                       clusterRes0.1= dge$samples$SCT_snn_res.0.1,
+                       batch= dge$samples$batch, 
+                       individual= dge$samples$ind)
+```
+
+
+```{r, eval=F}
+path<- here::here("output/pdfs/")
+
+pdf(paste0(path,"HierarchicalClusteringHeatmap_SingleCellRes_",f,".pdf"), width = 6, height = 10)
+Heatmap(pseudo.lcpm, bottom_annotation = ha, show_column_names = F, show_row_names = F, name = "lcpm", use_raster = TRUE)
+dev.off()
+```
+
+```{r}
+sessionInfo()
+```
+

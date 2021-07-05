@@ -1,0 +1,279 @@
+---
+title: "k6_Explore"
+output: html_document
+---
+
+```{r}
+library(fastTopics)
+library(Matrix)
+library(ggplot2)
+library(Seurat)
+library(cowplot)
+library(dplyr)
+library(tibble)
+```
+
+
+load data
+```{r}
+load("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/prepared_data_YorubaOnly_genesExpressedInMoreThan10Cells.RData")
+merged<-readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds")
+```
+
+```{r, eval=F, echo=F}
+#Ran this in Enrichments.Rmd
+timing<- system.time(diff_count_res <- diff_count_analysis(fit, counts))
+```
+
+```{r}
+load("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/pathways/diff_count_res_scd-ex-k=6.RData")
+```
+
+```{r}
+fit<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/fastTopics/fit-scd-ex-k=6.rds")$fit
+```
+
+```{r}
+summary(fit)
+```
+
+```{r}
+#structure plot
+clrs2<- c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f", "#a6cee3", "#1f78b4", "midnightblue", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928", "darkseagreen4", "darkorange3", "darkorchid4", "palevioletred2", "khaki3", "cornsilk3")
+V<- structure_plot(fit,topics=c("k6","k1","k3","k4","k5","k2"), n=5000,num_threads=5, perplexity = 1000, colors = clrs2, verbose=F, font.size= 20)
+
+V
+#grouped according to the 1-d t-SNE embedding
+#
+```
+
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig3.structure.png", width=6, height=3, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+
+
+```{r}
+#structure plot divided by seurat clusters at various resolutions
+
+B<- structure_plot(fit,
+               grouping=factor(merged@meta.data$SCT_snn_res.0.1, c("0", "1", "2", "3", "4", "5", "6")),
+               topics =c("k6","k1","k3","k4","k5","k2"),
+               gap=100, 
+               perplexity=15,
+               num_threads = 4, 
+               n=10000, 
+               font.size=20,
+               verbose = F)
+
+B
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig3.structure_xSeuratClust0.1.png", width=8, height=3, units= "in", res=1080)
+
+B
+
+dev.off()
+```
+
+```{r}
+R<-structure_plot(fit,
+               grouping=factor(merged@meta.data$SCT_snn_res.0.5),
+               topics = c("k6","k1","k3","k4","k5","k2"),
+               gap=100, 
+               perplexity=15,
+               num_threads = 4, 
+               n=10000, 
+               font.size=20,
+               verbose = F)
+
+R
+```
+
+
+
+```{r}
+names<- paste0("k6.",colnames(fit$L))
+merged<- AddMetaData(merged, poisson2multinom(fit)$L, col.name = names)
+```
+
+
+```{r}
+feat<- list()
+for(i in 1:ncol(fit$F)){
+  p<- FeaturePlot(merged, features = paste0("k6.k",i))
+  p<- AugmentPlot(p)
+  feat[[i]]<-p+ggtitle(paste0("Topic ", i))
+}
+feat
+```
+
+
+```{r}
+
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig.k6topicUMAPs.png", width=6, height=4, units= "in", res=1080)
+
+feat[[1]] + feat [[2]] + feat[[3]] + feat[[4]] + feat[[5]] + feat[[6]]
+
+
+dev.off()
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig3.k6topic1.UMAP.png", width=6, height=6, units= "in", res=1080)
+
+p<- FeaturePlot(merged, features = paste0("k6.k",1), pt.size = 1.5)
+p<- AugmentPlot(p)
+p+ggtitle("6 Topics: Topic 1 cell loadings")
+  
+dev.off()
+```
+
+
+```{r}
+clust<- c("SCT_snn_res.0.1", "SCT_snn_res.0.5", "SCT_snn_res.0.8", "SCT_snn_res.1")
+cres<- list()
+for(i in 1:length(clust)){
+  cres[[i]]<- DimPlot(merged, group.by = clust[i])
+}
+cres
+```
+
+```{r}
+lps<- NULL
+for ( i in 1:length(clust)){
+lps[[i]]<- loadings_plot(poisson2multinom(fit), as.factor(merged@meta.data[,clust[i]]))
+}
+lps
+```
+
+
+
+
+```{r, eval=F}
+pdf(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig_LoadingsxClust.k6.pdf", width= 11, height = 4)
+
+lps[[1]]
+lps[[2]]
+lps[[3]]
+lps[[4]]
+  
+dev.off()
+```
+
+```{r}
+p<- loadings_plot(poisson2multinom(fit), as.factor(merged@meta.data[,clust[1]]), k= "k1")
+p<- AugmentPlot(p)
+
+p<- p+ ggtitle("6 Topics: Topic 1 loading on seurat clusters") + xlab("Seurat Cluster (Res.0.1)") + geom_boxplot(size=.5, outlier.shape=NA)
+
+p
+
+
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig3.k6topic1.SeuratClusters0.1.loadingsplot.png", width=4, height=4, units= "in", res=1080)
+
+p
+  
+dev.off()
+```
+
+```{r}
+p<- loadings_plot(poisson2multinom(fit), as.factor(merged@meta.data[,clust[4]]), k= "k1")
+p<- AugmentPlot(p)
+
+p<- p+ ggtitle("6 Topics: Topic 1 loading on seurat clusters") + xlab("Seurat Cluster (Res. 1)") + geom_boxplot(size=.5, outlier.shape=NA)
+
+p
+
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig3.k6topic1.SeuratClusters1.loadingsplot.png", width=4, height=4, units= "in", res=1080)
+
+p
+  
+dev.off()
+```
+
+
+
+volcano plots for genes DE in each topic
+```{r}
+plot.list<- list()
+for (i in 1:ncol(fit$L)){
+p<-volcano_plot(diff_count_res, k=i, labels=genes, label_above_quantile = 0.99945)
+plot.list[[i]]<-p
+}
+
+plot.list
+```
+
+```{r}
+options(ggrepel.max.overlaps = Inf)
+volc.all<- plot.list[[1]]+ plot.list[[2]] + plot.list[[3]]+ plot.list[[4]] + plot.list[[5]] + plot.list[[6]]
+
+volc.all
+```
+
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig_k6volcanoplots.png", width=11, height=7, units= "in", res=1080)
+
+volc.all
+  
+dev.off()
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig3_k6.topic1volc.png", width=5, height=4, units= "in", res=1080)
+
+plot.list[[1]]
+  
+dev.off()
+```
+
+output tables of top 10 topic driver genes by beta
+```{r}
+top10.byBeta<- NULL
+for (i in 1:ncol(diff_count_res$beta)){
+  topic<- diff_count_res$beta[,i]
+  topic<- topic[order(topic, decreasing=T)]
+  top10<- names(topic)[1:10]
+  top10.byBeta<- cbind(top10.byBeta,top10)
+}
+
+colnames(top10.byBeta)<- colnames(diff_count_res$beta)
+```
+
+```{r, eval=F}
+write.csv(top10.byBeta, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TopicModelling_k6_top10drivergenes.byBeta.csv")
+```
+
+```{r}
+top15.byZ<- NULL
+for (i in 1:ncol(diff_count_res$beta)){
+  topic<- diff_count_res$Z[,i]
+  topic<- topic[order(topic, decreasing=T)]
+  top15<- names(topic)[1:15]
+  top15.byZ<- cbind(top15.byZ,top15)
+}
+
+colnames(top15.byZ)<- colnames(diff_count_res$beta)
+```
+
+```{r, eval=F}
+write.csv(top15.byZ, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/TopicModelling_k6_top15drivergenes.byZ.csv")
+```
+
