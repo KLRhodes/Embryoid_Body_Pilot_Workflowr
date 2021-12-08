@@ -1,0 +1,78 @@
+---
+title: "Untitled"
+author: "Katie Rhodes"
+date: "10/6/2021"
+output: html_document
+---
+
+```{r}
+library(Seurat)
+```
+
+```{r}
+merged<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/Harmony.Batchindividual.rds")
+```
+
+```{r}
+sub<- subset(merged, subset= individual == "SNG-NA18858")
+```
+
+```{r}
+Idents(sub)<- sub@meta.data$SCT_snn_res.0.1
+C<-DimPlot(sub, label=T, pt.size=2)+ NoLegend()
+C
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/18858onlyUmapRes0.1.png", width= 6, height=4, units= "in", res= 1080)
+
+C
+
+dev.off()
+```
+
+
+
+```{r}
+table(sub@meta.data$SCT_snn_res.0.1)
+```
+
+```{r}
+DotPlot(sub, features = c("POU5F1", "HAND1", "SOX17", "PAX6", "NEUROD1", "NR2F1", "GNG11", "TNNT2", "FGB"))
+```
+
+```{r}
+DotPlot(merged, features = c("POU5F1", "HAND1", "SOX17", "PAX6", "NEUROD1", "NR2F1", "GNG11", "TNNT2", "FGB"))
+```
+is cluster 4 (endoderm) expressing other major markers of that cluster from DE analysis? canonical markers
+
+```{r}
+#from DE analysis
+DotPlot(sub, features = c("S100A16", "LGALS3", "APOA2", "CST1"))
+```
+```{r}
+DotPlot(merged, features = c("S100A16", "LGALS3", "APOA2", "CST1"))
+```
+
+```{r}
+#canonical endoderm markers
+DotPlot(sub, features = c("FOXA2", "CLDN6", "EOMES", "GATA4", "FABP1"))
+```
+
+```{r}
+DotPlot(merged, features = c("FOXA2", "CLDN6", "EOMES", "GATA4", "FABP1"))
+```
+
+```{r}
+VlnPlot(sub, features = "nFeature_RNA", pt.size=.1)
+```
+
+```{r}
+VlnPlot(merged, features = "nFeature_RNA", pt.size=.1)
+```
+
+
+```{r}
+sessionInfo()
+```
+
