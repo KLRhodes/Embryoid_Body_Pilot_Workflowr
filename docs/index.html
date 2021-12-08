@@ -440,16 +440,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree21bb253f23311d4f1dcfe1ee2c3d55d9b0308a5ctargetblank21bb253a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/21bb253f23311d4f1dcfe1ee2c3d55d9b0308a5c" target="_blank">21bb253</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree6ef914a87e704afb8894209367e755467fcd4f66targetblank6ef914aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/6ef914a87e704afb8894209367e755467fcd4f66" target="_blank">6ef914a</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree21bb253f23311d4f1dcfe1ee2c3d55d9b0308a5ctargetblank21bb253a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKLRhodesEmbryoidBodyPilotWorkflowrtree6ef914a87e704afb8894209367e755467fcd4f66targetblank6ef914aa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/21bb253f23311d4f1dcfe1ee2c3d55d9b0308a5c" target="_blank">21bb253</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/tree/6ef914a87e704afb8894209367e755467fcd4f66" target="_blank">6ef914a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -598,6 +598,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/blob/6ef914a87e704afb8894209367e755467fcd4f66/analysis/index.Rmd" target="_blank">6ef914a</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-12-08
+</td>
+<td>
+update site with new analysis and aesthetically updated figs
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/KLRhodes/Embryoid_Body_Pilot_Workflowr/6ca558e68548cb3c61d55ee567fc8a2181617b2b/docs/index.html" target="_blank">6ca558e</a>
+</td>
+<td>
+KLRhodes
+</td>
+<td>
+2021-12-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1471,6 +1505,7 @@ Start workflowr project.
 </ol>
 <p>Study Design:</p>
 <p>Embryoid bodies were formed from 3 human iPSCs lines in 3 replicates. Three weeks after formation, EBs were dissociated and scRNA-seq data was collected using the 10x platform. After quality control and filtering, this dataset consists of 42,488 cells.</p>
+<p>We later collected data from 5 additional lines in a single replicate. This data was used to evaluate the robustness of EB cell type composition among YRI lines.</p>
 <div id="alignment-and-preprocessing" class="section level1">
 <h1>Alignment and Preprocessing</h1>
 <p>See full alignment and preprocessing pipeline here: <a href="https://github.com/kennethabarr/HumanChimp" class="uri">https://github.com/kennethabarr/HumanChimp</a></p>
@@ -1533,6 +1568,14 @@ Start workflowr project.
 <li><a href="ReferenceAnn_DE.html">Check differential expression of annotated cells</a></li>
 </ul>
 </div>
+<div id="further-exploration-of-cell-type-composition-across-lines" class="section level1">
+<h1>Further Exploration of cell type composition across lines</h1>
+<ul>
+<li><a href="18858ClusterDelve.Rmd">Visualization of 18858 EB cell type composition</a></li>
+<li><a href="NewDataRobustCellTypeComposition.Rmd">Broad cell type composition of 5 additional lines</a></li>
+<li><a href="IntegrateReference_SCTregressCaoPlusScHCL_5newlines.Rmd">Reference Integration with 5 additional lines</a></li>
+</ul>
+</div>
 <div id="topic-modelling-with-fasttopics" class="section level1">
 <h1>Topic Modelling with FastTopics</h1>
 <p>Topic modelling Scripts can be found in the code directory.</p>
@@ -1578,8 +1621,9 @@ Start workflowr project.
 <div id="scripts-for-generating-clean-paper-figures" class="section level1">
 <h1>Scripts for generating clean paper figures</h1>
 <ul>
-<li><a href="Fig1.html">Fig. 1</a></li>
-<li><a href="Fig2.html">Fig. 2</a></li>
+<li><a href="Fig1.html">Fig. 1 - Marker gene expression, clustering, and broad cell type composition</a></li>
+<li><a href="Fig2.html">Fig. 2 - Reference Integration with original samples (3 lines, 3 replicates)</a></li>
+<li><a href="Fig2.5_NewLinesSeparateRefInt.Rmd">Fig. 3 - Reference Integration with 5 additional lines</a></li>
 </ul>
 </div>
 <div id="additional-processing-and-analyses-that-were-tested-but-ultimately-not-included-in-the-paper" class="section level1">
