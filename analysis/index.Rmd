@@ -87,9 +87,9 @@ We then checked that the integration and annotation procedure was robust by subs
 + [Check differential expression of annotated cells](ReferenceAnn_DE.html)
 
 #Further Exploration of cell type composition across lines
-+ [Visualization of 18858 EB cell type composition](18858ClusterDelve.Rmd)
-+ [Broad cell type composition of 5 additional lines](NewDataRobustCellTypeComposition.Rmd)
-+ [Reference Integration with 5 additional lines](IntegrateReference_SCTregressCaoPlusScHCL_5newlines.Rmd)
++ [Visualization of 18858 EB cell type composition](18858ClusterDelve.html)
++ [Broad cell type composition of 5 additional lines](NewDataRobustCellTypeComposition.html)
++ [Reference Integration with 5 additional lines](IntegrateReference_SCTregressCaoPlusScHCL_5newlines.html)
 
 # Topic Modelling with FastTopics
 Topic modelling Scripts can be found in the code directory. 
@@ -129,7 +129,7 @@ See Josh Popp's GitHub: https://github.com/jmp448/ebpilot
 #Scripts for generating clean paper figures
 + [Fig. 1 - Marker gene expression, clustering, and broad cell type composition](Fig1.html)
 + [Fig. 2 - Reference Integration with original samples (3 lines, 3 replicates)](Fig2.html)
-+ [Fig. 3 - Reference Integration with 5 additional lines](Fig2.5_NewLinesSeparateRefInt.Rmd)
++ [Fig. 3 - Reference Integration with 5 additional lines](Fig2.5_NewLinesSeparateRefInt.html)
 
 
 #Additional Processing and Analyses that were tested but ultimately not included in the paper:
