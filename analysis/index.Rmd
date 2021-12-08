@@ -26,6 +26,8 @@ Study Design:
 
 Embryoid bodies were formed from 3 human iPSCs lines in 3 replicates. Three weeks after formation, EBs were dissociated and scRNA-seq data was collected using the 10x platform. After quality control and filtering, this dataset consists of 42,488 cells.
 
+We later collected data from 5 additional lines in a single replicate. This data was used to evaluate the robustness of EB cell type composition among YRI lines. 
+
 # Alignment and Preprocessing
 
 See full alignment and preprocessing pipeline here: https://github.com/kennethabarr/HumanChimp
@@ -84,6 +86,11 @@ We then checked that the integration and annotation procedure was robust by subs
 + [Check Robustness of Annotations between integrations](RefInt_ComparingFulltoPartialIntegrationAnnotations.html)
 + [Check differential expression of annotated cells](ReferenceAnn_DE.html)
 
+#Further Exploration of cell type composition across lines
++ [Visualization of 18858 EB cell type composition](18858ClusterDelve.Rmd)
++ [Broad cell type composition of 5 additional lines](NewDataRobustCellTypeComposition.Rmd)
++ [Reference Integration with 5 additional lines](IntegrateReference_SCTregressCaoPlusScHCL_5newlines.Rmd)
+
 # Topic Modelling with FastTopics
 Topic modelling Scripts can be found in the code directory. 
 
@@ -120,8 +127,9 @@ Topic modelling Scripts can be found in the code directory.
 See Josh Popp's GitHub: https://github.com/jmp448/ebpilot
 
 #Scripts for generating clean paper figures
-+ [Fig. 1](Fig1.html)
-+ [Fig. 2](Fig2.html)
++ [Fig. 1 - Marker gene expression, clustering, and broad cell type composition](Fig1.html)
++ [Fig. 2 - Reference Integration with original samples (3 lines, 3 replicates)](Fig2.html)
++ [Fig. 3 - Reference Integration with 5 additional lines](Fig2.5_NewLinesSeparateRefInt.Rmd)
 
 
 #Additional Processing and Analyses that were tested but ultimately not included in the paper:
