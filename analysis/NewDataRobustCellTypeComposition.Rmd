@@ -1,0 +1,320 @@
+---
+title: "Untitled"
+author: "Katie Rhodes"
+date: "10/6/2021"
+output: html_document
+---
+```{r}
+library(Seurat)
+library(SeuratDisk)
+library(sctransform)
+library(reshape2)
+library (ggplot2)
+```
+
+
+```{r}
+hfile<- LoadH5Seurat("/project2/gilad/katie/ebQTL/Lowpass.3seqbatches.merged.TEMP.h5Seurat", assays= "RNA")
+```
+
+```{r}
+hfile
+```
+
+```{r}
+#subset to 5 cell lines from the same collection date (10.15.20)
+lines<- c("19210", "19159", "19140", "18912", "18856")
+date<- 1015
+obj<- subset(hfile, subset= individual %in% lines)
+obj<- subset(obj, subset= c.date == date)
+```
+
+```{r}
+obj
+```
+
+
+```{r}
+VlnPlot(obj, features= c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol=3, pt.size=0)
+```
+
+In previous filtering, cells with greater than 15% MT have already been removed. to be consistent with the pilot, I also filter cells with less than 3% MT reads. 
+
+```{r}
+obj<- subset(obj, subset= percent.mt > 3)
+```
+
+```{r}
+obj
+```
+
+```{r}
+FeatureScatter(obj, feature1= "nCount_RNA", feature2= "percent.mt")
+```
+
+This data is not sequenced as deeply as the main pilot data, so the Feature threshold will be lower (for main data, kept cells with at least 1,500 genes expressed. Here, will keep cells with at least 1000)
+
+```{r}
+obj<- subset(obj, subset= nFeature_RNA > 1000)
+```
+
+```{r}
+obj
+```
+(this didn't actually filter any cells, mt cutoff also removed the low feature cells)
+
+```{r}
+#how many cells total from each individual after filtering?
+table(as.character(obj@meta.data$individual))
+```
+
+Normalize with same SCTransform
+```{r}
+obj<- SCTransform(obj, verbose=FALSE)
+```
+
+```{r}
+obj <- RunPCA(obj, npcs=100, verbose = FALSE)
+```
+
+```{r}
+FeaturePlot(obj, reduction= 'pca', features = "POU5F1")
+```
+
+```{r}
+obj<- RunUMAP(obj, dims=1:100, verbose=FALSE)
+```
+
+```{r}
+DimPlot(obj, reduction='umap', group.by = 'individual')
+```
+
+```{r}
+#by canonical markers
+FeaturePlot(obj, reduction='umap', features = c("POU5F1", "HAND1", "SOX17", "PAX6", "MAP2", "SOX10", "GNG11", "MIXL1", "AFP"))
+```
+
+by top markers in pilot DE analysis (adj. P)
+```{r}
+FeaturePlot(obj, reduction='umap', features = c("TERF1", "TPBG", "TNNI1", "NR2F1", "S100A16", "TAGLN3", "EGFL7"))
+```
+
+```{r}
+obj <- FindNeighbors(obj, dims = 1:100, verbose = FALSE)
+obj <- FindClusters(obj, resolution= 0.1, verbose = FALSE)
+V<- DimPlot(obj, label = TRUE) + NoLegend()
+V
+```
+
+```{r, eval=F}
+saveRDS(obj, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/mergedObjects/FiveNewLines.rds")
+```
+
+```{r}
+G<- DotPlot(obj, features= c("POU5F1", "HAND1", "SOX17", "PAX6", "MAP2", "SOX10", "GNG11", "MIXL1", "AFP"))
+G
+```
+
+```{r}
+DotPlot(obj, features= c("TERF1", "TPBG", "TNNI1", "NR2F1", "S100A16", "TAGLN3", "EGFL7"))
+```
+
+Where do clusters 2 and 4 fit into original cell type anno?
+```{r}
+#DimPlot colored by more of the top DE genes from Neuron cluster in OG pilot data
+FeaturePlot(obj, reduction='umap', features = c("TAGLN3", "RTN1", "NEUROD1", "NHLH1", "STMN2"))
+```
+Decent evidence that these two clusters are both similar to the "Neuron" cluster in OG data
+```{r}
+obj <- FindClusters(obj, resolution= 0.15, verbose = FALSE)
+G<- DimPlot(obj, label = TRUE) + NoLegend()
+G
+```
+
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/NewLinesDimPlotRes0.15.png", width= 5, height=5, units= "in", res= 1080)
+
+G
+
+dev.off()
+```
+
+```{r}
+V<- DotPlot(obj, features= c("POU5F1", "HAND1", "SOX17", "PAX6", "MAP2", "SOX10", "GNG11"))
+V
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/NewLinesDotPlotRes.15.CanonicalMarkers.png", width= 7, height=5, units= "in", res= 1080)
+
+V
+
+dev.off()
+```
+
+```{r}
+B<- DotPlot(obj, features= c("TERF1", "TNNI1", "S100A16", "TPBG", "TAGLN3", "NR2F1", "EGFL7"))
+B
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/NewLinesDotPlotRes.15.LearnedMarkers.png", width= 7, height=5, units= "in", res= 1080)
+
+B
+
+dev.off()
+```
+
+
+```{r}
+obj <- FindClusters(obj, resolution= 0.06, verbose = FALSE)
+DimPlot(obj, label = TRUE) + NoLegend()
+```
+
+```{r}
+DotPlot(obj, features= c("POU5F1", "HAND1", "SOX17", "PAX6", "MAP2", "SOX10", "GNG11", "MIXL1", "AFP"))
+```
+
+
+```{r}
+DotPlot(obj, features= c("TERF1", "TNNI1", "S100A16", "TPBG", "TAGLN3", "NR2F1", "EGFL7"))
+```
+
+
+```{r}
+
+M<-VlnPlot(obj, features= c("nFeature_RNA", "nCount_RNA", "percent.mt"), group.by= 'individual', ncol=3, pt.size=0)
+M
+
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/NewLinesQCvlnPlot.png", width= 5, height=4, units= "in", res= 1080)
+
+M
+
+dev.off()
+```
+
+
+quick FindMarkers to see whether any of these are distinct from the OG cell types using res 0.1
+
+```{r}
+Idents(obj)<- obj@meta.data$SCT_snn_res.0.15
+```
+
+```{r}
+c0mark<-FindMarkers(obj, ident.1= 0)
+head(c0mark, 20)
+```
+
+```{r}
+c1mark<-FindMarkers(obj, ident.1= 1)
+head(c1mark, 20)
+```
+
+```{r}
+c2mark<-FindMarkers(obj, ident.1= 2)
+head(c2mark, 20)
+```
+
+```{r}
+c3mark<-FindMarkers(obj, ident.1= 3)
+head(c3mark, 20)
+```
+
+```{r}
+c4mark<-FindMarkers(obj, ident.1= 4)
+head(c4mark)
+```
+
+```{r}
+c5mark<-FindMarkers(obj, ident.1= 5)
+head(c5mark)
+```
+
+```{r}
+c6mark<- FindMarkers(obj, ident.1=6)
+head(c6mark, 20)
+```
+
+```{r}
+c7mark<- FindMarkers(obj, ident.1=7)
+head(c7mark, 20)
+```
+
+
+```{r}
+c8mark<- FindMarkers(obj, ident.1=8)
+head(c8mark, 20)
+```
+
+
+```{r}
+#label them with labels from pilot ( Res 0.15:combining 0 and 2 to early ectoderm, combining 4 and 6 to Neuron. )
+Easy<- as.character(obj@meta.data$SCT_snn_res.0.15)
+Easy[Easy=="0"]<- "Early Ectoderm"
+Easy[Easy=="1"]<- "Neural Crest"
+Easy[Easy=="2"]<- "Early Ectoderm"
+Easy[Easy=="3"]<- "Pluripotent"
+Easy[Easy=="4"]<- "Neuron"
+Easy[Easy=="5"]<- "Mesoderm"
+Easy[Easy=="6"]<- "Neuron"
+Easy[Easy=="7"]<- "Endoderm"
+Easy[Easy=="8"]<- "Endothelial"
+
+obj<- AddMetaData(obj, metadata = Easy, col.name = "Pilot.Ann")
+```
+
+```{r, eval=F}
+tab<- cbind(rownames(obj@meta.data), obj@meta.data$Pilot.Ann)
+write.csv(tab, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/5NEWLINES.BroadCellTypeCatAssignment.basedonclustersres0.15.csv")
+```
+
+
+```{r}
+#calculate proportion of cells in each pilot annotation group
+indtot<- table(as.character(obj@meta.data$individual))
+indbyann<- table(as.character(obj@meta.data$individual), obj@meta.data$Pilot.Ann)
+indbyann
+```
+
+```{r}
+prop<- indbyann/as.vector(indtot)
+prop
+```
+
+```{r}
+dat<- melt(prop)
+dat$Var2<- factor(dat$Var2, levels = c("Endothelial", "Neuron", "Endoderm", "Neural Crest", "Mesoderm", "Early Ectoderm", "Pluripotent"))
+```
+
+```{r}
+clrs2<- c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#bc80bd", "#ccebc5", "#ffed6f", "#a6cee3", "#1f78b4", "midnightblue", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928", "darkseagreen4", "darkorange3", "darkorchid4", "palevioletred2", "khaki3", "cornsilk3")
+V<- ggplot(dat, aes(x= factor(Var1), y=value))+
+  geom_col(aes(fill=Var2), width = 0.8)+
+  xlab("individual")+
+  ylab("cell type proportion")+
+  scale_fill_manual(values = clrs2)+
+  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  labs(fill = "Cell Type")
+
+
+V
+```
+
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/NewLinesBarPlotCellTypeComp.png", width= 6, height=4, units= "in", res= 1080)
+
+V
+
+dev.off()
+```
+
+
+```{r}
+sessionInfo()
+```
+

@@ -1,0 +1,197 @@
+---
+title: "Fig2.5.5New"
+author: "Katie Rhodes"
+date: "4/19/2021"
+output: html_document
+---
+```{r}
+library(Seurat)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+merge.all<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/5newlines.merge.all.SCTwRegressOrigIdent.Harmony.rds")
+```
+
+```{r}
+#Get broad cell type category assignments for 5New lines based on cluster marker genes
+PilotAnn<-read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/5NEWLINES.BroadCellTypeCatAssignment.basedonclustersres0.15.csv", header=T)
+
+#prep to add metadata
+cellid<- as.data.frame(rownames(merge.all@meta.data))
+colnames(cellid)<- "cellid"
+PilotAnn<- PilotAnn[2:3]
+catbyid<- left_join(cellid, PilotAnn, by = c("cellid" ="V1"))
+
+merge.all<- AddMetaData(merge.all, metadata=catbyid$V2, "PilotAnn")
+```
+
+
+
+```{r}
+options(ggrepel.max.overlaps = Inf, ggrepel.force=1000, ggrepel.box.padding=1000, ggrepel.force_pull=0.01, ggrepel.max.iter=100000, ggrepel.max.time=30)
+```
+
+```{r}
+#rename reference metadata
+cleanNames<- merge.all@meta.data$orig.ident
+cleanNames[cleanNames == "Cao.EtAl"]<- "Fetal Reference"
+cleanNames[cleanNames == "EB.5New"]<- "EB Additional Lines"
+cleanNames[cleanNames == "scHCL.EB20"]<- "EB Reference"
+cleanNames[cleanNames == "scHCL.hESC"]<- "hESC Reference"
+
+merge.all<- AddMetaData(merge.all,cleanNames, col.name = "cleanOrig")
+```
+
+```{r}
+V<- DimPlot(merge.all, group.by = "cleanOrig", label = F, order= c("hESC Reference","EB Reference", "EB Additional Lines","Fetal Reference")) +NoAxes()
+  
+
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/Fig2.5_5New_CleanOrig.pdf")
+
+V
+
+dev.off()
+```
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig2.5.5New.CleanOrig.png", width=7, height=6, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+```{r}
+Idents(merge.all)<- "orig.ident"
+sub<- subset(merge.all, idents= c("Cao.EtAl", "EB.5New"))
+```
+
+```{r}
+V<- DimPlot(sub, group.by = "Main_cluster_name", label = T, repel = T, label.size = 2.1)+NoLegend()+theme(aspect.ratio = 1)+ NoAxes()
+V
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig2.5.5New.MainClust.png", width=6, height=6, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+
+```{r}
+V<- DimPlot(sub, group.by = "SCT_snn_res.0.1", label = T, repel = F, label.size = 5)+NoLegend()
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/Fig2.5_5New_SeuratClust.pdf")
+
+V
+
+dev.off()
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig2.5.5New.SeuratClust.png", width=6, height=6, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+
+```{r}
+V<- DimPlot(sub, group.by = "PilotAnn", label = T, repel = F, label.size = 4)+NoLegend()+NoAxes()
+V
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig2.5.5New.DEann.png", width=6, height=6, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+```{r}
+x<- DimPlot(sub, group.by = "cleanOrig", cols = c("#E69F00", "#0072B2"))+NoLegend()
+x
+```
+```{r}
+z<- DimPlot(sub, group.by = "cleanOrig", order="Cao.EtAl", cols = c("#E69F00", "#0072B2"))
+z
+```
+
+```{r}
+xz<- x + z
+
+xz
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig_5NEWLINES_EBandCaoOverlap.png", width=6, height=3, units= "in", res=1080)
+
+xz
+
+dev.off()
+```
+
+
+```{r}
+V<- DimPlot(merge.all, split.by = "cleanOrig", label = F, order= c("hESC Reference","EB Reference", "EB","Fetal Reference"))+NoLegend()
+  
+
+V
+```
+
+```{r, eval=F}
+pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/SuppFig_5NEWLINES_CleanOrig_split.pdf")
+
+V
+
+dev.off()
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig.5NEWLINES.cleanOrig,split.png", width=8, height=3, units= "in", res=1080)
+
+V
+
+dev.off()
+```
+
+```{r}
+nearest.ann<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/5NEWLINES.MostCommonAnnotation.FiveNearestRefCells.csv")
+sub<- subset(merge.all, idents= c("EB.5New"))
+EB.cell.id<- rownames(sub@meta.data)
+sub@meta.data<- cbind(sub@meta.data, EB.cell.id)
+sub@meta.data<- full_join(sub@meta.data, nearest.ann, by= c("EB.cell.id"))
+rownames(sub@meta.data)<- EB.cell.id
+```
+
+```{r}
+M<- DimPlot(sub, group.by="Annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()+NoAxes()
+
+M
+```
+
+```{r, eval=F}
+png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Fig2.5.5New.TransferredLabelUMAP.png", width=6, height=6, units= "in", res=1080)
+
+M
+
+dev.off()
+```
+
+
+```{r}
+sessionInfo()
+```
+

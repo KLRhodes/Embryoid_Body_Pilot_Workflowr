@@ -21,14 +21,20 @@ merged<- readRDS("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workf
 ```
 
 ```{r}
-p0<- FeaturePlot(merged, features = c("POU5F1", "SOX17", "HAND1", "PAX6"), cols= c("grey","blue"), combine=T, slot= "data", ncol=4)
+p0<- FeaturePlot(merged, features = c("POU5F1", "SOX17", "HAND1", "PAX6"), cols= c("grey","blue"), combine=F, slot= "data", ncol=4)
+
+for (i in 1:length(p0)){
+  p0[[i]]<- p0[[i]]+ NoAxes()
+}
+
+p0<- p0[[1]]+p0[[2]]+p0[[3]]+p0[[4]]+plot_layout(nrow=1)
 ```
 
 ```{r}
-p1<- DimPlot(merged, group.by= "SCT_snn_res.1")
+p1<- DimPlot(merged, group.by= "SCT_snn_res.1") + NoAxes()
 p2<- DimPlot(merged, group.by= "SCT_snn_res.0.5")
 p4<- DimPlot(merged, group.by= "SCT_snn_res.0.8")
-p3<- DimPlot(merged, group.by= "SCT_snn_res.0.1")
+p3<- DimPlot(merged, group.by= "SCT_snn_res.0.1") + NoAxes()
 ```
 
 
@@ -46,7 +52,16 @@ tot<- rowSums(tabi)
 tabprop<- tabi/tot
 dat<- melt(tabprop)
 
-dat$Var2<- factor(dat$Var2, levels = c("6", "5", "4", "3", "2", "1", "0"))
+dat$Var2[dat$Var2 == 0]<- "0 (Pluripotent)"
+dat$Var2[dat$Var2 == 1]<- "1 (Early Ectoderm)"
+dat$Var2[dat$Var2 == 2]<- "2 (Mesoderm)"
+dat$Var2[dat$Var2 == 3]<- "3 (Neural Crest)"
+dat$Var2[dat$Var2 == 4]<- "4 (Endoderm)"
+dat$Var2[dat$Var2 == 5]<- "5 (Neurons)"
+dat$Var2[dat$Var2 == 6]<- "6 (Endothelial)"
+
+dat$Var2<- factor(dat$Var2, levels = c("6 (Endothelial)", "5 (Neurons)", "4 (Endoderm)", "3 (Neural Crest)", "2 (Mesoderm)", "1 (Early Ectoderm)", "0 (Pluripotent)"))
+
 colnames(dat)<- c("Var1", "Cluster_Res0.1", "value")
 ```
 
@@ -72,14 +87,14 @@ V
 
 
 ```{r}
-fig1<- p0+p3 +p1
+fig1<- p0/(p3 +p1+ plot_spacer())
   
 
 fig1
 ```
 
 
-```{r}
+```{r, eval=F}
 pdf(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.1.pdf", width= 16, height=8)
 
 fig1
@@ -87,7 +102,7 @@ fig1
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 pdf(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.2.pdf", width= 7, height=4)
 
 V
@@ -95,7 +110,7 @@ V
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.1.png", width= 16, height=8, units= "in", res= 1080)
 
 fig1
@@ -103,7 +118,7 @@ fig1
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig1.2.png", width=7, height=4, units= "in", res=1080)
 
 V
@@ -161,7 +176,7 @@ all
 ```
 
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_ClusterPropHeat.png", width=5, height=8.5, units= "in", res=1080)
 
 all
@@ -169,7 +184,7 @@ all
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 lgd<- Legend(col_fun = col_fun, title="Proportion \nof cells")
 
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_ClusterProp_JUSTLEGEND.png", width=1, height=2, units= "in", res=1080)
@@ -204,7 +219,7 @@ a|b
 ```
 
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_nCountnFeat_RNA.png", width= 7.5, height=3, units= "in", res= 1080)
 
 a|b
@@ -212,7 +227,7 @@ a|b
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/Supp_nCountnFeat_SCT.png", width= 7.5, height=3, units= "in", res= 1080)
 
 c|d
@@ -226,7 +241,7 @@ H<- DimPlot(merged, group.by = "SCT_snn_res.0.8", pt.size = 0.005)
 G|H
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SUPP_DimPlot_res0.5and0.8.png", width=9, height=5, units= "in", res=1080)
 
 G|H
@@ -238,7 +253,7 @@ w<- VlnPlot(merged, features= c("EOMES", "MIXL1"), group.by= "SCT_snn_res.1", pt
 w
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SUPP_clust22_primitiveStreakVlnPlot.png", width=11, height=4, units= "in", res=1080)
 
 w

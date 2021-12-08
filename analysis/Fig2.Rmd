@@ -30,20 +30,20 @@ merge.all<- AddMetaData(merge.all,cleanNames, col.name = "cleanOrig")
 ```
 
 ```{r}
-V<- DimPlot(merge.all, group.by = "cleanOrig", label = F, order= c("hESC Reference","EB Reference", "EB","Fetal Reference"))
+V<- DimPlot(merge.all, group.by = "cleanOrig", label = F, order= c("hESC Reference","EB Reference", "EB","Fetal Reference")) +NoAxes()
   
 
 V
 ```
 
-```{r}
+```{r, eval=F}
 pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/Fig2_CleanOrig.pdf")
 
 V
 
 dev.off()
 ```
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig2.CleanOrig.png", width=7, height=6, units= "in", res=1080)
 
 V
@@ -57,11 +57,11 @@ sub<- subset(merge.all, idents= c("Cao.EtAl", "EB.Pilot"))
 ```
 
 ```{r}
-V<- DimPlot(sub, group.by = "Main_cluster_name", label = T, repel = T, label.size = 2.1)+NoLegend()+theme(aspect.ratio = 1)
+V<- DimPlot(sub, group.by = "Main_cluster_name", label = T, repel = T, label.size = 2.1)+NoLegend()+theme(aspect.ratio = 1)+NoAxes()
 V
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig2.MainClust.png", width=6, height=6, units= "in", res=1080)
 
 V
@@ -71,11 +71,11 @@ dev.off()
 
 
 ```{r}
-V<- DimPlot(sub, group.by = "SCT_snn_res.0.1", label = T, repel = F, label.size = 5)+NoLegend()
+V<- DimPlot(sub, group.by = "SCT_snn_res.0.1", label = T, repel = F, label.size = 5)+NoLegend() +NoAxes()
 V
 ```
 
-```{r}
+```{r, eval=F}
 pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/Fig2_SeuratClust.pdf")
 
 V
@@ -83,7 +83,7 @@ V
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig2.SeuratClust.png", width=6, height=6, units= "in", res=1080)
 
 V
@@ -106,11 +106,11 @@ sub<- AddMetaData(sub,DEann, col.name = "DEann")
 ```
 
 ```{r}
-V<- DimPlot(sub, group.by = "DEann", label = T, repel = F, label.size = 4)+NoLegend()
+V<- DimPlot(sub, group.by = "DEann", label = T, repel = F, label.size = 4)+NoLegend()+NoAxes()
 V
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig2.DEann.png", width=6, height=6, units= "in", res=1080)
 
 V
@@ -133,7 +133,7 @@ xz<- x + z
 xz
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig_EBandCaoOverlap.png", width=6, height=3, units= "in", res=1080)
 
 xz
@@ -149,7 +149,7 @@ V<- DimPlot(merge.all, split.by = "cleanOrig", label = F, order= c("hESC Referen
 V
 ```
 
-```{r}
+```{r, eval=F}
 pdf(file = "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/pdfs/SuppFig_CleanOrig_split.pdf")
 
 V
@@ -157,7 +157,7 @@ V
 dev.off()
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/SuppFig.cleanOrig,split.png", width=8, height=3, units= "in", res=1080)
 
 V
@@ -166,7 +166,7 @@ dev.off()
 ```
 
 ```{r}
-nearest.ann<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/NearestReferenceCell.Cao.hESC.EuclideanDistanceinHarmonySpace.csv")
+nearest.ann<- read.csv("/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/MostCommonAnnotation.FiveNearestRefCells.csv")
 sub<- subset(merge.all, idents= c("EB.Pilot"))
 EB.cell.id<- rownames(sub@meta.data)
 sub@meta.data<- cbind(sub@meta.data, EB.cell.id)
@@ -175,12 +175,12 @@ rownames(sub@meta.data)<- EB.cell.id
 ```
 
 ```{r}
-M<- DimPlot(sub, group.by="annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()
+M<- DimPlot(sub, group.by="Annotation", pt.size = 0.2, label.size = 2.5,label=T, repel=T) +NoLegend()+NoAxes()
 
 M
 ```
 
-```{r}
+```{r, eval=F}
 png(file= "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/figs/fig2.TransferredLabelUMAP.png", width=6, height=6, units= "in", res=1080)
 
 M
