@@ -12,6 +12,7 @@ library(limma)
 library(reshape2)
 library(ggplot2)
 library(UpSetR)
+library(tibble)
 ```
 
 
@@ -185,10 +186,7 @@ for (i in 1:nclust){
 
 listnames<- c(paste0("Cluster", unique(dge$samples$cluster)))
 names(output.list)<- as.vector(listnames)
-
-write.csv(output.list, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAllTopTables.csv")
 ```
-
 
 ```{r}
 #output table with top 5 upreg DE genes in each cluster by adjusted p
@@ -218,6 +216,25 @@ colnames(OnevAll.top10.logFC)<- as.character(0:(nclust-1))
 
 write.csv(OnevAll.top10.logFC, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/Pseudobulk_Limma_res0.1_OnevAll_top10Upregby_logFC.csv")
 ```
+
+```{r}
+#add cluster number to colnames
+for (i in 1:nclust){
+  d<- names(output.list[i])
+  colnames(output.list[[i]])<- paste(d, colnames(output.list[[i]]), sep=".")
+}
+
+all<- left_join(rownames_to_column(output.list[[1]]), rownames_to_column(output.list[[2]]), by= c("rowname" = "rowname"))
+for (i in 3:nclust){
+  all<- left_join(all, rownames_to_column(output.list[[i]]), by= c("rowname" = "rowname"))
+}
+
+colnames(all)[1]<- "gene"
+write.csv(all, "/project2/gilad/katie/Pilot_HumanEBs/Embryoid_Body_Pilot_Workflowr/output/NEW_Pseudobulk_Limma_res0.1_OnevAllTopTables.csv")
+```
+
+
+
 
 ```{r}
 sessionInfo()
