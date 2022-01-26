@@ -12,6 +12,7 @@ editor_options:
 Welcome! This is a research website detailing analyses analyses performed on scRNA-seq data from human embryoid bodies, aggregates of spontaneously differentiating cells generated from induced pluripotent stem cells.
 
 eLife article DOI: https://doi.org/10.7554/eLife.71361
+
 Preprint on BioRxiv: https://www.biorxiv.org/content/10.1101/2021.06.16.448714v1
 
 The overarching goals of this work are to:
